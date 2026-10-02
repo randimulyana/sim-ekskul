@@ -23,7 +23,7 @@
             <div class="flex items-start justify-between">
                 <div>
                     <p class="text-sm font-medium text-slate-500">Total Siswa</p>
-                    <p class="mt-1 text-3xl font-bold text-slate-900">247</p>
+                    <p class="mt-1 text-3xl font-bold text-slate-900">{{ $totalStudents ?? 0 }}</p>
                     <p class="mt-1 text-xs text-slate-500">Terdata di sistem</p>
                 </div>
                 <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center flex-shrink-0">
@@ -37,7 +37,7 @@
             <div class="flex items-start justify-between">
                 <div>
                     <p class="text-sm font-medium text-slate-500">Total Ekstrakurikuler</p>
-                    <p class="mt-1 text-3xl font-bold text-slate-900">12</p>
+                    <p class="mt-1 text-3xl font-bold text-slate-900">{{ $totalExtracurriculars ?? 0 }}</p>
                     <p class="mt-1 text-xs text-slate-500">Aktif periode ini</p>
                 </div>
                 <div class="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-xl flex items-center justify-center flex-shrink-0">
@@ -51,7 +51,7 @@
             <div class="flex items-start justify-between">
                 <div>
                     <p class="text-sm font-medium text-slate-500">Total Pendaftar</p>
-                    <p class="mt-1 text-3xl font-bold text-slate-900">183</p>
+                    <p class="mt-1 text-3xl font-bold text-slate-900">{{ $totalRegistrations ?? 0 }}</p>
                     <p class="mt-1 text-xs text-slate-500">Periode aktif</p>
                 </div>
                 <div class="w-12 h-12 bg-amber-100 text-amber-600 rounded-xl flex items-center justify-center flex-shrink-0">
@@ -65,7 +65,7 @@
             <div class="flex items-start justify-between">
                 <div>
                     <p class="text-sm font-medium text-slate-500">Pendaftaran Pending</p>
-                    <p class="mt-1 text-3xl font-bold text-slate-900">42</p>
+                    <p class="mt-1 text-3xl font-bold text-slate-900">{{ $pendingRegistrations ?? 0 }}</p>
                     <p class="mt-1 text-xs text-amber-600 font-medium">Menunggu tinjau</p>
                 </div>
                 <div class="w-12 h-12 bg-red-100 text-red-600 rounded-xl flex items-center justify-center flex-shrink-0">
@@ -76,14 +76,25 @@
     </div>
 
     {{-- Period Alert --}}
+    @if(isset($activePeriod) && $activePeriod)
     <div class="bg-emerald-50 border border-emerald-200 rounded-xl p-4 flex items-center gap-3">
         <div class="w-2.5 h-2.5 bg-emerald-500 rounded-full flex-shrink-0 animate-pulse"></div>
         <div class="flex-1 min-w-0">
-            <p class="text-sm font-semibold text-emerald-800">Periode Pendaftaran Aktif</p>
-            <p class="text-xs text-emerald-600 mt-0.5">Tahun Pelajaran 2026/2027 &mdash; Dibuka sejak 1 Agustus 2026 &middot; Ditutup 30 September 2026</p>
+            <p class="text-sm font-semibold text-emerald-800">Periode Pendaftaran Aktif: {{ $activePeriod->name }}</p>
+            <p class="text-xs text-emerald-600 mt-0.5">{{ $activePeriod->school_year }} &mdash; Dibuka sejak {{ \Carbon\Carbon::parse($activePeriod->start_date)->translatedFormat('j F Y') }} &middot; Ditutup {{ \Carbon\Carbon::parse($activePeriod->end_date)->translatedFormat('j F Y') }}</p>
         </div>
         <a href="/admin/pengaturan" class="text-xs text-emerald-700 font-semibold hover:underline whitespace-nowrap">Kelola Periode</a>
     </div>
+    @else
+    <div class="bg-amber-50 border border-amber-200 rounded-xl p-4 flex items-center gap-3">
+        <div class="w-2.5 h-2.5 bg-amber-500 rounded-full flex-shrink-0"></div>
+        <div class="flex-1 min-w-0">
+            <p class="text-sm font-semibold text-amber-800">Tidak ada periode pendaftaran aktif</p>
+            <p class="text-xs text-amber-600 mt-0.5">Aktifkan periode pendaftaran agar siswa dapat mendaftar ekstrakurikuler.</p>
+        </div>
+        <a href="/admin/pengaturan" class="text-xs text-amber-700 font-semibold hover:underline whitespace-nowrap">Atur Periode</a>
+    </div>
+    @endif
 
     {{-- Two Column Grid --}}
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -96,32 +107,36 @@
             </div>
             <div class="divide-y divide-slate-100">
                 @php
-                // DATA DEMO
-                $pendaftaran = [
-                    ['nama' => 'Andi Saputra',  'kelas' => 'KULINER 1',    'ekskul' => 'PASKIBRAKA',   'status' => 'accepted', 'statusLabel' => 'Diterima'],
-                    ['nama' => 'Bunga Lestari',  'kelas' => 'BUSANA 2',     'ekskul' => 'PADUAN SUARA', 'status' => 'reviewed', 'statusLabel' => 'Ditinjau'],
-                    ['nama' => 'Rizky Pratama',  'kelas' => 'TKJ 1',        'ekskul' => 'ENGLISH CLUB', 'status' => 'submitted','statusLabel' => 'Terkirim'],
-                    ['nama' => 'Siti Aulia',     'kelas' => 'PERHOTELAN 1', 'ekskul' => 'PRAMUKA',      'status' => 'submitted','statusLabel' => 'Terkirim'],
-                    ['nama' => 'Danu Wirawan',   'kelas' => 'ANIMASI 1',    'ekskul' => 'MARCHING BAND','status' => 'accepted', 'statusLabel' => 'Diterima'],
-                ];
                 $statusColors = [
                     'accepted'  => 'bg-emerald-100 text-emerald-700',
                     'reviewed'  => 'bg-amber-100 text-amber-700',
                     'submitted' => 'bg-blue-100 text-blue-700',
                     'rejected'  => 'bg-red-100 text-red-700',
+                    'cancelled' => 'bg-slate-100 text-slate-700',
+                ];
+                $statusLabels = [
+                    'accepted'  => 'Diterima',
+                    'reviewed'  => 'Ditinjau',
+                    'submitted' => 'Terkirim',
+                    'rejected'  => 'Ditolak',
+                    'cancelled' => 'Dibatalkan',
                 ];
                 @endphp
-                @foreach($pendaftaran as $p)
+                @forelse($recentRegistrations ?? [] as $p)
                 <div class="flex items-center justify-between px-6 py-3.5 hover:bg-slate-50 transition-colors">
                     <div class="min-w-0">
-                        <p class="text-sm font-medium text-slate-900 truncate">{{ $p['nama'] }}</p>
-                        <p class="text-xs text-slate-500 mt-0.5">{{ $p['kelas'] }} &middot; {{ $p['ekskul'] }}</p>
+                        <p class="text-sm font-medium text-slate-900 truncate">{{ $p->student->user->name ?? '-' }}</p>
+                        <p class="text-xs text-slate-500 mt-0.5">{{ $p->student->class_name ?? '-' }} &middot; {{ $p->extracurricular->name ?? '-' }}</p>
                     </div>
-                    <span class="ml-3 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {{ $statusColors[$p['status']] }}">
-                        {{ $p['statusLabel'] }}
+                    <span class="ml-3 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {{ $statusColors[$p->status] ?? 'bg-slate-100 text-slate-700' }}">
+                        {{ $statusLabels[$p->status] ?? ucfirst($p->status) }}
                     </span>
                 </div>
-                @endforeach
+                @empty
+                <div class="px-6 py-8 text-center text-sm text-slate-400">
+                    Belum ada pendaftaran yang masuk.
+                </div>
+                @endforelse
             </div>
             <div class="px-6 py-3 border-t border-slate-100 bg-slate-50 rounded-b-xl">
                 <a href="/admin/pendaftaran" class="text-xs text-slate-500 hover:text-blue-600 transition-colors">Tampilkan selengkapnya &rarr;</a>
@@ -136,30 +151,26 @@
             </div>
             <div class="px-6 py-4 space-y-4">
                 @php
-                // DATA DEMO
-                $ekskulStats = [
-                    ['nama' => 'PASKIBRAKA',    'jumlah' => 34, 'pct' => 85, 'color' => 'bg-blue-500'],
-                    ['nama' => 'PRAMUKA',        'jumlah' => 28, 'pct' => 70, 'color' => 'bg-emerald-500'],
-                    ['nama' => 'MARCHING BAND',  'jumlah' => 22, 'pct' => 55, 'color' => 'bg-amber-500'],
-                    ['nama' => 'PADUAN SUARA',   'jumlah' => 18, 'pct' => 45, 'color' => 'bg-purple-500'],
-                    ['nama' => 'ENGLISH CLUB',   'jumlah' => 15, 'pct' => 38, 'color' => 'bg-sky-500'],
-                    ['nama' => 'SILAT TRADISI',  'jumlah' => 12, 'pct' => 30, 'color' => 'bg-red-500'],
-                ];
+                $barColors = ['bg-blue-500', 'bg-emerald-500', 'bg-amber-500', 'bg-purple-500', 'bg-sky-500', 'bg-red-500'];
                 @endphp
-                @foreach($ekskulStats as $e)
+                @forelse($ekskulStats ?? [] as $index => $e)
                 <div>
                     <div class="flex items-center justify-between text-sm mb-1.5">
-                        <span class="font-medium text-slate-700">{{ $e['nama'] }}</span>
-                        <span class="text-slate-500 text-xs">{{ $e['jumlah'] }} pendaftar</span>
+                        <span class="font-medium text-slate-700">{{ $e->name }}</span>
+                        <span class="text-slate-500 text-xs">{{ $e->registrations_count }} pendaftar</span>
                     </div>
                     <div class="w-full bg-slate-100 rounded-full h-2">
-                        <div class="{{ $e['color'] }} h-2 rounded-full transition-all" style="width: {{ $e['pct'] }}%"></div>
+                        <div class="{{ $barColors[$index % count($barColors)] }} h-2 rounded-full transition-all" style="width: {{ $e->percentage ?? 0 }}%"></div>
                     </div>
                 </div>
-                @endforeach
+                @empty
+                <div class="py-8 text-center text-sm text-slate-400">
+                    Belum ada data pendaftar per ekstrakurikuler.
+                </div>
+                @endforelse
             </div>
             <div class="px-6 py-3 border-t border-slate-100 bg-slate-50 rounded-b-xl">
-                <p class="text-xs text-slate-400">Data berdasarkan periode aktif 2026/2027</p>
+                <p class="text-xs text-slate-400">Data berdasarkan pendaftaran terdata</p>
             </div>
         </div>
     </div>

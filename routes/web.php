@@ -56,42 +56,67 @@ Route::prefix('siswa')->name('siswa.')->group(function () {
 });
 
 // ============================================================
-// ADMIN ROUTES (UI only - no auth middleware for now)
+// ADMIN ROUTES (Protected with auth + role:admin)
 // ============================================================
-Route::prefix('admin')->name('admin.')->group(function () {
-    Route::get('/dashboard', fn () => view('admin.dashboard'))->name('dashboard');
-    Route::get('/profil', fn () => view('admin.profil'))->name('profil');
+Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->group(function () {
+    Route::get('/dashboard', [App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard');
+
+    // Profil Admin
+    Route::get('/profil', [App\Http\Controllers\Admin\AdminProfileController::class, 'edit'])->name('profil');
+    Route::put('/profil', [App\Http\Controllers\Admin\AdminProfileController::class, 'update'])->name('profil.update');
+    Route::patch('/profil', [App\Http\Controllers\Admin\AdminProfileController::class, 'update']);
+    Route::put('/profil/password', [App\Http\Controllers\Admin\AdminProfileController::class, 'updatePassword'])->name('profil.password');
 
     // Siswa (Students)
-    Route::get('/siswa', fn () => view('admin.siswa.index'))->name('siswa.index');
-    Route::get('/siswa/create', fn () => view('admin.siswa.create'))->name('siswa.create');
-    Route::get('/siswa/{id}', fn ($id) => view('admin.siswa.show', ['id' => $id]))->name('siswa.show');
-    Route::get('/siswa/{id}/edit', fn ($id) => view('admin.siswa.edit', ['id' => $id]))->name('siswa.edit');
+    Route::get('/siswa', [App\Http\Controllers\Admin\StudentController::class, 'index'])->name('siswa.index');
+    Route::get('/siswa/create', [App\Http\Controllers\Admin\StudentController::class, 'create'])->name('siswa.create');
+    Route::post('/siswa', [App\Http\Controllers\Admin\StudentController::class, 'store'])->name('siswa.store');
+    Route::get('/siswa/{id}', [App\Http\Controllers\Admin\StudentController::class, 'show'])->name('siswa.show');
+    Route::get('/siswa/{id}/edit', [App\Http\Controllers\Admin\StudentController::class, 'edit'])->name('siswa.edit');
+    Route::put('/siswa/{id}', [App\Http\Controllers\Admin\StudentController::class, 'update'])->name('siswa.update');
+    Route::patch('/siswa/{id}', [App\Http\Controllers\Admin\StudentController::class, 'update']);
+    Route::delete('/siswa/{id}', [App\Http\Controllers\Admin\StudentController::class, 'destroy'])->name('siswa.destroy');
 
     // Ekstrakurikuler
-    Route::get('/ekstrakurikuler', fn () => view('admin.ekstrakurikuler.index'))->name('ekstrakurikuler.index');
-    Route::get('/ekstrakurikuler/create', fn () => view('admin.ekstrakurikuler.create'))->name('ekstrakurikuler.create');
-    Route::get('/ekstrakurikuler/{id}', fn ($id) => view('admin.ekstrakurikuler.show', ['id' => $id]))->name('ekstrakurikuler.show');
-    Route::get('/ekstrakurikuler/{id}/edit', fn ($id) => view('admin.ekstrakurikuler.edit', ['id' => $id]))->name('ekstrakurikuler.edit');
+    Route::get('/ekstrakurikuler', [App\Http\Controllers\Admin\ExtracurricularController::class, 'index'])->name('ekstrakurikuler.index');
+    Route::get('/ekstrakurikuler/create', [App\Http\Controllers\Admin\ExtracurricularController::class, 'create'])->name('ekstrakurikuler.create');
+    Route::post('/ekstrakurikuler', [App\Http\Controllers\Admin\ExtracurricularController::class, 'store'])->name('ekstrakurikuler.store');
+    Route::get('/ekstrakurikuler/{id}', [App\Http\Controllers\Admin\ExtracurricularController::class, 'show'])->name('ekstrakurikuler.show');
+    Route::get('/ekstrakurikuler/{id}/edit', [App\Http\Controllers\Admin\ExtracurricularController::class, 'edit'])->name('ekstrakurikuler.edit');
+    Route::put('/ekstrakurikuler/{id}', [App\Http\Controllers\Admin\ExtracurricularController::class, 'update'])->name('ekstrakurikuler.update');
+    Route::patch('/ekstrakurikuler/{id}', [App\Http\Controllers\Admin\ExtracurricularController::class, 'update']);
+    Route::delete('/ekstrakurikuler/{id}', [App\Http\Controllers\Admin\ExtracurricularController::class, 'destroy'])->name('ekstrakurikuler.destroy');
 
     // Pendaftaran
-    Route::get('/pendaftaran', fn () => view('admin.pendaftaran.index'))->name('pendaftaran.index');
-    Route::get('/pendaftaran/{id}', fn ($id) => view('admin.pendaftaran.show', ['id' => $id]))->name('pendaftaran.show');
+    Route::get('/pendaftaran', [App\Http\Controllers\Admin\RegistrationController::class, 'index'])->name('pendaftaran.index');
+    Route::get('/pendaftaran/{id}', [App\Http\Controllers\Admin\RegistrationController::class, 'show'])->name('pendaftaran.show');
+    Route::put('/pendaftaran/{id}/status', [App\Http\Controllers\Admin\RegistrationController::class, 'updateStatus'])->name('pendaftaran.update-status');
+    Route::patch('/pendaftaran/{id}/status', [App\Http\Controllers\Admin\RegistrationController::class, 'updateStatus']);
+    Route::post('/pendaftaran/{id}/status', [App\Http\Controllers\Admin\RegistrationController::class, 'updateStatus']);
+    Route::put('/pendaftaran/{id}', [App\Http\Controllers\Admin\RegistrationController::class, 'updateStatus'])->name('pendaftaran.update');
 
     // Kuesioner
-    Route::get('/kuesioner', fn () => view('admin.kuesioner.index'))->name('kuesioner.index');
-    Route::get('/kuesioner/create', fn () => view('admin.kuesioner.create'))->name('kuesioner.create');
-    Route::get('/kuesioner/{id}/edit', fn ($id) => view('admin.kuesioner.edit', ['id' => $id]))->name('kuesioner.edit');
+    Route::get('/kuesioner', [App\Http\Controllers\Admin\QuestionnaireController::class, 'index'])->name('kuesioner.index');
+    Route::get('/kuesioner/create', [App\Http\Controllers\Admin\QuestionnaireController::class, 'create'])->name('kuesioner.create');
+    Route::post('/kuesioner', [App\Http\Controllers\Admin\QuestionnaireController::class, 'store'])->name('kuesioner.store');
+    Route::get('/kuesioner/{id}/edit', [App\Http\Controllers\Admin\QuestionnaireController::class, 'edit'])->name('kuesioner.edit');
+    Route::put('/kuesioner/{id}', [App\Http\Controllers\Admin\QuestionnaireController::class, 'update'])->name('kuesioner.update');
+    Route::patch('/kuesioner/{id}', [App\Http\Controllers\Admin\QuestionnaireController::class, 'update']);
+    Route::patch('/kuesioner/{id}/toggle', [App\Http\Controllers\Admin\QuestionnaireController::class, 'toggleStatus'])->name('kuesioner.toggle');
+    Route::delete('/kuesioner/{id}', [App\Http\Controllers\Admin\QuestionnaireController::class, 'destroy'])->name('kuesioner.destroy');
 
     // Rekomendasi
-    Route::get('/rekomendasi', fn () => view('admin.rekomendasi.index'))->name('rekomendasi.index');
-    Route::get('/rekomendasi/{id}', fn ($id) => view('admin.rekomendasi.show', ['id' => $id]))->name('rekomendasi.show');
+    Route::get('/rekomendasi', [App\Http\Controllers\Admin\RecommendationController::class, 'index'])->name('rekomendasi.index');
+    Route::get('/rekomendasi/{id}', [App\Http\Controllers\Admin\RecommendationController::class, 'show'])->name('rekomendasi.show');
 
     // Laporan
-    Route::get('/laporan', fn () => view('admin.laporan'))->name('laporan');
+    Route::get('/laporan', [App\Http\Controllers\Admin\ReportController::class, 'index'])->name('laporan');
 
     // Pengaturan (Periode)
-    Route::get('/pengaturan', fn () => view('admin.pengaturan'))->name('pengaturan');
+    Route::get('/pengaturan', [App\Http\Controllers\Admin\PeriodController::class, 'index'])->name('pengaturan');
+    Route::post('/pengaturan', [App\Http\Controllers\Admin\PeriodController::class, 'store'])->name('pengaturan.store');
+    Route::put('/pengaturan/{id}', [App\Http\Controllers\Admin\PeriodController::class, 'update'])->name('pengaturan.update');
+    Route::patch('/pengaturan/{id}/toggle', [App\Http\Controllers\Admin\PeriodController::class, 'toggleStatus'])->name('pengaturan.toggle');
 });
 
 require __DIR__.'/auth.php';

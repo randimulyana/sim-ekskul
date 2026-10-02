@@ -1,7 +1,6 @@
 @extends('layouts.admin')
 @section('page-title', 'Ekstrakurikuler')
 @section('content')
-<!-- DATA DEMO: data di halaman ini adalah contoh untuk keperluan pengembangan -->
 <div class="space-y-5">
 
     {{-- Page Header --}}
@@ -10,10 +9,10 @@
             <h1 class="text-2xl font-bold text-slate-900">Data Ekstrakurikuler</h1>
             <p class="mt-1 text-sm text-slate-500">
                 Kelola daftar ekstrakurikuler yang tersedia &mdash;
-                <span class="text-amber-600 font-medium">⚠ Data demo berdasarkan observasi awal, bukan daftar resmi final</span>
+                <span class="text-amber-600 font-medium">⚠ Data observasi awal, dapat diverifikasi bersama pihak sekolah</span>
             </p>
         </div>
-        <a href="/admin/ekstrakurikuler/create"
+        <a href="{{ route('admin.ekstrakurikuler.create') }}"
             class="flex-shrink-0 inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
@@ -24,29 +23,16 @@
 
     {{-- Summary Cards --}}
     @php
-    // DATA DEMO
-    $ekskuls = [
-        ['nama' => 'PASKIBRAKA',    'kategori' => 'Organisasi',      'peserta' => 34, 'aktif' => true,  'pembina' => 'Bpk. Harun, S.Pd'],
-        ['nama' => 'PRAMUKA',       'kategori' => 'Organisasi',      'peserta' => 28, 'aktif' => true,  'pembina' => 'Ibu Sari, S.Pd'],
-        ['nama' => 'PIK-R',         'kategori' => 'Organisasi',      'peserta' => 12, 'aktif' => true,  'pembina' => 'Ibu Dewi, M.Pd'],
-        ['nama' => 'SILAT TRADISI', 'kategori' => 'Bela Diri',       'peserta' => 18, 'aktif' => true,  'pembina' => 'Bpk. Reza, S.Pd'],
-        ['nama' => 'RANDAI',        'kategori' => 'Seni & Budaya',   'peserta' => 10, 'aktif' => true,  'pembina' => 'Bpk. Fikri, S.Sn'],
-        ['nama' => 'MARCHING BAND', 'kategori' => 'Seni & Budaya',   'peserta' => 22, 'aktif' => true,  'pembina' => 'Ibu Ratna, S.Pd'],
-        ['nama' => 'MODELLING',     'kategori' => 'Seni & Budaya',   'peserta' => 14, 'aktif' => true,  'pembina' => 'Ibu Citra, S.Pd'],
-        ['nama' => 'KESENIAN',      'kategori' => 'Seni & Budaya',   'peserta' => 8,  'aktif' => true,  'pembina' => 'Bpk. Yogi, S.Sn'],
-        ['nama' => 'PADUAN SUARA',  'kategori' => 'Seni & Budaya',   'peserta' => 20, 'aktif' => true,  'pembina' => 'Ibu Nurul, S.Pd'],
-        ['nama' => 'ENGLISH CLUB',  'kategori' => 'Akademik',        'peserta' => 15, 'aktif' => true,  'pembina' => 'Ibu Lina, S.S'],
-        ['nama' => 'JAPANESE CLUB', 'kategori' => 'Akademik',        'peserta' => 9,  'aktif' => false, 'pembina' => '-'],
-        ['nama' => 'TAHFIDZ',       'kategori' => 'Keagamaan',       'peserta' => 11, 'aktif' => true,  'pembina' => 'Bpk. Ustadz Fajar'],
-    ];
-    $totalAktif   = collect($ekskuls)->where('aktif', true)->count();
-    $totalPeserta = collect($ekskuls)->sum('peserta');
+    $totalEkskul = \App\Models\Extracurricular::count();
+    $totalAktif   = \App\Models\Extracurricular::where('is_active', true)->count();
+    $totalNonaktif = \App\Models\Extracurricular::where('is_active', false)->count();
+    $totalPeserta = \App\Models\Registration::count();
     @endphp
 
     <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
         <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-4">
             <p class="text-xs font-medium text-slate-500 uppercase tracking-wider">Total Ekskul</p>
-            <p class="mt-1 text-3xl font-bold text-slate-900">{{ count($ekskuls) }}</p>
+            <p class="mt-1 text-3xl font-bold text-slate-900">{{ $totalEkskul }}</p>
         </div>
         <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-4">
             <p class="text-xs font-medium text-slate-500 uppercase tracking-wider">Ekskul Aktif</p>
@@ -54,35 +40,41 @@
         </div>
         <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-4">
             <p class="text-xs font-medium text-slate-500 uppercase tracking-wider">Nonaktif</p>
-            <p class="mt-1 text-3xl font-bold text-slate-400">{{ count($ekskuls) - $totalAktif }}</p>
+            <p class="mt-1 text-3xl font-bold text-slate-400">{{ $totalNonaktif }}</p>
         </div>
         <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-4">
-            <p class="text-xs font-medium text-slate-500 uppercase tracking-wider">Total Peserta</p>
+            <p class="text-xs font-medium text-slate-500 uppercase tracking-wider">Total Pendaftar</p>
             <p class="mt-1 text-3xl font-bold text-blue-600">{{ $totalPeserta }}</p>
         </div>
     </div>
 
     {{-- Filters --}}
     <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-4">
-        <div class="flex flex-col sm:flex-row gap-3">
+        <form method="GET" action="{{ route('admin.ekstrakurikuler.index') }}" class="flex flex-col sm:flex-row gap-3">
             <div class="flex-1">
-                <input type="text" placeholder="Cari nama ekstrakurikuler..."
+                <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari nama atau deskripsi..."
                     class="block w-full rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-900 placeholder-slate-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500" />
             </div>
-            <select class="rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500">
+            <select name="category" class="rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 bg-white">
                 <option value="">Semua Kategori</option>
-                <option>Organisasi</option>
-                <option>Seni &amp; Budaya</option>
-                <option>Bela Diri</option>
-                <option>Akademik</option>
-                <option>Keagamaan</option>
+                @foreach($categories ?? [] as $cat)
+                    <option value="{{ $cat }}" {{ request('category') === $cat ? 'selected' : '' }}>{{ $cat }}</option>
+                @endforeach
             </select>
-            <select class="rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500">
+            <select name="status" class="rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 bg-white">
                 <option value="">Semua Status</option>
-                <option>Aktif</option>
-                <option>Nonaktif</option>
+                <option value="aktif" {{ request('status') === 'aktif' ? 'selected' : '' }}>Aktif</option>
+                <option value="nonaktif" {{ request('status') === 'nonaktif' ? 'selected' : '' }}>Nonaktif</option>
             </select>
-        </div>
+            <button type="submit" class="px-4 py-2 bg-slate-50 border border-slate-200 hover:bg-slate-100 text-slate-700 text-sm font-medium rounded-lg transition-colors">
+                Filter
+            </button>
+            @if(request()->hasAny(['search', 'category', 'status']))
+                <a href="{{ route('admin.ekstrakurikuler.index') }}" class="px-3 py-2 text-slate-500 hover:text-slate-800 text-sm flex items-center justify-center">
+                    Reset
+                </a>
+            @endif
+        </form>
     </div>
 
     {{-- Table --}}
@@ -101,17 +93,20 @@
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-100">
-                    @foreach($ekskuls as $i => $e)
+                    @forelse($extracurriculars ?? [] as $i => $e)
                     <tr class="hover:bg-slate-50 transition-colors">
-                        <td class="px-6 py-4 text-slate-500">{{ $i + 1 }}</td>
+                        <td class="px-6 py-4 text-slate-500">{{ ($extracurriculars->firstItem() ?? 1) + $i }}</td>
                         <td class="px-6 py-4">
-                            <p class="font-semibold text-slate-900">{{ $e['nama'] }}</p>
+                            <p class="font-semibold text-slate-900">{{ $e->name }}</p>
+                            @if($e->schedule)
+                                <p class="text-xs text-slate-400 mt-0.5">{{ $e->schedule }}</p>
+                            @endif
                         </td>
-                        <td class="px-6 py-4 text-slate-600">{{ $e['kategori'] }}</td>
-                        <td class="px-6 py-4 text-slate-600">{{ $e['pembina'] }}</td>
-                        <td class="px-6 py-4 text-slate-600">{{ $e['peserta'] }} orang</td>
+                        <td class="px-6 py-4 text-slate-600">{{ $e->category ?: '-' }}</td>
+                        <td class="px-6 py-4 text-slate-600">{{ $e->coach_name ?: '-' }}</td>
+                        <td class="px-6 py-4 text-slate-600">{{ $e->registrations_count }} orang</td>
                         <td class="px-6 py-4">
-                            @if($e['aktif'])
+                            @if($e->is_active)
                                 <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-100 text-emerald-700">Aktif</span>
                             @else
                                 <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-slate-100 text-slate-600">Nonaktif</span>
@@ -119,24 +114,33 @@
                         </td>
                         <td class="px-6 py-4">
                             <div class="flex items-center gap-2">
-                                <a href="/admin/ekstrakurikuler/{{ $i + 1 }}" class="text-sm text-blue-600 hover:text-blue-700 font-medium">Detail</a>
+                                <a href="{{ route('admin.ekstrakurikuler.show', $e->id) }}" class="text-sm text-blue-600 hover:text-blue-700 font-medium">Detail</a>
                                 <span class="text-slate-300">|</span>
-                                <a href="/admin/ekstrakurikuler/{{ $i + 1 }}/edit" class="text-sm text-slate-600 hover:text-slate-900">Edit</a>
+                                <a href="{{ route('admin.ekstrakurikuler.edit', $e->id) }}" class="text-sm text-slate-600 hover:text-slate-900">Edit</a>
+                                <span class="text-slate-300">|</span>
+                                <form method="POST" action="{{ route('admin.ekstrakurikuler.destroy', $e->id) }}" class="inline" onsubmit="return confirm('Apakah Anda yakin ingin menghapus ekstrakurikuler ini?')">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="text-sm text-red-600 hover:text-red-700">Hapus</button>
+                                </form>
                             </div>
                         </td>
                     </tr>
-                    @endforeach
+                    @empty
+                    <tr>
+                        <td colspan="7" class="px-6 py-12 text-center text-slate-400">
+                            Tidak ada data ekstrakurikuler yang ditemukan.
+                        </td>
+                    </tr>
+                    @endforelse
                 </tbody>
             </table>
         </div>
-        <div class="flex items-center justify-between px-6 py-4 border-t border-slate-100">
-            <p class="text-sm text-slate-500">Menampilkan {{ count($ekskuls) }} dari {{ count($ekskuls) }} data</p>
-            <div class="flex items-center gap-1">
-                <button disabled class="px-3 py-1.5 text-sm text-slate-400 border border-slate-200 rounded-lg cursor-not-allowed">Sebelumnya</button>
-                <button class="px-3 py-1.5 text-sm bg-blue-600 text-white border border-blue-600 rounded-lg">1</button>
-                <button disabled class="px-3 py-1.5 text-sm text-slate-400 border border-slate-200 rounded-lg cursor-not-allowed">Berikutnya</button>
-            </div>
+        @if(isset($extracurriculars) && $extracurriculars->hasPages())
+        <div class="px-6 py-4 border-t border-slate-100">
+            {{ $extracurriculars->links() }}
         </div>
+        @endif
     </div>
 </div>
 @endsection

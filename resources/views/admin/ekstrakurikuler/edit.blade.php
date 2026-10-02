@@ -3,19 +3,18 @@
 @section('page-title', 'Edit Ekstrakurikuler')
 
 @section('content')
-<!-- DATA DEMO: data form edit ekstrakurikuler prototype UI -->
 <div class="max-w-3xl space-y-6">
 
     <!-- Breadcrumb & Header -->
     <div>
         <nav class="flex items-center gap-1 text-xs text-slate-500 mb-2">
-            <a href="/admin/dashboard" class="hover:text-slate-700">Dashboard</a>
+            <a href="{{ route('admin.dashboard') }}" class="hover:text-slate-700">Dashboard</a>
             <svg class="w-3.5 h-3.5 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-            <a href="/admin/ekstrakurikuler" class="hover:text-slate-700">Ekstrakurikuler</a>
+            <a href="{{ route('admin.ekstrakurikuler.index') }}" class="hover:text-slate-700">Ekstrakurikuler</a>
             <svg class="w-3.5 h-3.5 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
             <span class="text-slate-800 font-semibold">Edit</span>
         </nav>
-        <h1 class="text-2xl font-bold text-slate-900">Edit Ekstrakurikuler: PASKIBRAKA</h1>
+        <h1 class="text-2xl font-bold text-slate-900">Edit Ekstrakurikuler: {{ $extracurricular->name }}</h1>
         <p class="text-xs text-slate-500 mt-1">Perbarui data informasi ekstrakurikuler yang ditampilkan ke siswa.</p>
     </div>
 
@@ -27,7 +26,7 @@
 
     <!-- Form Card -->
     <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-6 sm:p-7">
-        <form class="space-y-5" method="POST" action="#">
+        <form class="space-y-5" method="POST" action="{{ route('admin.ekstrakurikuler.update', $extracurricular->id) }}">
             @csrf
             @method('PUT')
 
@@ -35,62 +34,72 @@
                 <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Nama Ekstrakurikuler <span class="text-red-500">*</span></label>
                 <input
                     type="text"
-                    name="nama"
-                    value="PASKIBRAKA"
-                    class="block w-full rounded-lg border border-slate-200 px-3.5 py-2.5 text-sm text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                    name="name"
+                    value="{{ old('name', $extracurricular->name) }}"
+                    class="block w-full rounded-lg border @error('name') border-red-500 bg-red-50 @else border-slate-200 @enderror px-3.5 py-2.5 text-sm text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                     required
                 />
+                @error('name')
+                    <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
+                @enderror
             </div>
 
             <div>
                 <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Kategori</label>
-                <select name="kategori" class="block w-full rounded-lg border border-slate-200 px-3.5 py-2.5 text-sm text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500">
-                    <option selected>Organisasi</option>
-                    <option>Seni &amp; Budaya</option>
-                    <option>Bela Diri</option>
-                    <option>Akademik</option>
-                    <option>Keagamaan</option>
+                <select name="category" class="block w-full rounded-lg border @error('category') border-red-500 bg-red-50 @else border-slate-200 @enderror px-3.5 py-2.5 text-sm text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 bg-white">
+                    @php
+                    $selCat = old('category', $extracurricular->category);
+                    @endphp
+                    @foreach(['Organisasi', 'Seni & Budaya', 'Bela Diri', 'Akademik', 'Keagamaan'] as $cat)
+                        <option value="{{ $cat }}" {{ $selCat === $cat ? 'selected' : '' }}>{{ $cat }}</option>
+                    @endforeach
                 </select>
+                @error('category')
+                    <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
+                @enderror
             </div>
 
             <div>
                 <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Deskripsi Singkat</label>
-                <textarea name="deskripsi" rows="4" class="block w-full rounded-lg border border-slate-200 p-3 text-sm text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 resize-none">Pasukan Pengibar Bendera Pusaka yang melatih kedisiplinan tingkat tinggi, ketahanan fisik, kepemimpinan, dan rasa cinta tanah air.</textarea>
+                <textarea name="description" rows="4" class="block w-full rounded-lg border @error('description') border-red-500 bg-red-50 @else border-slate-200 @enderror p-3 text-sm text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 resize-none">{{ old('description', $extracurricular->description) }}</textarea>
+                @error('description')
+                    <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
+                @enderror
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Jadwal Rutin (Placeholder)</label>
-                    <input type="text" name="jadwal" value="Rabu &amp; Sabtu, 15.30 - 17.30 WIB" class="block w-full rounded-lg border border-slate-200 px-3.5 py-2.5 text-sm text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500" />
+                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Jadwal Rutin</label>
+                    <input type="text" name="schedule" value="{{ old('schedule', $extracurricular->schedule) }}" class="block w-full rounded-lg border border-slate-200 px-3.5 py-2.5 text-sm text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500" placeholder="cth: Sabtu, 08.00–10.00 WIB" />
                 </div>
                 <div>
-                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Lokasi Kegiatan (Placeholder)</label>
-                    <input type="text" name="lokasi" value="Lapangan Utama Kampus SMKN 3 Payakumbuh" class="block w-full rounded-lg border border-slate-200 px-3.5 py-2.5 text-sm text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500" />
+                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Lokasi Kegiatan</label>
+                    <input type="text" name="location" value="{{ old('location', $extracurricular->location) }}" class="block w-full rounded-lg border border-slate-200 px-3.5 py-2.5 text-sm text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500" placeholder="cth: Lapangan utama" />
                 </div>
                 <div>
-                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Nama Pembina (Placeholder)</label>
-                    <input type="text" name="pembina" value="Drs. Hendri Syahputra, M.Pd." class="block w-full rounded-lg border border-slate-200 px-3.5 py-2.5 text-sm text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500" />
+                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Nama Pembina</label>
+                    <input type="text" name="coach_name" value="{{ old('coach_name', $extracurricular->coach_name) }}" class="block w-full rounded-lg border border-slate-200 px-3.5 py-2.5 text-sm text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500" placeholder="Nama pembina" />
                 </div>
                 <div>
                     <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Estimasi Kuota</label>
-                    <input type="number" name="kuota" value="60" class="block w-full rounded-lg border border-slate-200 px-3.5 py-2.5 text-sm text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500" />
+                    <input type="number" name="quota" value="{{ old('quota', $extracurricular->quota) }}" class="block w-full rounded-lg border border-slate-200 px-3.5 py-2.5 text-sm text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500" placeholder="Kapasitas kuota siswa" />
                 </div>
             </div>
 
             <div>
                 <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Status Aktif</label>
-                <select name="status" class="block w-full rounded-lg border border-slate-200 px-3.5 py-2.5 text-sm text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500">
-                    <option value="aktif" selected>Aktif (Tampil di Katalog &amp; Rekomendasi)</option>
-                    <option value="nonaktif">Nonaktif (Diarsipkan)</option>
+                <select name="is_active" class="block w-full rounded-lg border border-slate-200 px-3.5 py-2.5 text-sm text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 bg-white">
+                    <option value="1" {{ old('is_active', $extracurricular->is_active ? '1' : '0') == '1' ? 'selected' : '' }}>Aktif (Tampil di Katalog &amp; Rekomendasi)</option>
+                    <option value="0" {{ old('is_active', $extracurricular->is_active ? '1' : '0') == '0' ? 'selected' : '' }}>Nonaktif (Diarsipkan)</option>
                 </select>
-                <p class="text-[11px] text-slate-400 mt-1">Ekstrakurikuler yang memiliki riwayat pendaftaran tidak dihapus permanen, melainkan dinonaktifkan.</p>
+                <p class="text-[11px] text-slate-400 mt-1">Ekstrakurikuler yang dinonaktifkan tidak akan muncul pada rekomendasi siswa.</p>
             </div>
 
             <div class="pt-3 border-t border-slate-100 flex items-center gap-3">
                 <button type="submit" class="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-lg shadow-sm transition-colors">
                     Simpan Perubahan
                 </button>
-                <a href="/admin/ekstrakurikuler" class="px-5 py-2.5 border border-slate-200 text-slate-700 text-sm font-semibold rounded-lg hover:bg-slate-50 transition-colors">
+                <a href="{{ route('admin.ekstrakurikuler.index') }}" class="px-5 py-2.5 border border-slate-200 text-slate-700 text-sm font-semibold rounded-lg hover:bg-slate-50 transition-colors">
                     Batal
                 </a>
             </div>

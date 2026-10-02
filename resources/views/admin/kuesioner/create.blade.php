@@ -3,15 +3,14 @@
 @section('page-title', 'Tambah Pertanyaan Kuesioner')
 
 @section('content')
-<!-- DATA DEMO: formulir tambah pertanyaan kuesioner prototype UI -->
 <div class="max-w-3xl space-y-6">
 
     <!-- Breadcrumb & Header -->
     <div>
         <nav class="flex items-center gap-1 text-xs text-slate-500 mb-2">
-            <a href="/admin/dashboard" class="hover:text-slate-700">Dashboard</a>
+            <a href="{{ route('admin.dashboard') }}" class="hover:text-slate-700">Dashboard</a>
             <svg class="w-3.5 h-3.5 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-            <a href="/admin/kuesioner" class="hover:text-slate-700">Kuesioner</a>
+            <a href="{{ route('admin.kuesioner.index') }}" class="hover:text-slate-700">Kuesioner</a>
             <svg class="w-3.5 h-3.5 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
             <span class="text-slate-800 font-semibold">Tambah</span>
         </nav>
@@ -21,65 +20,78 @@
 
     <!-- Form Card -->
     <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-6 sm:p-7">
-        <form class="space-y-5" method="POST" action="#" onsubmit="event.preventDefault(); alert('Pertanyaan berhasil disimpan (simulasi UI)'); window.location.href='/admin/kuesioner';">
+        <form class="space-y-5" method="POST" action="{{ route('admin.kuesioner.store') }}">
             @csrf
 
             <div>
                 <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Teks Butir Pertanyaan <span class="text-red-500">*</span></label>
                 <textarea
-                    name="teks"
+                    name="question_text"
                     rows="3"
-                    class="block w-full rounded-lg border border-slate-200 p-3 text-sm text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 resize-none"
+                    class="block w-full rounded-lg border @error('question_text') border-red-500 bg-red-50 @else border-slate-200 @enderror p-3 text-sm text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 resize-none"
                     placeholder="Contoh: Seberapa sering kamu menyukai aktivitas yang menuntut ketahanan fisik di luar ruangan?"
                     required
-                ></textarea>
+                >{{ old('question_text', old('teks')) }}</textarea>
+                @error('question_text')
+                    <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
+                @enderror
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                     <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Kategori Pertanyaan <span class="text-red-500">*</span></label>
-                    <select name="kategori" class="block w-full rounded-lg border border-slate-200 px-3.5 py-2.5 text-sm text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500" required>
+                    <select name="category" class="block w-full rounded-lg border @error('category') border-red-500 bg-red-50 @else border-slate-200 @enderror px-3.5 py-2.5 text-sm text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 bg-white" required>
                         <option value="">Pilih Kategori...</option>
-                        <option>Minat Awal</option>
-                        <option>Minat &amp; Ketertarikan</option>
-                        <option>Karakteristik Diri</option>
-                        <option>Pengalaman</option>
-                        <option>Kemampuan</option>
+                        @foreach(['Minat Awal', 'Minat & Ketertarikan', 'Karakteristik Diri', 'Pengalaman', 'Kemampuan'] as $cat)
+                            <option value="{{ $cat }}" {{ old('category', old('kategori')) === $cat ? 'selected' : '' }}>{{ $cat }}</option>
+                        @endforeach
                     </select>
+                    @error('category')
+                        <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
+                    @enderror
                 </div>
 
                 <div>
                     <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Tipe Skala Jawaban <span class="text-red-500">*</span></label>
-                    <select id="tipeJawaban" name="tipe" onchange="toggleOptionBox()" class="block w-full rounded-lg border border-slate-200 px-3.5 py-2.5 text-sm text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500" required>
-                        <option value="likert">Skala Likert (1-5)</option>
-                        <option value="radio">Pilihan Tunggal (Radio)</option>
-                        <option value="checkbox">Pilihan Ganda (Checkbox)</option>
-                        <option value="textarea">Esai Singkat (Textarea)</option>
+                    <select id="tipeJawaban" name="type" onchange="toggleOptionBox()" class="block w-full rounded-lg border @error('type') border-red-500 bg-red-50 @else border-slate-200 @enderror px-3.5 py-2.5 text-sm text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 bg-white" required>
+                        <option value="likert" {{ old('type', old('tipe')) === 'likert' ? 'selected' : '' }}>Skala Likert (1-5)</option>
+                        <option value="radio" {{ old('type', old('tipe')) === 'radio' ? 'selected' : '' }}>Pilihan Tunggal (Radio)</option>
+                        <option value="checkbox" {{ old('type', old('tipe')) === 'checkbox' ? 'selected' : '' }}>Pilihan Ganda (Checkbox)</option>
+                        <option value="textarea" {{ old('type', old('tipe')) === 'textarea' ? 'selected' : '' }}>Esai Singkat (Textarea)</option>
                     </select>
+                    @error('type')
+                        <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
+                    @enderror
                 </div>
 
                 <div>
                     <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Nomor Urutan Tampil</label>
-                    <input type="number" name="urutan" value="11" min="1" class="block w-full rounded-lg border border-slate-200 px-3.5 py-2.5 text-sm text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500" />
+                    <input type="number" name="order" value="{{ old('order', old('urutan', (\App\Models\Question::max('order') ?: 0) + 1)) }}" min="1" class="block w-full rounded-lg border border-slate-200 px-3.5 py-2.5 text-sm text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500" />
                 </div>
 
                 <div>
                     <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Status Pertanyaan</label>
-                    <select name="status" class="block w-full rounded-lg border border-slate-200 px-3.5 py-2.5 text-sm text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500">
-                        <option value="aktif" selected>Aktif (Tampil di Kuesioner Siswa)</option>
-                        <option value="nonaktif">Draft / Nonaktif</option>
+                    <select name="is_active" class="block w-full rounded-lg border border-slate-200 px-3.5 py-2.5 text-sm text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 bg-white">
+                        <option value="1" {{ old('is_active', '1') == '1' ? 'selected' : '' }}>Aktif (Tampil di Kuesioner Siswa)</option>
+                        <option value="0" {{ old('is_active') == '0' ? 'selected' : '' }}>Draft / Nonaktif</option>
                     </select>
                 </div>
             </div>
 
             <!-- Opsi Jawaban Container (Jika Radio / Checkbox) -->
-            <div id="optionBox" class="hidden p-4 bg-slate-50 rounded-xl border border-slate-200 space-y-3">
+            <div id="optionBox" class="{{ in_array(old('type', old('tipe')), ['radio', 'checkbox'], true) ? '' : 'hidden' }} p-4 bg-slate-50 rounded-xl border border-slate-200 space-y-3">
                 <span class="text-xs font-bold text-slate-700 uppercase block">Daftar Pilihan Opsi:</span>
                 <div class="space-y-2" id="optionList">
-                    <input type="text" placeholder="Pilihan 1..." class="block w-full rounded-lg border border-slate-200 px-3 py-2 text-xs bg-white text-slate-900">
-                    <input type="text" placeholder="Pilihan 2..." class="block w-full rounded-lg border border-slate-200 px-3 py-2 text-xs bg-white text-slate-900">
+                    @if(old('options'))
+                        @foreach(old('options') as $opt)
+                            <input type="text" name="options[]" value="{{ is_array($opt) ? ($opt['option_text'] ?? '') : $opt }}" placeholder="Pilihan jawaban..." class="block w-full rounded-lg border border-slate-200 px-3 py-2 text-xs bg-white text-slate-900">
+                        @endforeach
+                    @else
+                        <input type="text" name="options[]" placeholder="Pilihan 1..." class="block w-full rounded-lg border border-slate-200 px-3 py-2 text-xs bg-white text-slate-900">
+                        <input type="text" name="options[]" placeholder="Pilihan 2..." class="block w-full rounded-lg border border-slate-200 px-3 py-2 text-xs bg-white text-slate-900">
+                    @endif
                 </div>
-                <button type="button" onclick="alert('Tambah baris opsi');" class="text-xs font-bold text-blue-600 hover:text-blue-800">
+                <button type="button" onclick="addOptionRow()" class="text-xs font-bold text-blue-600 hover:text-blue-800">
                     + Tambah Opsi Jawaban
                 </button>
             </div>
@@ -88,7 +100,7 @@
                 <button type="submit" class="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-lg shadow-sm transition-colors">
                     Simpan Pertanyaan
                 </button>
-                <a href="/admin/kuesioner" class="px-5 py-2.5 border border-slate-200 text-slate-700 text-sm font-semibold rounded-lg hover:bg-slate-50 transition-colors">
+                <a href="{{ route('admin.kuesioner.index') }}" class="px-5 py-2.5 border border-slate-200 text-slate-700 text-sm font-semibold rounded-lg hover:bg-slate-50 transition-colors">
                     Batal
                 </a>
             </div>
@@ -107,6 +119,16 @@ function toggleOptionBox() {
     } else {
         box.classList.add('hidden');
     }
+}
+
+function addOptionRow() {
+    const container = document.getElementById('optionList');
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.name = 'options[]';
+    input.placeholder = 'Pilihan baru...';
+    input.className = 'block w-full rounded-lg border border-slate-200 px-3 py-2 text-xs bg-white text-slate-900';
+    container.appendChild(input);
 }
 </script>
 @endpush

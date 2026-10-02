@@ -99,11 +99,11 @@
     <div class="p-4 border-t border-slate-100">
         <div class="flex items-center gap-3">
             <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
-                <span class="text-blue-700 text-xs font-bold">A</span>
+                <span class="text-blue-700 text-xs font-bold">{{ strtoupper(substr(auth()->user()->name ?? 'A', 0, 1)) }}</span>
             </div>
             <div class="min-w-0 flex-1">
-                <p class="text-sm font-medium text-slate-900 truncate">Admin</p>
-                <p class="text-xs text-slate-500 truncate">admin@smkn3payakumbuh.sch.id</p>
+                <p class="text-sm font-medium text-slate-900 truncate">{{ auth()->user()->name ?? 'Admin' }}</p>
+                <p class="text-xs text-slate-500 truncate">{{ auth()->user()->email ?? 'admin@smkn3payakumbuh.sch.id' }}</p>
             </div>
         </div>
     </div>
@@ -137,9 +137,9 @@
             <div class="relative" id="userDropdown">
                 <button onclick="toggleDropdown()" class="flex items-center gap-2 p-1.5 rounded-lg hover:bg-slate-100">
                     <div class="w-7 h-7 bg-blue-100 rounded-full flex items-center justify-center">
-                        <span class="text-blue-700 text-xs font-bold">A</span>
+                        <span class="text-blue-700 text-xs font-bold">{{ strtoupper(substr(auth()->user()->name ?? 'A', 0, 1)) }}</span>
                     </div>
-                    <span class="hidden md:block text-sm font-medium text-slate-700">Admin</span>
+                    <span class="hidden md:block text-sm font-medium text-slate-700">{{ auth()->user()->name ?? 'Admin' }}</span>
                     <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                 </button>
                 <div id="dropdownMenu" class="hidden absolute right-0 top-full mt-1 w-48 bg-white rounded-xl shadow-lg border border-slate-200 py-1 z-50">

@@ -1,0 +1,156 @@
+<?php
+
+namespace App\Http\Controllers\Admin;
+
+use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\StoreExtracurricularRequest;
+use App\Http\Requests\Admin\UpdateExtracurricularRequest;
+use App\Models\Extracurricular;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+use Illuminate\View\View;
+
+class ExtracurricularController extends Controller
+{
+    /**
+     * Display a listing of the extracurriculars.
+     */
+    public function index(Request $request): View
+    {
+        $query = Extracurricular::withCount('registrations');
+
+        if ($search = $request->input('search')) {
+            $query->where('name', 'like', "%{$search}%")
+                ->orWhere('description', 'like', "%{$search}%")
+                ->orWhere('coach_name', 'like', "%{$search}%");
+        }
+
+        if ($category = $request->input('category')) {
+            $query->where('category', $category);
+        }
+
+        if ($status = $request->input('status')) {
+            $isActive = in_array(strtolower($status), ['aktif', 'active', '1', 1], true);
+            $query->where('is_active', $isActive);
+        }
+
+        $extracurriculars = $query->orderBy('name')->paginate(15)->withQueryString();
+
+        $categories = Extracurricular::query()
+            ->select('category')
+            ->whereNotNull('category')
+            ->distinct()
+            ->orderBy('category')
+            ->pluck('category');
+
+        return view('admin.ekstrakurikuler.index', compact('extracurriculars', 'categories'));
+    }
+
+    /**
+     * Show the form for creating a new extracurricular.
+     */
+    public function create(): View
+    {
+        return view('admin.ekstrakurikuler.create');
+    }
+
+    /**
+     * Store a newly created extracurricular.
+     */
+    public function store(StoreExtracurricularRequest $request): RedirectResponse
+    {
+        $baseSlug = Str::slug($request->input('name'));
+        $slug = $baseSlug;
+        $counter = 1;
+        while (Extracurricular::where('slug', $slug)->exists()) {
+            $slug = "{$baseSlug}-{$counter}";
+            $counter++;
+        }
+
+        Extracurricular::create([
+            'name' => $request->input('name'),
+            'slug' => $slug,
+            'category' => $request->input('category'),
+            'description' => $request->input('description'),
+            'schedule_info' => $request->input('schedule') ?? $request->input('schedule_info'),
+            'location_info' => $request->input('location') ?? $request->input('location_info'),
+            'coach_name' => $request->input('coach_name'),
+            'quota' => $request->input('quota'),
+            'is_active' => $request->boolean('is_active', true),
+        ]);
+
+        return redirect()->route('admin.ekstrakurikuler.index')
+            ->with('success', 'Ekstrakurikuler berhasil ditambahkan.');
+    }
+
+    /**
+     * Display the specified extracurricular.
+     */
+    public function show(int|string $id): View
+    {
+        $extracurricular = Extracurricular::with([
+            'registrations.student.user',
+            'registrations.period',
+        ])->withCount('registrations')->findOrFail($id);
+
+        return view('admin.ekstrakurikuler.show', compact('extracurricular'));
+    }
+
+    /**
+     * Show the form for editing the specified extracurricular.
+     */
+    public function edit(int|string $id): View
+    {
+        $extracurricular = Extracurricular::findOrFail($id);
+
+        return view('admin.ekstrakurikuler.edit', compact('extracurricular'));
+    }
+
+    /**
+     * Update the specified extracurricular.
+     */
+    public function update(UpdateExtracurricularRequest $request, int|string $id): RedirectResponse
+    {
+        $extracurricular = Extracurricular::findOrFail($id);
+
+        $data = [
+            'name' => $request->input('name'),
+            'category' => $request->input('category'),
+            'description' => $request->input('description'),
+            'schedule_info' => $request->input('schedule') ?? $request->input('schedule_info') ?? $extracurricular->schedule_info,
+            'location_info' => $request->input('location') ?? $request->input('location_info') ?? $extracurricular->location_info,
+            'coach_name' => $request->input('coach_name'),
+            'quota' => $request->input('quota'),
+            'is_active' => $request->has('is_active') ? $request->boolean('is_active') : $extracurricular->is_active,
+        ];
+
+        if ($request->input('name') !== $extracurricular->name) {
+            $baseSlug = Str::slug($request->input('name'));
+            $slug = $baseSlug;
+            $counter = 1;
+            while (Extracurricular::where('slug', $slug)->where('id', '!=', $extracurricular->id)->exists()) {
+                $slug = "{$baseSlug}-{$counter}";
+                $counter++;
+            }
+            $data['slug'] = $slug;
+        }
+
+        $extracurricular->update($data);
+
+        return redirect()->route('admin.ekstrakurikuler.index')
+            ->with('success', 'Ekstrakurikuler berhasil diperbarui.');
+    }
+
+    /**
+     * Remove the specified extracurricular.
+     */
+    public function destroy(int|string $id): RedirectResponse
+    {
+        $extracurricular = Extracurricular::findOrFail($id);
+        $extracurricular->delete();
+
+        return redirect()->route('admin.ekstrakurikuler.index')
+            ->with('success', 'Ekstrakurikuler berhasil dihapus.');
+    }
+}
