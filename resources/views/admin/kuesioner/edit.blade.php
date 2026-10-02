@@ -69,6 +69,20 @@
                 </div>
 
                 <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Pemetaan Kriteria (Phase 4)</label>
+                    <select name="criterion_id" class="block w-full rounded-lg border border-slate-200 px-3.5 py-2.5 text-sm text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 bg-white">
+                        <option value="">-- Belum Dipetakan (Kualitatif / Needs Validation) --</option>
+                        @isset($criteria)
+                            @foreach($criteria as $crit)
+                                <option value="{{ $crit->id }}" {{ old('criterion_id', $question->criterion_id) == $crit->id ? 'selected' : '' }}>
+                                    {{ $crit->code }} - {{ $crit->name }} ({{ round($crit->weight * 100) }}%)
+                                </option>
+                            @endforeach
+                        @endisset
+                    </select>
+                </div>
+
+                <div class="sm:col-span-2">
                     <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Status Pertanyaan</label>
                     <select name="is_active" class="block w-full rounded-lg border border-slate-200 px-3.5 py-2.5 text-sm text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 bg-white">
                         <option value="1" {{ old('is_active', $question->is_active ? '1' : '0') == '1' ? 'selected' : '' }}>Aktif (Tampil di Kuesioner Siswa)</option>

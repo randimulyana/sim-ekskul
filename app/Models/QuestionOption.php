@@ -13,6 +13,7 @@ class QuestionOption extends Model
 
     protected $fillable = [
         'question_id',
+        'criterion_value_id',
         'label',
         'option_text',
         'text',
@@ -76,6 +77,14 @@ class QuestionOption extends Model
     public function question(): BelongsTo
     {
         return $this->belongsTo(Question::class);
+    }
+
+    /**
+     * Optional mapped criterion value (indicator).
+     */
+    public function criterionValue(): BelongsTo
+    {
+        return $this->belongsTo(CriterionValue::class);
     }
 
     /**

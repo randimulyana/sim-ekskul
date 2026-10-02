@@ -57,6 +57,7 @@ class AdminRoleAuthorizationTest extends TestCase
         $this->get('/admin/profil')->assertForbidden();
         $this->get('/admin/rekomendasi')->assertForbidden();
         $this->get('/admin/laporan')->assertForbidden();
+        $this->get('/admin/kriteria')->assertForbidden();
     }
 
     public function test_admin_can_access_admin_dashboard_and_modules(): void
@@ -72,6 +73,7 @@ class AdminRoleAuthorizationTest extends TestCase
         $this->get('/admin/ekstrakurikuler')->assertOk();
         $this->get('/admin/pendaftaran')->assertOk();
         $this->get('/admin/kuesioner')->assertOk();
+        $this->get('/admin/kriteria')->assertOk();
         $this->get('/admin/pengaturan')->assertOk();
         $this->get('/admin/profil')->assertOk();
         $this->get('/admin/rekomendasi')->assertOk();

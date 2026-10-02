@@ -389,5 +389,8 @@ class DemoDataSeeder extends Seeder
                 ]);
             }
         }
+
+        // 6. Proposed Phase 4 Criteria, Indicator Values & Question Mappings
+        app(\App\Services\CriteriaConfigurationService::class)->setupProposedConfiguration();
     }
 }

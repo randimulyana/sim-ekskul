@@ -107,6 +107,17 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
     Route::patch('/kuesioner/{id}/toggle', [App\Http\Controllers\Admin\QuestionnaireController::class, 'toggleStatus'])->name('kuesioner.toggle');
     Route::delete('/kuesioner/{id}', [App\Http\Controllers\Admin\QuestionnaireController::class, 'destroy'])->name('kuesioner.destroy');
 
+    // Kriteria & Bobot (Phase 4)
+    Route::get('/kriteria', [App\Http\Controllers\Admin\CriterionController::class, 'index'])->name('kriteria.index');
+    Route::get('/kriteria/create', [App\Http\Controllers\Admin\CriterionController::class, 'create'])->name('kriteria.create');
+    Route::post('/kriteria', [App\Http\Controllers\Admin\CriterionController::class, 'store'])->name('kriteria.store');
+    Route::get('/kriteria/mapping', [App\Http\Controllers\Admin\CriterionController::class, 'mapping'])->name('kriteria.mapping');
+    Route::get('/kriteria/{id}', [App\Http\Controllers\Admin\CriterionController::class, 'show'])->name('kriteria.show');
+    Route::get('/kriteria/{id}/edit', [App\Http\Controllers\Admin\CriterionController::class, 'edit'])->name('kriteria.edit');
+    Route::put('/kriteria/{id}', [App\Http\Controllers\Admin\CriterionController::class, 'update'])->name('kriteria.update');
+    Route::patch('/kriteria/{id}', [App\Http\Controllers\Admin\CriterionController::class, 'update']);
+    Route::delete('/kriteria/{id}', [App\Http\Controllers\Admin\CriterionController::class, 'destroy'])->name('kriteria.destroy');
+
     // Rekomendasi
     Route::get('/rekomendasi', [App\Http\Controllers\Admin\RecommendationController::class, 'index'])->name('rekomendasi.index');
     Route::get('/rekomendasi/{id}', [App\Http\Controllers\Admin\RecommendationController::class, 'show'])->name('rekomendasi.show');

@@ -38,6 +38,7 @@
                         <th class="px-6 py-3.5 w-16">Urutan</th>
                         <th class="px-6 py-3.5">Butir Pertanyaan</th>
                         <th class="px-6 py-3.5">Kategori</th>
+                        <th class="px-6 py-3.5">Kriteria</th>
                         <th class="px-6 py-3.5">Tipe Jawaban</th>
                         <th class="px-6 py-3.5">Opsi</th>
                         <th class="px-6 py-3.5">Status</th>
@@ -63,6 +64,17 @@
                             <span class="inline-block px-2 py-0.5 rounded bg-slate-100 text-slate-700 font-medium text-[11px]">
                                 {{ $q->category }}
                             </span>
+                        </td>
+                        <td class="px-6 py-3.5">
+                            @if($q->criterion)
+                                <span class="inline-block px-2 py-0.5 rounded bg-blue-50 text-blue-700 font-bold text-[11px]" title="{{ $q->criterion->name }}">
+                                    {{ $q->criterion->code }}
+                                </span>
+                            @else
+                                <span class="inline-block px-1.5 py-0.5 rounded bg-slate-100 text-slate-400 text-[10px]">
+                                    -
+                                </span>
+                            @endif
                         </td>
                         <td class="px-6 py-3.5 text-slate-600 font-medium">{{ $typeLabels[$q->type] ?? ucfirst($q->type) }}</td>
                         <td class="px-6 py-3.5 text-slate-500 font-mono">{{ $q->options->count() }} opsi</td>

@@ -14,6 +14,7 @@ class ExtracurricularCriterionMapping extends Model
         'extracurricular_id',
         'criterion_id',
         'value',
+        'status',
         'notes',
     ];
 

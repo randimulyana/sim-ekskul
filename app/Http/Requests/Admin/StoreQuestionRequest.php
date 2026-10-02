@@ -49,6 +49,7 @@ class StoreQuestionRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'criterion_id' => ['nullable', 'exists:criteria,id'],
             'question_text' => ['required', 'string'],
             'category' => ['required', 'string', 'max:100'],
             'type' => ['required', 'string', 'in:radio,checkbox,likert,textarea'],

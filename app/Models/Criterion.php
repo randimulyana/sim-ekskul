@@ -20,6 +20,7 @@ class Criterion extends Model
         'description',
         'type',
         'weight',
+        'status',
         'is_active',
     ];
 
@@ -29,6 +30,58 @@ class Criterion extends Model
             'weight' => 'float',
             'is_active' => 'boolean',
         ];
+    }
+
+    /**
+     * Get weight in percentage representation (e.g. 0.30 -> 30).
+     */
+    public function getWeightPercentageAttribute(): float
+    {
+        return round(($this->weight ?? 0) * 100, 2);
+    }
+
+    /**
+     * Human readable label for status.
+     */
+    public function getStatusLabelAttribute(): string
+    {
+        return match ($this->status) {
+            'validated' => 'Validated (Resmi)',
+            'proposed' => 'Proposed / Needs Validation',
+            default => 'Needs Validation',
+        };
+    }
+
+    /**
+     * Check if criterion is benefit type.
+     */
+    public function isBenefit(): bool
+    {
+        return strtolower($this->type) === 'benefit';
+    }
+
+    /**
+     * Check if criterion is cost type.
+     */
+    public function isCost(): bool
+    {
+        return strtolower($this->type) === 'cost';
+    }
+
+    /**
+     * Calculate total active criteria weight.
+     */
+    public static function getTotalWeight(): float
+    {
+        return (float) static::where('is_active', true)->sum('weight');
+    }
+
+    /**
+     * Validate whether total active criteria weight equals 1.00 (100%).
+     */
+    public static function isTotalWeightValid(): bool
+    {
+        return abs(static::getTotalWeight() - 1.00) < 0.001;
     }
 
     /**

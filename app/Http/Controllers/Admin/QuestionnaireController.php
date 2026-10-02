@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreQuestionRequest;
 use App\Http\Requests\Admin\UpdateQuestionRequest;
+use App\Models\Criterion;
 use App\Models\Question;
 use App\Models\QuestionOption;
 use Illuminate\Http\RedirectResponse;
@@ -18,8 +19,8 @@ class QuestionnaireController extends Controller
      */
     public function index(): View
     {
-        $questions = Question::with('options')
-            ->orderBy('order')
+        $questions = Question::with(['options', 'criterion'])
+            ->orderBy('sort_order')
             ->paginate(15);
 
         return view('admin.kuesioner.index', compact('questions'));
@@ -30,7 +31,9 @@ class QuestionnaireController extends Controller
      */
     public function create(): View
     {
-        return view('admin.kuesioner.create');
+        $criteria = Criterion::where('is_active', true)->orderBy('code')->get();
+
+        return view('admin.kuesioner.create', compact('criteria'));
     }
 
     /**
@@ -44,6 +47,7 @@ class QuestionnaireController extends Controller
             $qText = $request->input('question') ?? $request->input('question_text') ?? $request->input('teks_pertanyaan');
 
             $question = Question::create([
+                'criterion_id' => $request->input('criterion_id'),
                 'question' => $qText,
                 'category' => $request->input('category'),
                 'type' => $request->input('type'),
@@ -80,8 +84,9 @@ class QuestionnaireController extends Controller
     public function edit(int|string $id): View
     {
         $question = Question::with('options')->findOrFail($id);
+        $criteria = Criterion::where('is_active', true)->orderBy('code')->get();
 
-        return view('admin.kuesioner.edit', compact('question'));
+        return view('admin.kuesioner.edit', compact('question', 'criteria'));
     }
 
     /**
@@ -96,6 +101,7 @@ class QuestionnaireController extends Controller
             $order = $request->input('sort_order') ?: $request->input('order') ?: $question->sort_order;
 
             $question->update([
+                'criterion_id' => $request->has('criterion_id') ? $request->input('criterion_id') : $question->criterion_id,
                 'question' => $qText,
                 'category' => $request->input('category'),
                 'type' => $request->input('type'),
