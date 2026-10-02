@@ -44,9 +44,9 @@ Route::prefix('siswa')->name('siswa.')->middleware(['auth', 'role:student'])->gr
     Route::get('/kuesioner/analisis', [App\Http\Controllers\Student\QuestionnaireController::class, 'analisis'])->name('kuesioner.analisis');
     Route::get('/kuesioner/hasil', [App\Http\Controllers\Student\QuestionnaireController::class, 'hasil'])->name('kuesioner.hasil');
 
-    // Recommendation (Prototype / placeholder views preserved for Phase 5)
-    Route::get('/rekomendasi', fn () => view('siswa.rekomendasi.index'))->name('rekomendasi.index');
-    Route::get('/rekomendasi/{id}', fn ($id) => view('siswa.rekomendasi.show', ['id' => $id]))->name('rekomendasi.show');
+    // Recommendation (SAW Recommendation Engine)
+    Route::get('/rekomendasi', [App\Http\Controllers\Student\RecommendationController::class, 'index'])->name('rekomendasi.index');
+    Route::get('/rekomendasi/{id}', [App\Http\Controllers\Student\RecommendationController::class, 'show'])->name('rekomendasi.show');
 
     // Registration (Prototype views preserved for Phase 6)
     Route::get('/pendaftaran', fn () => view('siswa.pendaftaran.index'))->name('pendaftaran.index');

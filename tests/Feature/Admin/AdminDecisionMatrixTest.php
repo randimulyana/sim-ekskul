@@ -74,7 +74,8 @@ class AdminDecisionMatrixTest extends TestCase
 
         $response->assertOk();
         $response->assertViewIs('admin.rekomendasi.matrix');
-        $response->assertSee('Matriks Keputusan SAW');
+        $response->assertSee('Matriks Keputusan');
+        $response->assertSee('Engine SAW');
         $response->assertSee('Andi Saputra');
         $response->assertSee('PASKIBRAKA');
         $response->assertSee('NEEDS VALIDATION');

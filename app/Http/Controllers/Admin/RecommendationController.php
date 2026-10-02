@@ -8,13 +8,15 @@ use App\Models\QuestionnaireAnswer;
 use App\Models\Recommendation;
 use App\Models\Student;
 use App\Services\DecisionMatrixService;
+use App\Services\SawRecommendationService;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class RecommendationController extends Controller
 {
     public function __construct(
-        protected DecisionMatrixService $matrixService
+        protected DecisionMatrixService $matrixService,
+        protected SawRecommendationService $sawService
     ) {}
 
     /**
@@ -31,7 +33,7 @@ class RecommendationController extends Controller
     }
 
     /**
-     * Preview Decision Matrix X for a student (Phase 5A Debug & Validation).
+     * Preview Decision Matrix X & SAW Calculation for a student (Phase 5B Debug & Validation).
      */
     public function matrixPreview(Request $request): View
     {
@@ -61,10 +63,15 @@ class RecommendationController extends Controller
             ? $this->matrixService->build($selectedStudent, $activePeriod)
             : null;
 
+        $sawResult = $selectedStudent
+            ? $this->sawService->recommend($selectedStudent, $activePeriod, persist: false)
+            : null;
+
         return view('admin.rekomendasi.matrix', compact(
             'students',
             'selectedStudent',
             'matrixData',
+            'sawResult',
             'activePeriod'
         ));
     }
