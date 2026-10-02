@@ -20,6 +20,14 @@ class Student extends Model
     ];
 
     /**
+     * Get the student's name from the associated user account.
+     */
+    public function getNameAttribute(): string
+    {
+        return $this->user?->name ?? 'Siswa';
+    }
+
+    /**
      * The user account associated with the student profile.
      */
     public function user(): BelongsTo

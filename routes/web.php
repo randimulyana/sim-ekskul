@@ -118,8 +118,9 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
     Route::patch('/kriteria/{id}', [App\Http\Controllers\Admin\CriterionController::class, 'update']);
     Route::delete('/kriteria/{id}', [App\Http\Controllers\Admin\CriterionController::class, 'destroy'])->name('kriteria.destroy');
 
-    // Rekomendasi
+    // Rekomendasi & Matriks Keputusan (Phase 5A)
     Route::get('/rekomendasi', [App\Http\Controllers\Admin\RecommendationController::class, 'index'])->name('rekomendasi.index');
+    Route::get('/rekomendasi/matriks-keputusan', [App\Http\Controllers\Admin\RecommendationController::class, 'matrixPreview'])->name('rekomendasi.matrix');
     Route::get('/rekomendasi/{id}', [App\Http\Controllers\Admin\RecommendationController::class, 'show'])->name('rekomendasi.show');
 
     // Laporan

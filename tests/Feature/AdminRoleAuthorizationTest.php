@@ -56,6 +56,7 @@ class AdminRoleAuthorizationTest extends TestCase
         $this->get('/admin/pengaturan')->assertForbidden();
         $this->get('/admin/profil')->assertForbidden();
         $this->get('/admin/rekomendasi')->assertForbidden();
+        $this->get('/admin/rekomendasi/matriks-keputusan')->assertForbidden();
         $this->get('/admin/laporan')->assertForbidden();
         $this->get('/admin/kriteria')->assertForbidden();
     }
@@ -77,6 +78,7 @@ class AdminRoleAuthorizationTest extends TestCase
         $this->get('/admin/pengaturan')->assertOk();
         $this->get('/admin/profil')->assertOk();
         $this->get('/admin/rekomendasi')->assertOk();
+        $this->get('/admin/rekomendasi/matriks-keputusan')->assertOk();
         $this->get('/admin/laporan')->assertOk();
     }
 
