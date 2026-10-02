@@ -14,5 +14,6 @@ class CriteriaPhase4Seeder extends Seeder
     {
         $service = app(CriteriaConfigurationService::class);
         $service->setupProposedConfiguration();
+        $service->setupResearchTargetMappings();
     }
 }

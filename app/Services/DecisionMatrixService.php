@@ -127,7 +127,9 @@ class DecisionMatrixService
                 if ($evaluated['status'] === 'READY') {
                     $readyCellsCount++;
                 } else {
-                    $needsValidationCellsCount++;
+                    if ($evaluated['status'] === 'NEEDS_VALIDATION') {
+                        $needsValidationCellsCount++;
+                    }
                     $hasUnvalidatedCell = true;
                 }
             }

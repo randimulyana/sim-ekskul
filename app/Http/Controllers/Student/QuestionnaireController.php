@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Student;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Student\SaveQuestionnaireRequest;
 use App\Services\QuestionnaireService;
+use App\Services\SawRecommendationService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
@@ -12,7 +13,8 @@ use Illuminate\View\View;
 class QuestionnaireController extends Controller
 {
     public function __construct(
-        protected QuestionnaireService $questionnaireService
+        protected QuestionnaireService $questionnaireService,
+        protected SawRecommendationService $sawService
     ) {}
 
     /**
@@ -104,7 +106,7 @@ class QuestionnaireController extends Controller
     }
 
     /**
-     * Display questionnaire completion / results placeholder page.
+     * Display questionnaire completion / recommendation results page.
      */
     public function hasil(): View
     {
@@ -113,6 +115,11 @@ class QuestionnaireController extends Controller
         $activePeriod = $this->questionnaireService->getActivePeriod();
         $progress = $student->getQuestionnaireProgress($activePeriod);
 
-        return view('siswa.kuesioner.hasil', compact('student', 'activePeriod', 'progress'));
+        $recommendationResult = null;
+        if ($activePeriod) {
+            $recommendationResult = $this->sawService->recommend($student, $activePeriod, persist: true);
+        }
+
+        return view('siswa.kuesioner.hasil', compact('student', 'activePeriod', 'progress', 'recommendationResult'));
     }
 }

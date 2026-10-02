@@ -48,13 +48,11 @@ Route::prefix('siswa')->name('siswa.')->middleware(['auth', 'role:student'])->gr
     Route::get('/rekomendasi', [App\Http\Controllers\Student\RecommendationController::class, 'index'])->name('rekomendasi.index');
     Route::get('/rekomendasi/{id}', [App\Http\Controllers\Student\RecommendationController::class, 'show'])->name('rekomendasi.show');
 
-    // Registration (Prototype views preserved for Phase 6)
-    Route::get('/pendaftaran', fn () => view('siswa.pendaftaran.index'))->name('pendaftaran.index');
-    Route::post('/pendaftaran', fn () => redirect()->route('siswa.pendaftaran.sukses'))->name('pendaftaran.store');
-    Route::get('/pendaftaran/sukses', fn () => view('siswa.pendaftaran.sukses'))->name('pendaftaran.sukses');
-
-    // History
-    Route::get('/riwayat', fn () => view('siswa.riwayat'))->name('riwayat');
+    // Registration & History
+    Route::get('/pendaftaran', [App\Http\Controllers\Student\RegistrationController::class, 'index'])->name('pendaftaran.index');
+    Route::post('/pendaftaran', [App\Http\Controllers\Student\RegistrationController::class, 'store'])->name('pendaftaran.store');
+    Route::get('/pendaftaran/sukses', [App\Http\Controllers\Student\RegistrationController::class, 'sukses'])->name('pendaftaran.sukses');
+    Route::get('/riwayat', [App\Http\Controllers\Student\RegistrationController::class, 'riwayat'])->name('riwayat');
 });
 
 // ============================================================

@@ -391,6 +391,10 @@ class DemoDataSeeder extends Seeder
         }
 
         // 6. Proposed Phase 4 Criteria, Indicator Values & Question Mappings
-        app(\App\Services\CriteriaConfigurationService::class)->setupProposedConfiguration();
+        $criteriaService = app(\App\Services\CriteriaConfigurationService::class);
+        $criteriaService->setupProposedConfiguration();
+
+        // 7. Research Target Mappings for 12 Extracurriculars (Phase 6 Baseline)
+        $criteriaService->setupResearchTargetMappings();
     }
 }

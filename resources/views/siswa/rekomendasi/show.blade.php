@@ -99,7 +99,7 @@ $coach = $extracurricular?->coach_name ?? 'Pembina Terdaftar';
                 <a href="{{ isset($extracurricular) ? route('siswa.ekstrakurikuler.show', $extracurricular->id) : route('siswa.ekstrakurikuler.index') }}" class="text-xs font-semibold text-slate-600 hover:text-slate-900">
                     &larr; Lihat Selengkapnya di Profil Ekskul
                 </a>
-                <a href="{{ route('siswa.pendaftaran.index') }}" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-lg shadow-sm transition-colors">
+                <a href="{{ route('siswa.pendaftaran.index', ['ekskul_id' => $extracurricular->id]) }}" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-lg shadow-sm transition-colors">
                     <span>Pilih dan Ajukan Pendaftaran</span>
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
                 </a>

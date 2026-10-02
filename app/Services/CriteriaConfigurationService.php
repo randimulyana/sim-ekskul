@@ -9,6 +9,7 @@ use App\Models\ExtracurricularCriterionMapping;
 use App\Models\Question;
 use App\Models\QuestionOption;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class CriteriaConfigurationService
 {
@@ -57,6 +58,25 @@ class CriteriaConfigurationService
             'weight' => 0.10,
             'status' => 'proposed',
         ],
+    ];
+
+    /**
+     * Target values for 12 extracurriculars on criteria C1–C5.
+     * Documented as DESIGN / RESEARCH CONFIGURATION (Research Baseline for SMKN 3 Payakumbuh).
+     */
+    public const RESEARCH_TARGET_MAPPINGS = [
+        'PASKIBRAKA'    => ['C1' => 5.0, 'C2' => 4.0, 'C3' => 5.0, 'C4' => 3.0, 'C5' => 5.0],
+        'PRAMUKA'       => ['C1' => 4.0, 'C2' => 3.0, 'C3' => 5.0, 'C4' => 4.0, 'C5' => 5.0],
+        'PIK-R'         => ['C1' => 4.0, 'C2' => 3.0, 'C3' => 5.0, 'C4' => 3.0, 'C5' => 4.0],
+        'SILAT TRADISI' => ['C1' => 5.0, 'C2' => 4.0, 'C3' => 4.0, 'C4' => 3.0, 'C5' => 5.0],
+        'RANDAI'        => ['C1' => 5.0, 'C2' => 4.0, 'C3' => 4.0, 'C4' => 3.0, 'C5' => 5.0],
+        'MARCHING BAND' => ['C1' => 5.0, 'C2' => 4.0, 'C3' => 5.0, 'C4' => 3.0, 'C5' => 5.0],
+        'MODELLING'     => ['C1' => 5.0, 'C2' => 4.0, 'C3' => 4.0, 'C4' => 3.0, 'C5' => 5.0],
+        'KESENIAN'      => ['C1' => 5.0, 'C2' => 3.0, 'C3' => 4.0, 'C4' => 3.0, 'C5' => 5.0],
+        'PADUAN SUARA'  => ['C1' => 5.0, 'C2' => 4.0, 'C3' => 4.0, 'C4' => 3.0, 'C5' => 5.0],
+        'ENGLISH CLUB'  => ['C1' => 5.0, 'C2' => 4.0, 'C3' => 4.0, 'C4' => 3.0, 'C5' => 4.0],
+        'JAPANESE CLUB' => ['C1' => 5.0, 'C2' => 3.0, 'C3' => 4.0, 'C4' => 3.0, 'C5' => 4.0],
+        'TAHFIDZ'       => ['C1' => 5.0, 'C2' => 4.0, 'C3' => 5.0, 'C4' => 4.0, 'C5' => 4.0],
     ];
 
     /**
@@ -117,6 +137,51 @@ class CriteriaConfigurationService
             $this->mapQuestionOptionsToCriterionValues($createdCriteria);
 
             return $createdCriteria;
+        });
+    }
+
+    /**
+     * Setup research target mappings for 12 extracurriculars on criteria C1–C5.
+     * All mappings are assigned status 'validated' as research/design configuration baseline.
+     */
+    public function setupResearchTargetMappings(): int
+    {
+        return DB::transaction(function () {
+            $criteria = Criterion::whereIn('code', ['C1', 'C2', 'C3', 'C4', 'C5'])->get()->keyBy('code');
+            $createdCount = 0;
+
+            foreach (self::RESEARCH_TARGET_MAPPINGS as $ekskulName => $targetValues) {
+                $ekskul = Extracurricular::where('name', $ekskulName)
+                    ->orWhere('slug', Str::slug($ekskulName))
+                    ->first();
+
+                if (! $ekskul) {
+                    continue;
+                }
+
+                foreach ($targetValues as $code => $value) {
+                    $criterion = $criteria->get($code);
+                    if (! $criterion) {
+                        continue;
+                    }
+
+                    ExtracurricularCriterionMapping::updateOrCreate(
+                        [
+                            'extracurricular_id' => $ekskul->id,
+                            'criterion_id' => $criterion->id,
+                        ],
+                        [
+                            'value' => $value,
+                            'status' => 'validated',
+                            'notes' => 'Konfigurasi target desain/riset (Research Baseline - SMKN 3 Payakumbuh)',
+                        ]
+                    );
+
+                    $createdCount++;
+                }
+            }
+
+            return $createdCount;
         });
     }
 
@@ -213,10 +278,10 @@ class CriteriaConfigurationService
         // Check criterion values
         $criteriaWithoutValues = $criteria->filter(fn ($c) => $c->values->count() < 5);
 
-        // Check questions mapping
-        $totalActiveQuestions = Question::where('is_active', true)->count();
-        $mappedQuestionsCount = Question::where('is_active', true)->whereNotNull('criterion_id')->count();
-        $unmappedQuestionsCount = $totalActiveQuestions - $mappedQuestionsCount;
+        // Check questions mapping (scorable questions only; qualitative textarea is excluded)
+        $totalActiveQuestions = Question::where('is_active', true)->where('type', '!=', 'textarea')->count();
+        $mappedQuestionsCount = Question::where('is_active', true)->where('type', '!=', 'textarea')->whereNotNull('criterion_id')->count();
+        $unmappedQuestionsCount = max(0, $totalActiveQuestions - $mappedQuestionsCount);
 
         // Check extracurricular mappings
         $totalActiveEkskuls = Extracurricular::where('is_active', true)->count();
@@ -240,7 +305,7 @@ class CriteriaConfigurationService
         }
 
         if ($unmappedQuestionsCount > 0) {
-            $issues[] = "Terdapat {$unmappedQuestionsCount} pertanyaan aktif yang belum terpetakan ke kriteria (atau berstatus kualitatif/NEEDS_MAPPING_VALIDATION).";
+            $issues[] = "Terdapat {$unmappedQuestionsCount} pertanyaan aktif yang belum terpetakan ke kriteria.";
         }
 
         // Extracurricular mapping check
@@ -252,6 +317,9 @@ class CriteriaConfigurationService
 
         // Status is NOT_READY if there are blocking issues
         $status = empty($issues) ? 'READY_FOR_SAW' : 'NOT_READY';
+        $mappingStatus = ($expectedMappings > 0 && $validatedMappingsCount >= $expectedMappings)
+            ? 'CONFIGURED_RESEARCH'
+            : 'NEEDS_VALIDATION';
 
         return [
             'status' => $status,
@@ -262,10 +330,10 @@ class CriteriaConfigurationService
             'is_weight_valid' => $isWeightValid,
             'mapped_questions_count' => $mappedQuestionsCount,
             'unmapped_questions_count' => $unmappedQuestionsCount,
-            'total_active_questions' => $totalActiveQuestions,
+            'total_active_questions' => Question::where('is_active', true)->count(),
             'total_active_ekskuls' => $totalActiveEkskuls,
             'extracurricular_mappings_count' => ExtracurricularCriterionMapping::count(),
-            'extracurricular_mapping_status' => 'NEEDS_VALIDATION',
+            'extracurricular_mapping_status' => $mappingStatus,
             'issues' => $issues,
         ];
     }
