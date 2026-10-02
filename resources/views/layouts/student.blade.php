@@ -35,19 +35,31 @@
 
             <!-- Right actions -->
             <div class="flex items-center gap-2">
+                @php
+                    $navUser = auth()->user();
+                    $navStudent = $navUser?->student;
+                    $initial = strtoupper(substr($navUser?->name ?? 'S', 0, 1));
+                    $shortName = \Illuminate\Support\Str::limit($navUser?->name ?? 'Siswa', 12);
+                @endphp
                 <!-- Profile dropdown -->
                 <div class="relative" id="studentDropdown">
                     <button onclick="toggleStudentDropdown()" class="flex items-center gap-2 p-1.5 rounded-lg hover:bg-slate-100">
                         <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
-                            <span class="text-blue-700 text-sm font-bold">A</span>
+                            <span class="text-blue-700 text-sm font-bold">{{ $initial }}</span>
                         </div>
-                        <span class="hidden sm:block text-sm font-medium text-slate-700">Andi S.</span>
+                        <span class="hidden sm:block text-sm font-medium text-slate-700">{{ $shortName }}</span>
                         <svg class="hidden sm:block w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                     </button>
                     <div id="studentDropdownMenu" class="hidden absolute right-0 top-full mt-1 w-48 bg-white rounded-xl shadow-lg border border-slate-200 py-1 z-50">
                         <div class="px-4 py-2 border-b border-slate-100">
-                            <p class="text-sm font-medium text-slate-900">Andi Saputra</p>
-                            <p class="text-xs text-slate-500">NIS: 2026001 · KULINER 1</p>
+                            <p class="text-sm font-medium text-slate-900 truncate">{{ $navUser?->name ?? 'Siswa' }}</p>
+                            <p class="text-xs text-slate-500 truncate">
+                                @if($navStudent?->nis)
+                                    NIS: {{ $navStudent->nis }} · {{ $navStudent->class_name ?? '-' }}
+                                @else
+                                    {{ $navUser?->email ?? '-' }}
+                                @endif
+                            </p>
                         </div>
                         <a href="/siswa/profil" class="flex items-center gap-2 px-4 py-2 text-sm text-slate-700 hover:bg-slate-50">Profil Saya</a>
                         <a href="/siswa/pendaftaran" class="flex items-center gap-2 px-4 py-2 text-sm text-slate-700 hover:bg-slate-50">Status Pendaftaran</a>

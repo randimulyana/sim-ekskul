@@ -81,4 +81,22 @@ class User extends Authenticatable
     {
         return $this->hasOne(Student::class);
     }
+
+    /**
+     * Get or safely instantiate student profile for this user.
+     */
+    public function getOrCreateStudent(): Student
+    {
+        if ($this->relationLoaded('student') && $this->getRelation('student') !== null) {
+            return $this->getRelation('student');
+        }
+
+        $student = $this->student()->firstOrCreate([], [
+            'status' => 'active',
+        ]);
+
+        $this->setRelation('student', $student);
+
+        return $student;
+    }
 }

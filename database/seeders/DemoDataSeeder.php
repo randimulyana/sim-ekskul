@@ -193,5 +193,201 @@ class DemoDataSeeder extends Seeder
                 array_merge($item, ['slug' => Str::slug($item['name'])])
             );
         }
+
+        // 5. Demo Questionnaire Questions & Options
+        $questions = [
+            // STEP 1: Minat Awal
+            [
+                'question' => 'Bagaimana cara kamu belajar hal baru yang paling menyenangkan?',
+                'category' => 'Minat Awal',
+                'type' => 'radio',
+                'sort_order' => 1,
+                'is_required' => true,
+                'options' => [
+                    ['label' => 'Praktik langsung, bergerak, dan simulasi fisik (Kinestetik)', 'value' => 5],
+                    ['label' => 'Melihat gambar, demonstrasi visual, atau video (Visual)', 'value' => 4],
+                    ['label' => 'Mendengarkan penjelasan, diskusi, dan irama bunyi (Auditori)', 'value' => 3],
+                ],
+            ],
+            [
+                'question' => 'Seberapa sering kamu menyukai aktivitas yang menuntut ketahanan fisik di luar ruangan?',
+                'category' => 'Minat Awal',
+                'type' => 'likert',
+                'sort_order' => 2,
+                'is_required' => true,
+                'options' => [
+                    ['label' => '1 - Sangat Jarang', 'value' => 1],
+                    ['label' => '2 - Jarang', 'value' => 2],
+                    ['label' => '3 - Netral', 'value' => 3],
+                    ['label' => '4 - Sering', 'value' => 4],
+                    ['label' => '5 - Sangat Sering', 'value' => 5],
+                ],
+            ],
+            // STEP 2: Ketertarikan
+            [
+                'question' => 'Pilih bidang kegiatan yang paling membuatmu antusias:',
+                'category' => 'Ketertarikan',
+                'type' => 'checkbox',
+                'sort_order' => 3,
+                'is_required' => true,
+                'options' => [
+                    ['label' => 'Kepemimpinan & Baris Berbaris', 'value' => 5],
+                    ['label' => 'Kepanduan & Alam Bebas', 'value' => 5],
+                    ['label' => 'Seni Musik & Korps Irama', 'value' => 5],
+                    ['label' => 'Seni Bela Diri Tradisional Minangkabau', 'value' => 5],
+                    ['label' => 'Bahasa Asing & Komunikasi Publik', 'value' => 5],
+                    ['label' => 'Keagamaan & Hafalan Al-Qur\'an', 'value' => 5],
+                ],
+            ],
+            [
+                'question' => 'Apakah kamu tertarik untuk tampil atau berkompetisi mewakili nama sekolah?',
+                'category' => 'Ketertarikan',
+                'type' => 'radio',
+                'sort_order' => 4,
+                'is_required' => true,
+                'options' => [
+                    ['label' => 'Sangat Tertarik', 'value' => 5],
+                    ['label' => 'Cukup Tertarik', 'value' => 3],
+                    ['label' => 'Belum Tertarik', 'value' => 1],
+                ],
+            ],
+            // STEP 3: Karakteristik
+            [
+                'question' => 'Dalam menyelesaikan suatu kegiatan, gaya kerja seperti apa yang paling kamu sukai?',
+                'category' => 'Karakteristik',
+                'type' => 'radio',
+                'sort_order' => 5,
+                'is_required' => true,
+                'options' => [
+                    ['label' => 'Bekerja dalam tim besar yang solid dan terstruktur', 'value' => 5],
+                    ['label' => 'Bekerja dalam kelompok kecil yang fleksibel', 'value' => 4],
+                    ['label' => 'Bekerja mandiri secara independen', 'value' => 3],
+                ],
+            ],
+            [
+                'question' => 'Tingkat kepercayaan diri kamu saat berinteraksi dengan orang-orang baru:',
+                'category' => 'Karakteristik',
+                'type' => 'likert',
+                'sort_order' => 6,
+                'is_required' => true,
+                'options' => [
+                    ['label' => '1 - Kurang Percaya Diri', 'value' => 1],
+                    ['label' => '2 - Cukup Ragu', 'value' => 2],
+                    ['label' => '3 - Sedang / Wajar', 'value' => 3],
+                    ['label' => '4 - Percaya Diri', 'value' => 4],
+                    ['label' => '5 - Sangat Percaya Diri', 'value' => 5],
+                ],
+            ],
+            [
+                'question' => 'Seberapa mudah kamu beradaptasi dengan aturan kedisiplinan yang ketat?',
+                'category' => 'Karakteristik',
+                'type' => 'radio',
+                'sort_order' => 7,
+                'is_required' => true,
+                'options' => [
+                    ['label' => 'Sangat mudah dan terbiasa berdisiplin', 'value' => 5],
+                    ['label' => 'Dapat beradaptasi dengan waktu', 'value' => 3],
+                    ['label' => 'Lebih menyukai kegiatan yang santai dan luwes', 'value' => 2],
+                ],
+            ],
+            // STEP 4: Pengalaman
+            [
+                'question' => 'Apakah kamu pernah mengikuti kegiatan ekstrakurikuler atau kepanitiaan semasa SMP/MTs?',
+                'category' => 'Pengalaman',
+                'type' => 'radio',
+                'sort_order' => 8,
+                'is_required' => true,
+                'options' => [
+                    ['label' => 'Pernah aktif sebagai pengurus / inti', 'value' => 5],
+                    ['label' => 'Pernah menjadi anggota biasa', 'value' => 3],
+                    ['label' => 'Belum pernah mengikuti kegiatan apapun', 'value' => 1],
+                ],
+            ],
+            [
+                'question' => 'Apakah kamu memiliki pengalaman dasar di bidang seni panggung, bela diri, atau bahasa asing?',
+                'category' => 'Pengalaman',
+                'type' => 'radio',
+                'sort_order' => 9,
+                'is_required' => true,
+                'options' => [
+                    ['label' => 'Ya, memiliki pengalaman aktif dan pernah berlatih', 'value' => 5],
+                    ['label' => 'Pernah sedikit belajar secara otodidak', 'value' => 3],
+                    ['label' => 'Belum memiliki pengalaman sama sekali', 'value' => 1],
+                ],
+            ],
+            [
+                'question' => 'Ceritakan secara singkat motivasi atau harapanmu dalam mengikuti ekstrakurikuler di SMKN 3 Payakumbuh:',
+                'category' => 'Pengalaman',
+                'type' => 'textarea',
+                'sort_order' => 10,
+                'is_required' => false,
+                'options' => [],
+            ],
+            // STEP 5: Kemampuan
+            [
+                'question' => 'Penilaian mandiri terhadap ketahanan fisik dan stamina kamu:',
+                'category' => 'Kemampuan',
+                'type' => 'likert',
+                'sort_order' => 11,
+                'is_required' => true,
+                'options' => [
+                    ['label' => '1 - Sangat Rendah', 'value' => 1],
+                    ['label' => '2 - Kurang', 'value' => 2],
+                    ['label' => '3 - Cukup', 'value' => 3],
+                    ['label' => '4 - Baik', 'value' => 4],
+                    ['label' => '5 - Sangat Prima', 'value' => 5],
+                ],
+            ],
+            [
+                'question' => 'Penilaian mandiri terhadap kepekaan ritme irama musik / kesenian vokal gerak:',
+                'category' => 'Kemampuan',
+                'type' => 'likert',
+                'sort_order' => 12,
+                'is_required' => true,
+                'options' => [
+                    ['label' => '1 - Kurang Peka', 'value' => 1],
+                    ['label' => '2 - Cukup Ragu', 'value' => 2],
+                    ['label' => '3 - Sedang', 'value' => 3],
+                    ['label' => '4 - Baik', 'value' => 4],
+                    ['label' => '5 - Sangat Peka', 'value' => 5],
+                ],
+            ],
+            [
+                'question' => 'Penilaian mandiri terhadap minat mempelajari bahasa asing atau hafalan:',
+                'category' => 'Kemampuan',
+                'type' => 'likert',
+                'sort_order' => 13,
+                'is_required' => true,
+                'options' => [
+                    ['label' => '1 - Kurang Tertarik', 'value' => 1],
+                    ['label' => '2 - Biasa Saja', 'value' => 2],
+                    ['label' => '3 - Cukup Tertarik', 'value' => 3],
+                    ['label' => '4 - Antusias', 'value' => 4],
+                    ['label' => '5 - Sangat Antusias', 'value' => 5],
+                ],
+            ],
+        ];
+
+        foreach ($questions as $qData) {
+            $options = $qData['options'];
+            unset($qData['options']);
+
+            $q = \App\Models\Question::updateOrCreate(
+                ['question' => $qData['question']],
+                array_merge($qData, ['is_active' => true])
+            );
+
+            // Recreate options
+            $q->options()->delete();
+            $optOrder = 1;
+            foreach ($options as $opt) {
+                \App\Models\QuestionOption::create([
+                    'question_id' => $q->id,
+                    'label' => $opt['label'],
+                    'value' => $opt['value'],
+                    'sort_order' => $optOrder++,
+                ]);
+            }
+        }
     }
 }

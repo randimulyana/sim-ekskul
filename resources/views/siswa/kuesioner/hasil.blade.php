@@ -11,24 +11,31 @@
     <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-6 sm:p-8">
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
-                <span class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800 mb-2">
+                <span class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold {{ ($progress['is_complete'] ?? false) ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800' }} mb-2">
                     <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
-                    Analisis Kuesioner Selesai
+                    {{ ($progress['is_complete'] ?? false) ? 'Kuesioner Selesai (100%)' : 'Progress: ' . ($progress['percentage'] ?? 0) . '%' }}
                 </span>
                 <h1 class="text-2xl sm:text-3xl font-bold text-slate-900">Hasil Rekomendasi Ekstrakurikuler</h1>
-                <p class="text-sm text-slate-500 mt-1">Berikut adalah urutan kegiatan yang paling sesuai dengan preferensi yang kamu isi.</p>
+                <p class="text-sm text-slate-500 mt-1">Jawaban kuesioner periode {{ $activePeriod?->name ?? 'aktif' }} telah tersimpan dengan aman di database.</p>
             </div>
-            <a href="/siswa/kuesioner" class="self-start sm:self-auto inline-flex items-center gap-1.5 px-4 py-2 border border-slate-200 text-slate-700 hover:bg-slate-50 text-xs font-semibold rounded-lg transition-colors">
+            <a href="{{ route('siswa.kuesioner.index') }}" class="self-start sm:self-auto inline-flex items-center gap-1.5 px-4 py-2 border border-slate-200 text-slate-700 hover:bg-slate-50 text-xs font-semibold rounded-lg transition-colors">
                 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
-                Ulangi Kuesioner
+                Perbarui Jawaban
             </a>
         </div>
 
-        <!-- Disclaimer Banner Wajib PRD -->
-        <div class="mt-6 bg-blue-50 border border-blue-200 rounded-xl p-4 flex items-start gap-3 text-blue-900 text-xs leading-relaxed">
-            <svg class="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-            <div>
-                <span class="font-bold">Informasi:</span> Angka di bawah ini merupakan <strong>Skor Kecocokan</strong> berdasarkan preferensi jawaban kuesionermu, <em>bukan</em> penilaian mutlak bakat atau kemampuan psikometrik. Rekomendasi ini berfungsi sebagai alat bantu pertimbangan bagi siswa dalam mengambil keputusan.
+        <!-- Information & Phase 5 Notice Banner -->
+        <div class="mt-6 space-y-3">
+            <div class="bg-blue-50 border border-blue-200 rounded-xl p-4 flex items-start gap-3 text-blue-900 text-xs leading-relaxed">
+                <svg class="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                <div>
+                    <span class="font-bold">Informasi:</span> Angka di bawah ini merupakan <strong>Skor Kecocokan</strong> simulasi berdasarkan preferensi jawaban kuesionermu, <em>bukan</em> penilaian mutlak bakat atau kemampuan psikometrik. Rekomendasi ini berfungsi sebagai alat bantu pertimbangan bagi siswa dalam mengambil keputusan.
+                </div>
+            </div>
+
+            <div class="bg-amber-50 border border-amber-200 rounded-xl p-3 flex items-center gap-2 text-amber-800 text-xs">
+                <svg class="w-4 h-4 text-amber-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                <span><strong>Catatan Pengembangan:</strong> Algoritma perhitungan matematis SAW (Simple Additive Weighting) akan aktif pada Phase 5 setelah seluruh bobot kriteria divalidasi.</span>
             </div>
         </div>
     </div>

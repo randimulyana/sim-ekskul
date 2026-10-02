@@ -27,26 +27,28 @@ Route::middleware('auth')->group(function () {
 });
 
 // ============================================================
-// STUDENT ROUTES (UI only - no auth middleware for now)
+// STUDENT ROUTES (Protected with auth + role:student)
 // ============================================================
-Route::prefix('siswa')->name('siswa.')->group(function () {
-    Route::get('/dashboard', fn () => view('siswa.dashboard'))->name('dashboard');
-    Route::get('/profil', fn () => view('siswa.profil'))->name('profil');
+Route::prefix('siswa')->name('siswa.')->middleware(['auth', 'role:student'])->group(function () {
+    Route::get('/dashboard', [App\Http\Controllers\Student\DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/profil', [App\Http\Controllers\Student\ProfileController::class, 'show'])->name('profil');
+    Route::put('/profil', [App\Http\Controllers\Student\ProfileController::class, 'update'])->name('profil.update');
 
     // Extracurricular catalog
-    Route::get('/ekstrakurikuler', fn () => view('siswa.ekstrakurikuler.index'))->name('ekstrakurikuler.index');
-    Route::get('/ekstrakurikuler/{id}', fn ($id) => view('siswa.ekstrakurikuler.show', ['id' => $id]))->name('ekstrakurikuler.show');
+    Route::get('/ekstrakurikuler', [App\Http\Controllers\Student\ExtracurricularController::class, 'index'])->name('ekstrakurikuler.index');
+    Route::get('/ekstrakurikuler/{id}', [App\Http\Controllers\Student\ExtracurricularController::class, 'show'])->name('ekstrakurikuler.show');
 
     // Questionnaire
-    Route::get('/kuesioner', fn () => view('siswa.kuesioner.index'))->name('kuesioner.index');
-    Route::get('/kuesioner/analisis', fn () => view('siswa.kuesioner.analisis'))->name('kuesioner.analisis');
-    Route::get('/kuesioner/hasil', fn () => view('siswa.kuesioner.hasil'))->name('kuesioner.hasil');
+    Route::get('/kuesioner', [App\Http\Controllers\Student\QuestionnaireController::class, 'index'])->name('kuesioner.index');
+    Route::post('/kuesioner', [App\Http\Controllers\Student\QuestionnaireController::class, 'store'])->name('kuesioner.store');
+    Route::get('/kuesioner/analisis', [App\Http\Controllers\Student\QuestionnaireController::class, 'analisis'])->name('kuesioner.analisis');
+    Route::get('/kuesioner/hasil', [App\Http\Controllers\Student\QuestionnaireController::class, 'hasil'])->name('kuesioner.hasil');
 
-    // Recommendation
+    // Recommendation (Prototype / placeholder views preserved for Phase 5)
     Route::get('/rekomendasi', fn () => view('siswa.rekomendasi.index'))->name('rekomendasi.index');
     Route::get('/rekomendasi/{id}', fn ($id) => view('siswa.rekomendasi.show', ['id' => $id]))->name('rekomendasi.show');
 
-    // Registration
+    // Registration (Prototype views preserved for Phase 6)
     Route::get('/pendaftaran', fn () => view('siswa.pendaftaran.index'))->name('pendaftaran.index');
     Route::post('/pendaftaran', fn () => redirect()->route('siswa.pendaftaran.sukses'))->name('pendaftaran.store');
     Route::get('/pendaftaran/sukses', fn () => view('siswa.pendaftaran.sukses'))->name('pendaftaran.sukses');

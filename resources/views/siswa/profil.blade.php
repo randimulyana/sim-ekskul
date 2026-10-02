@@ -3,7 +3,6 @@
 @section('title', 'Profil Saya')
 
 @section('content')
-{{-- DATA DEMO: semua data di halaman ini adalah dummy untuk keperluan pengembangan --}}
 
 <div class="max-w-2xl mx-auto">
 
@@ -13,25 +12,48 @@
         <p class="text-sm text-slate-500 mt-1">Kelola informasi akun dan data pribadimu</p>
     </div>
 
+    {{-- Alerts --}}
+    @if(session('success'))
+        <div class="mb-5 bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs rounded-xl p-4 flex items-center gap-2">
+            <svg class="w-4 h-4 text-emerald-600 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+            <span>{{ session('success') }}</span>
+        </div>
+    @endif
+
+    @if($errors->any())
+        <div class="mb-5 bg-red-50 border border-red-200 text-red-800 text-xs rounded-xl p-4 space-y-1">
+            <div class="font-bold flex items-center gap-2">
+                <svg class="w-4 h-4 text-red-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                <span>Terjadi kesalahan pengisian form:</span>
+            </div>
+            <ul class="list-disc list-inside pl-4 text-red-700">
+                @foreach($errors->all() as $err)
+                    <li>{{ $err }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
     {{-- ===================== AVATAR & NAMA ===================== --}}
-    <!-- DATA DEMO: data siswa -->
     <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-6 mb-5">
         <div class="flex flex-col sm:flex-row items-center sm:items-start gap-5">
             {{-- Avatar circle --}}
             <div class="w-20 h-20 bg-blue-600 rounded-full flex items-center justify-center flex-shrink-0 shadow-md">
-                <span class="text-2xl font-bold text-white">AS</span>
+                <span class="text-2xl font-bold text-white">{{ strtoupper(substr($user->name, 0, 2)) }}</span>
             </div>
             <div class="text-center sm:text-left flex-1">
-                <h2 class="text-lg font-bold text-slate-900">Andi Saputra</h2>
-                <p class="text-sm text-slate-500">NIS: 2026001 · Kelas KULINER 1</p>
+                <h2 class="text-lg font-bold text-slate-900">{{ $user->name }}</h2>
+                <p class="text-sm text-slate-500">NIS: {{ $student->nis ?: '-' }} · Kelas: {{ $student->class_name ?: '-' }}</p>
                 <div class="flex flex-wrap justify-center sm:justify-start gap-2 mt-3">
                     <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-blue-50 text-blue-700 border border-blue-100">
                         <svg class="w-3.5 h-3.5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
                         Siswa Aktif
                     </span>
+                    @if($student->class_name)
                     <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-slate-50 text-slate-600 border border-slate-200">
-                        KULINER 1
+                        {{ $student->class_name }}
                     </span>
+                    @endif
                 </div>
             </div>
             {{-- Edit toggle button --}}
@@ -43,7 +65,7 @@
     </div>
 
     {{-- ===================== INFO DISPLAY MODE ===================== --}}
-    <div id="viewMode" class="space-y-5">
+    <div id="viewMode" class="space-y-5 {{ $errors->any() ? 'hidden' : '' }}">
 
         {{-- Data Pribadi --}}
         <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-6">
@@ -54,23 +76,19 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                     <p class="text-xs text-slate-500 mb-1">Nama Lengkap</p>
-                    <!-- DATA DEMO -->
-                    <p class="text-sm font-medium text-slate-900">Andi Saputra</p>
+                    <p class="text-sm font-medium text-slate-900">{{ $user->name }}</p>
                 </div>
                 <div>
                     <p class="text-xs text-slate-500 mb-1">NIS</p>
-                    <!-- DATA DEMO -->
-                    <p class="text-sm font-medium text-slate-900">2026001</p>
+                    <p class="text-sm font-medium text-slate-900">{{ $student->nis ?: '-' }}</p>
                 </div>
                 <div>
                     <p class="text-xs text-slate-500 mb-1">Kelas</p>
-                    <!-- DATA DEMO -->
-                    <p class="text-sm font-medium text-slate-900">KULINER 1</p>
+                    <p class="text-sm font-medium text-slate-900">{{ $student->class_name ?: '-' }}</p>
                 </div>
                 <div>
                     <p class="text-xs text-slate-500 mb-1">No. WhatsApp</p>
-                    <!-- DATA DEMO -->
-                    <p class="text-sm font-medium text-slate-900">08123456789</p>
+                    <p class="text-sm font-medium text-slate-900">{{ $student->whatsapp ?: '-' }}</p>
                 </div>
             </div>
         </div>
@@ -84,13 +102,11 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                     <p class="text-xs text-slate-500 mb-1">Email</p>
-                    <!-- DATA DEMO -->
-                    <p class="text-sm font-medium text-slate-900">andi.saputra@smkn3payakumbuh.sch.id</p>
+                    <p class="text-sm font-medium text-slate-900">{{ $user->email }}</p>
                 </div>
                 <div>
                     <p class="text-xs text-slate-500 mb-1">Tanggal Bergabung</p>
-                    <!-- DATA DEMO -->
-                    <p class="text-sm font-medium text-slate-900">1 Juli 2026</p>
+                    <p class="text-sm font-medium text-slate-900">{{ $user->created_at ? $user->created_at->format('d M Y') : '-' }}</p>
                 </div>
                 <div>
                     <p class="text-xs text-slate-500 mb-1">Peran</p>
@@ -98,7 +114,9 @@
                 </div>
                 <div>
                     <p class="text-xs text-slate-500 mb-1">Status Kuesioner</p>
-                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-100 text-amber-700">Belum Diisi</span>
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold {{ $questionnaireProgress['is_complete'] ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700' }}">
+                        {{ $questionnaireProgress['status_label'] }}
+                    </span>
                 </div>
             </div>
         </div>
@@ -106,9 +124,9 @@
     </div>
 
     {{-- ===================== EDIT MODE FORM ===================== --}}
-    <div id="editMode" class="hidden space-y-5">
+    <div id="editMode" class="{{ $errors->any() ? '' : 'hidden' }} space-y-5">
 
-        <form method="POST" action="/siswa/profil" class="space-y-5">
+        <form method="POST" action="{{ route('siswa.profil.update') }}" class="space-y-5">
             @csrf
             @method('PUT')
 
@@ -120,26 +138,22 @@
                 </h3>
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div class="sm:col-span-2">
-                        <label class="block text-xs font-medium text-slate-700 mb-1.5">Nama Lengkap</label>
-                        <!-- DATA DEMO -->
-                        <input type="text" name="name" value="Andi Saputra" class="w-full px-3.5 py-2.5 rounded-lg border border-slate-200 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        <label class="block text-xs font-medium text-slate-700 mb-1.5">Nama Lengkap <span class="text-red-500">*</span></label>
+                        <input type="text" name="name" value="{{ old('name', $user->name) }}" required class="w-full px-3.5 py-2.5 rounded-lg border border-slate-200 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
                     </div>
                     <div>
                         <label class="block text-xs font-medium text-slate-700 mb-1.5">NIS</label>
-                        <!-- DATA DEMO -->
-                        <input type="text" name="nis" value="2026001" disabled class="w-full px-3.5 py-2.5 rounded-lg border border-slate-200 bg-slate-50 text-sm text-slate-500 cursor-not-allowed">
-                        <p class="text-xs text-slate-400 mt-1">NIS tidak dapat diubah</p>
+                        <input type="text" value="{{ $student->nis ?: '-' }}" disabled class="w-full px-3.5 py-2.5 rounded-lg border border-slate-200 bg-slate-50 text-sm text-slate-500 cursor-not-allowed">
+                        <p class="text-xs text-slate-400 mt-1">NIS dikelola oleh pihak sekolah</p>
                     </div>
                     <div>
                         <label class="block text-xs font-medium text-slate-700 mb-1.5">Kelas</label>
-                        <!-- DATA DEMO -->
-                        <input type="text" name="kelas" value="KULINER 1" disabled class="w-full px-3.5 py-2.5 rounded-lg border border-slate-200 bg-slate-50 text-sm text-slate-500 cursor-not-allowed">
-                        <p class="text-xs text-slate-400 mt-1">Kelas tidak dapat diubah</p>
+                        <input type="text" value="{{ $student->class_name ?: '-' }}" disabled class="w-full px-3.5 py-2.5 rounded-lg border border-slate-200 bg-slate-50 text-sm text-slate-500 cursor-not-allowed">
+                        <p class="text-xs text-slate-400 mt-1">Kelas dikelola oleh pihak sekolah</p>
                     </div>
                     <div class="sm:col-span-2">
                         <label class="block text-xs font-medium text-slate-700 mb-1.5">No. WhatsApp</label>
-                        <!-- DATA DEMO -->
-                        <input type="tel" name="whatsapp" value="08123456789" class="w-full px-3.5 py-2.5 rounded-lg border border-slate-200 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="08xx-xxxx-xxxx">
+                        <input type="tel" name="whatsapp" value="{{ old('whatsapp', $student->whatsapp) }}" class="w-full px-3.5 py-2.5 rounded-lg border border-slate-200 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="08xx-xxxx-xxxx">
                     </div>
                 </div>
             </div>
@@ -150,15 +164,15 @@
                     <svg class="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/></svg>
                     Ganti Password
                 </h3>
-                <p class="text-xs text-slate-500 mb-4">Kosongkan jika tidak ingin mengubah password</p>
+                <p class="text-xs text-slate-500 mb-4">Kosongkan jika tidak ingin mengubah password akun</p>
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                         <label class="block text-xs font-medium text-slate-700 mb-1.5">Password Baru</label>
-                        <input type="password" name="password" class="w-full px-3.5 py-2.5 rounded-lg border border-slate-200 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="••••••••">
+                        <input type="password" name="password" class="w-full px-3.5 py-2.5 rounded-lg border border-slate-200 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Minimal 8 karakter">
                     </div>
                     <div>
                         <label class="block text-xs font-medium text-slate-700 mb-1.5">Konfirmasi Password</label>
-                        <input type="password" name="password_confirmation" class="w-full px-3.5 py-2.5 rounded-lg border border-slate-200 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="••••••••">
+                        <input type="password" name="password_confirmation" class="w-full px-3.5 py-2.5 rounded-lg border border-slate-200 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Ulangi password baru">
                     </div>
                 </div>
             </div>
@@ -191,12 +205,10 @@ function toggleEditMode() {
     const isEditing = !editMode.classList.contains('hidden');
 
     if (isEditing) {
-        // Switch to view mode
         editMode.classList.add('hidden');
         viewMode.classList.remove('hidden');
         btnToggle.innerHTML = `<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg> Edit Profil`;
     } else {
-        // Switch to edit mode
         viewMode.classList.add('hidden');
         editMode.classList.remove('hidden');
         btnToggle.innerHTML = `<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg> Batal Edit`;
