@@ -66,7 +66,7 @@
 
                 <div>
                     <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Nomor Urutan Tampil</label>
-                    <input type="number" name="order" value="{{ old('order', old('urutan', (\App\Models\Question::max('order') ?: 0) + 1)) }}" min="1" class="block w-full rounded-lg border border-slate-200 px-3.5 py-2.5 text-sm text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500" />
+                    <input type="number" name="order" value="{{ old('order', old('urutan', (\App\Models\Question::max('sort_order') ?: 0) + 1)) }}" min="1" class="block w-full rounded-lg border border-slate-200 px-3.5 py-2.5 text-sm text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500" />
                 </div>
 
                 <div>
