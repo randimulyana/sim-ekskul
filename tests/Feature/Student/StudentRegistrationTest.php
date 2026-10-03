@@ -246,4 +246,25 @@ class StudentRegistrationTest extends TestCase
         $response->assertSessionHas('error');
         $this->assertDatabaseCount('registrations', 0);
     }
+
+    public function test_student_cannot_register_for_inactive_extracurricular(): void
+    {
+        $inactiveEkskul = Extracurricular::create([
+            'name' => 'ROBOTIK NONAKTIF',
+            'slug' => 'robotik-nonaktif',
+            'category' => 'Teknologi',
+            'description' => 'Ekskul robotik nonaktif',
+            'quota' => 30,
+            'is_active' => false,
+        ]);
+
+        $response = $this->actingAs($this->studentUser)->post('/siswa/pendaftaran', [
+            'extracurricular_id' => $inactiveEkskul->id,
+            'motivation' => 'Mencoba mendaftar ekskul nonaktif',
+            'agreement' => '1',
+        ]);
+
+        $response->assertNotFound();
+        $this->assertDatabaseCount('registrations', 0);
+    }
 }

@@ -2,6 +2,9 @@
 
 namespace Tests\Feature;
 
+use App\Models\Extracurricular;
+use App\Models\Period;
+use App\Models\Registration;
 use App\Models\Student;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -182,5 +185,50 @@ class AdminStudentCrudTest extends TestCase
 
         $this->assertDatabaseMissing('students', ['id' => $student->id]);
         $this->assertDatabaseMissing('users', ['id' => $studentUser->id]);
+    }
+
+    public function test_admin_cannot_delete_student_with_existing_registrations(): void
+    {
+        $studentUser = User::factory()->create(['name' => 'Siswa Terdaftar']);
+        $student = Student::create([
+            'user_id' => $studentUser->id,
+            'nis' => '2026777',
+            'class_name' => 'KULINER 1',
+            'status' => 'active',
+        ]);
+
+        $period = Period::create([
+            'name' => 'TP 2026/2027',
+            'academic_year' => '2026/2027',
+            'start_date' => '2026-08-01',
+            'end_date' => '2026-09-30',
+            'is_active' => true,
+        ]);
+
+        $ekskul = Extracurricular::create([
+            'name' => 'PASKIBRAKA',
+            'slug' => 'paskibraka',
+            'category' => 'Organisasi',
+            'quota' => 50,
+            'is_active' => true,
+        ]);
+
+        $registration = Registration::create([
+            'student_id' => $student->id,
+            'period_id' => $period->id,
+            'extracurricular_id' => $ekskul->id,
+            'registration_number' => 'REG-2026-TEST-01',
+            'status' => 'submitted',
+            'registered_at' => now(),
+        ]);
+
+        $response = $this->actingAs($this->admin)->delete("/admin/siswa/{$student->id}");
+
+        $response->assertRedirect('/admin/siswa');
+        $response->assertSessionHas('error', 'Data siswa tidak dapat dihapus karena sudah memiliki riwayat pendaftaran. Silakan nonaktifkan siswa jika tidak ingin digunakan lagi.');
+
+        $this->assertDatabaseHas('students', ['id' => $student->id]);
+        $this->assertDatabaseHas('users', ['id' => $studentUser->id]);
+        $this->assertDatabaseHas('registrations', ['id' => $registration->id]);
     }
 }

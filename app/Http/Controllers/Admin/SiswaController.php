@@ -160,6 +160,11 @@ class SiswaController extends Controller
     {
         $student = Student::with('user')->findOrFail($id);
 
+        if ($student->registrations()->exists()) {
+            return redirect()->route('admin.siswa.index')
+                ->with('error', 'Data siswa tidak dapat dihapus karena sudah memiliki riwayat pendaftaran. Silakan nonaktifkan siswa jika tidak ingin digunakan lagi.');
+        }
+
         DB::transaction(function () use ($student) {
             $user = $student->user;
             $student->delete();

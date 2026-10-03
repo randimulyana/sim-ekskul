@@ -19,6 +19,7 @@ class ProfileTest extends TestCase
             ->get('/profile');
 
         $response->assertOk();
+        $response->assertDontSee('Delete Account');
     }
 
     public function test_profile_information_can_be_updated(): void
@@ -61,7 +62,7 @@ class ProfileTest extends TestCase
         $this->assertNotNull($user->refresh()->email_verified_at);
     }
 
-    public function test_user_can_delete_their_account(): void
+    public function test_user_cannot_delete_account_via_profile_route(): void
     {
         $user = User::factory()->create();
 
@@ -71,29 +72,28 @@ class ProfileTest extends TestCase
                 'password' => 'password',
             ]);
 
-        $response
-            ->assertSessionHasNoErrors()
-            ->assertRedirect('/');
-
-        $this->assertGuest();
-        $this->assertNull($user->fresh());
+        $response->assertMethodNotAllowed();
+        $this->assertDatabaseHas('users', ['id' => $user->id]);
     }
 
-    public function test_correct_password_must_be_provided_to_delete_account(): void
+    public function test_student_and_academic_data_preserved_against_profile_deletion(): void
     {
-        $user = User::factory()->create();
+        $studentUser = User::factory()->create(['role' => 'student']);
+        $student = \App\Models\Student::create([
+            'user_id' => $studentUser->id,
+            'nis' => '2026888',
+            'class_name' => 'KULINER 1',
+            'status' => 'active',
+        ]);
 
         $response = $this
-            ->actingAs($user)
-            ->from('/profile')
+            ->actingAs($studentUser)
             ->delete('/profile', [
-                'password' => 'wrong-password',
+                'password' => 'password',
             ]);
 
-        $response
-            ->assertSessionHasErrorsIn('userDeletion', 'password')
-            ->assertRedirect('/profile');
-
-        $this->assertNotNull($user->fresh());
+        $response->assertMethodNotAllowed();
+        $this->assertDatabaseHas('users', ['id' => $studentUser->id]);
+        $this->assertDatabaseHas('students', ['id' => $student->id]);
     }
 }
