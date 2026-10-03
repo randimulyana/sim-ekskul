@@ -10,7 +10,7 @@ use App\Models\QuestionOption;
 use App\Models\QuestionnaireAnswer;
 use App\Models\Student;
 use App\Models\User;
-use App\Services\StudentCriterionProfileService;
+use App\Services\ProfilKriteriaSiswaService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -18,7 +18,7 @@ class StudentCriterionProfileServiceTest extends TestCase
 {
     use RefreshDatabase;
 
-    protected StudentCriterionProfileService $service;
+    protected ProfilKriteriaSiswaService $service;
     protected Student $student;
     protected Period $period;
     protected Criterion $c1;
@@ -27,7 +27,7 @@ class StudentCriterionProfileServiceTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->service = new StudentCriterionProfileService();
+        $this->service = new ProfilKriteriaSiswaService();
 
         $user = User::factory()->create(['role' => 'student']);
         $this->student = Student::create([

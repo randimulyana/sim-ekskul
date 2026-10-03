@@ -11,7 +11,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
-class RegistrationController extends Controller
+class PendaftaranController extends Controller
 {
     /**
      * Tampilkan daftar pendaftaran dengan filter.

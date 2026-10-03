@@ -4,7 +4,7 @@ namespace App\Http\Requests\Admin;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreExtracurricularRequest extends FormRequest
+class StoreEkstrakurikulerRequest extends FormRequest
 {
     /**
      * Tentukan apakah user berwenang untuk membuat request ini.

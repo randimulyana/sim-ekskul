@@ -7,16 +7,16 @@ use App\Models\Period;
 use App\Models\QuestionnaireAnswer;
 use App\Models\Recommendation;
 use App\Models\Student;
-use App\Services\DecisionMatrixService;
-use App\Services\SawRecommendationService;
+use App\Services\MatriksKeputusanService;
+use App\Services\RekomendasiSawService;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
-class RecommendationController extends Controller
+class RekomendasiController extends Controller
 {
     public function __construct(
-        protected DecisionMatrixService $matrixService,
-        protected SawRecommendationService $sawService
+        protected MatriksKeputusanService $matrixService,
+        protected RekomendasiSawService $sawService
     ) {}
 
     /**

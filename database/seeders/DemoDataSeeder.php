@@ -391,7 +391,7 @@ class DemoDataSeeder extends Seeder
         }
 
         // 6. Kriteria Phase 4 yang Diusulkan, Nilai Indikator & Pemetaan Pertanyaan
-        $criteriaService = app(\App\Services\CriteriaConfigurationService::class);
+        $criteriaService = app(\App\Services\KonfigurasiKriteriaService::class);
         $criteriaService->setupProposedConfiguration();
 
         // 7. Pemetaan Target Penelitian untuk 12 Ekstrakurikuler (Baseline Phase 6)

@@ -10,9 +10,9 @@ use App\Models\QuestionOption;
 use App\Models\Registration;
 use App\Models\Student;
 use App\Models\User;
-use App\Services\CriteriaConfigurationService;
-use App\Services\DecisionMatrixService;
-use App\Services\SawRecommendationService;
+use App\Services\KonfigurasiKriteriaService;
+use App\Services\MatriksKeputusanService;
+use App\Services\RekomendasiSawService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -24,13 +24,13 @@ class EndToEndRecommendationFlowTest extends TestCase
     protected Student $student;
     protected User $adminUser;
     protected Period $activePeriod;
-    protected CriteriaConfigurationService $criteriaService;
+    protected KonfigurasiKriteriaService $criteriaService;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->criteriaService = app(CriteriaConfigurationService::class);
+        $this->criteriaService = app(KonfigurasiKriteriaService::class);
 
         // 1. Create Active Period
         $this->activePeriod = Period::create([
@@ -356,8 +356,8 @@ class EndToEndRecommendationFlowTest extends TestCase
             'class_name' => 'TKJ',
         ]);
 
-        $matrixService = app(DecisionMatrixService::class);
-        $sawService = app(SawRecommendationService::class);
+        $matrixService = app(MatriksKeputusanService::class);
+        $sawService = app(RekomendasiSawService::class);
 
         // Before answering questionnaire: matrix & SAW are NOT_READY
         $matrixBefore = $matrixService->build($student2, $this->activePeriod);

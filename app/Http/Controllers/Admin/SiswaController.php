@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\StoreStudentRequest;
-use App\Http\Requests\Admin\UpdateStudentRequest;
+use App\Http\Requests\Admin\StoreSiswaRequest;
+use App\Http\Requests\Admin\UpdateSiswaRequest;
 use App\Models\Student;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\View\View;
 
-class StudentController extends Controller
+class SiswaController extends Controller
 {
     /**
      * Tampilkan daftar siswa dengan filter dan paginasi.
@@ -67,7 +67,7 @@ class StudentController extends Controller
     /**
      * Simpan siswa yang baru dibuat beserta akun pengguna terkait.
      */
-    public function store(StoreStudentRequest $request): RedirectResponse
+    public function store(StoreSiswaRequest $request): RedirectResponse
     {
         DB::transaction(function () use ($request) {
             $cleanNis = preg_replace('/[^a-zA-Z0-9]/', '', $request->input('nis'));
@@ -130,7 +130,7 @@ class StudentController extends Controller
     /**
      * Perbarui data siswa dan pengguna terkait.
      */
-    public function update(UpdateStudentRequest $request, int|string $id): RedirectResponse
+    public function update(UpdateSiswaRequest $request, int|string $id): RedirectResponse
     {
         $student = Student::with('user')->findOrFail($id);
 

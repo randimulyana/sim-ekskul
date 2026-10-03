@@ -11,9 +11,9 @@ use App\Models\QuestionOption;
 use App\Models\QuestionnaireAnswer;
 use App\Models\Student;
 use App\Models\User;
-use App\Services\CompatibilityCalculator;
-use App\Services\DecisionMatrixService;
-use App\Services\StudentCriterionProfileService;
+use App\Services\KalkulatorKecocokan;
+use App\Services\MatriksKeputusanService;
+use App\Services\ProfilKriteriaSiswaService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -21,7 +21,7 @@ class DecisionMatrixServiceTest extends TestCase
 {
     use RefreshDatabase;
 
-    protected DecisionMatrixService $service;
+    protected MatriksKeputusanService $service;
     protected Student $student;
     protected Period $period;
     protected array $criteria = [];
@@ -32,9 +32,9 @@ class DecisionMatrixServiceTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->service = new DecisionMatrixService(
-            new StudentCriterionProfileService(),
-            new CompatibilityCalculator()
+        $this->service = new MatriksKeputusanService(
+            new ProfilKriteriaSiswaService(),
+            new KalkulatorKecocokan()
         );
 
         $user = User::factory()->create(['role' => 'student']);

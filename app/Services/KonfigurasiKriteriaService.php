@@ -11,7 +11,7 @@ use App\Models\QuestionOption;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
-class CriteriaConfigurationService
+class KonfigurasiKriteriaService
 {
     /**
      * Definisi kriteria yang diusulkan untuk SRPE SMKN 3 Payakumbuh.

@@ -3,15 +3,15 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\StoreExtracurricularRequest;
-use App\Http\Requests\Admin\UpdateExtracurricularRequest;
+use App\Http\Requests\Admin\StoreEkstrakurikulerRequest;
+use App\Http\Requests\Admin\UpdateEkstrakurikulerRequest;
 use App\Models\Extracurricular;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
 
-class ExtracurricularController extends Controller
+class EkstrakurikulerController extends Controller
 {
     /**
      * Tampilkan daftar ekstrakurikuler.
@@ -58,7 +58,7 @@ class ExtracurricularController extends Controller
     /**
      * Simpan ekstrakurikuler yang baru dibuat.
      */
-    public function store(StoreExtracurricularRequest $request): RedirectResponse
+    public function store(StoreEkstrakurikulerRequest $request): RedirectResponse
     {
         $baseSlug = Str::slug($request->input('name'));
         $slug = $baseSlug;
@@ -110,7 +110,7 @@ class ExtracurricularController extends Controller
     /**
      * Perbarui ekstrakurikuler yang ditentukan.
      */
-    public function update(UpdateExtracurricularRequest $request, int|string $id): RedirectResponse
+    public function update(UpdateEkstrakurikulerRequest $request, int|string $id): RedirectResponse
     {
         $extracurricular = Extracurricular::findOrFail($id);
 

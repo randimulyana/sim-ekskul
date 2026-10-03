@@ -10,7 +10,7 @@ use App\Models\Student;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
-class ReportController extends Controller
+class LaporanController extends Controller
 {
     /**
      * Tampilkan laporan dan rekap data.

@@ -4,7 +4,7 @@ namespace App\Http\Requests\Admin;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreStudentRequest extends FormRequest
+class StoreSiswaRequest extends FormRequest
 {
     /**
      * Tentukan apakah user berwenang untuk membuat request ini.

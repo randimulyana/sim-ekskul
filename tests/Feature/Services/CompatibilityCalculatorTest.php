@@ -2,17 +2,17 @@
 
 namespace Tests\Feature\Services;
 
-use App\Services\CompatibilityCalculator;
+use App\Services\KalkulatorKecocokan;
 use Tests\TestCase;
 
 class CompatibilityCalculatorTest extends TestCase
 {
-    protected CompatibilityCalculator $calculator;
+    protected KalkulatorKecocokan $calculator;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->calculator = new CompatibilityCalculator();
+        $this->calculator = new KalkulatorKecocokan();
     }
 
     public function test_compatibility_is_one_when_student_and_target_are_equal(): void

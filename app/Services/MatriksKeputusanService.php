@@ -9,11 +9,11 @@ use App\Models\Period;
 use App\Models\QuestionnaireAnswer;
 use App\Models\Student;
 
-class DecisionMatrixService
+class MatriksKeputusanService
 {
     public function __construct(
-        protected StudentCriterionProfileService $profileService,
-        protected CompatibilityCalculator $compatibilityCalculator
+        protected ProfilKriteriaSiswaService $profileService,
+        protected KalkulatorKecocokan $compatibilityCalculator
     ) {}
 
     /**

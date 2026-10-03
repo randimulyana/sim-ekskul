@@ -4,17 +4,17 @@ namespace App\Http\Controllers\Student;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Student\SaveQuestionnaireRequest;
-use App\Services\QuestionnaireService;
-use App\Services\SawRecommendationService;
+use App\Services\KuesionerService;
+use App\Services\RekomendasiSawService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
-class QuestionnaireController extends Controller
+class KuesionerController extends Controller
 {
     public function __construct(
-        protected QuestionnaireService $questionnaireService,
-        protected SawRecommendationService $sawService
+        protected KuesionerService $questionnaireService,
+        protected RekomendasiSawService $sawService
     ) {}
 
     /**

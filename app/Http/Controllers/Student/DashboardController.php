@@ -5,14 +5,14 @@ namespace App\Http\Controllers\Student;
 use App\Http\Controllers\Controller;
 use App\Models\Extracurricular;
 use App\Models\Period;
-use App\Services\SawRecommendationService;
+use App\Services\RekomendasiSawService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
 class DashboardController extends Controller
 {
     public function __construct(
-        protected SawRecommendationService $sawService
+        protected RekomendasiSawService $sawService
     ) {}
 
     /**

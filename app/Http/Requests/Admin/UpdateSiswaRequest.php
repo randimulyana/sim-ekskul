@@ -6,7 +6,7 @@ use App\Models\Student;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class UpdateStudentRequest extends FormRequest
+class UpdateSiswaRequest extends FormRequest
 {
     /**
      * Tentukan apakah user berwenang untuk membuat request ini.

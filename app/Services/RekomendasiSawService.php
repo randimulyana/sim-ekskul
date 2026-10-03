@@ -7,21 +7,21 @@ use App\Models\Recommendation;
 use App\Models\Student;
 use Illuminate\Support\Facades\DB;
 
-class SawRecommendationService
+class RekomendasiSawService
 {
     public const METHOD_NAME = 'Simple Additive Weighting (SAW)';
     public const METHOD_VERSION = '1.0';
 
     public function __construct(
-        protected DecisionMatrixService $matrixService,
-        protected CriteriaConfigurationService $configService
+        protected MatriksKeputusanService $matrixService,
+        protected KonfigurasiKriteriaService $configService
     ) {}
 
     /**
      * Jalankan seluruh pipeline rekomendasi SAW untuk seorang siswa.
      *
      * Pipeline:
-     * 1. Matriks Keputusan X (dari DecisionMatrixService)
+     * 1. Matriks Keputusan X (dari MatriksKeputusanService)
      * 2. Validasi Kesiapan
      * 3. Normalisasi R (rij = xij / max(xj) untuk benefit, min(xj) / xij untuk cost)
      * 4. Matriks Berbobot V (vij = rij * wj)

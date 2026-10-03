@@ -12,7 +12,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 
-class QuestionnaireController extends Controller
+class KuesionerController extends Controller
 {
     /**
      * Tampilkan daftar pertanyaan kuesioner.

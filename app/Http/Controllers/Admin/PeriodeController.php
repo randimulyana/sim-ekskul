@@ -10,7 +10,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 
-class PeriodController extends Controller
+class PeriodeController extends Controller
 {
     /**
      * Tampilkan halaman manajemen periode.

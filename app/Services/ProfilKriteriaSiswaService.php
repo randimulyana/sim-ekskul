@@ -8,7 +8,7 @@ use App\Models\QuestionnaireAnswer;
 use App\Models\Student;
 use App\Models\User;
 
-class StudentCriterionProfileService
+class ProfilKriteriaSiswaService
 {
     /**
      * Hitung skor profil kriteria (C1-C5) untuk seorang siswa pada periode tertentu.

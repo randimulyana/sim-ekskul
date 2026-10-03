@@ -12,11 +12,11 @@ use App\Models\QuestionnaireAnswer;
 use App\Models\Recommendation;
 use App\Models\Student;
 use App\Models\User;
-use App\Services\CompatibilityCalculator;
-use App\Services\CriteriaConfigurationService;
-use App\Services\DecisionMatrixService;
-use App\Services\SawRecommendationService;
-use App\Services\StudentCriterionProfileService;
+use App\Services\KalkulatorKecocokan;
+use App\Services\KonfigurasiKriteriaService;
+use App\Services\MatriksKeputusanService;
+use App\Services\RekomendasiSawService;
+use App\Services\ProfilKriteriaSiswaService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -24,7 +24,7 @@ class SawRecommendationServiceTest extends TestCase
 {
     use RefreshDatabase;
 
-    protected SawRecommendationService $sawService;
+    protected RekomendasiSawService $sawService;
     protected Student $student;
     protected Period $period;
     protected array $criteria = [];
@@ -34,12 +34,12 @@ class SawRecommendationServiceTest extends TestCase
     {
         parent::setUp();
 
-        $profileService = new StudentCriterionProfileService();
-        $calc = new CompatibilityCalculator();
-        $matrixService = new DecisionMatrixService($profileService, $calc);
-        $configService = new CriteriaConfigurationService();
+        $profileService = new ProfilKriteriaSiswaService();
+        $calc = new KalkulatorKecocokan();
+        $matrixService = new MatriksKeputusanService($profileService, $calc);
+        $configService = new KonfigurasiKriteriaService();
 
-        $this->sawService = new SawRecommendationService($matrixService, $configService);
+        $this->sawService = new RekomendasiSawService($matrixService, $configService);
 
         $user = User::factory()->create(['name' => 'Siswa Saw Test', 'role' => 'student']);
         $this->student = Student::create([

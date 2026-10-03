@@ -9,15 +9,15 @@ use App\Models\Criterion;
 use App\Models\CriterionValue;
 use App\Models\Extracurricular;
 use App\Models\ExtracurricularCriterionMapping;
-use App\Services\CriteriaConfigurationService;
+use App\Services\KonfigurasiKriteriaService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 
-class CriterionController extends Controller
+class KriteriaController extends Controller
 {
     public function __construct(
-        protected CriteriaConfigurationService $configService
+        protected KonfigurasiKriteriaService $configService
     ) {}
 
     /**
@@ -66,7 +66,7 @@ class CriterionController extends Controller
             ]);
 
             // Otomatis menyediakan nilai skala standar 1-5
-            foreach (CriteriaConfigurationService::STANDARD_SCALE as $scale) {
+            foreach (KonfigurasiKriteriaService::STANDARD_SCALE as $scale) {
                 CriterionValue::create([
                     'criterion_id' => $criterion->id,
                     'label' => $scale['label'],

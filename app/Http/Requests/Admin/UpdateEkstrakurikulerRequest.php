@@ -6,7 +6,7 @@ use App\Models\Extracurricular;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class UpdateExtracurricularRequest extends FormRequest
+class UpdateEkstrakurikulerRequest extends FormRequest
 {
     /**
      * Tentukan apakah user berwenang untuk membuat request ini.

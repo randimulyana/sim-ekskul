@@ -7,7 +7,7 @@ use App\Models\Extracurricular;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
-class ExtracurricularController extends Controller
+class EkstrakurikulerController extends Controller
 {
     /**
      * Tampilkan daftar ekstrakurikuler aktif untuk siswa.

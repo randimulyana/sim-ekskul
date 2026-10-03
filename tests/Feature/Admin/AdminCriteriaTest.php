@@ -8,7 +8,7 @@ use App\Models\Extracurricular;
 use App\Models\Question;
 use App\Models\QuestionOption;
 use App\Models\User;
-use App\Services\CriteriaConfigurationService;
+use App\Services\KonfigurasiKriteriaService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -27,7 +27,7 @@ class AdminCriteriaTest extends TestCase
         $this->student = User::factory()->create(['role' => 'student']);
 
         // Seed initial Phase 4 configuration
-        app(CriteriaConfigurationService::class)->setupProposedConfiguration();
+        app(KonfigurasiKriteriaService::class)->setupProposedConfiguration();
     }
 
     public function test_guest_is_redirected_from_criteria_routes(): void
@@ -299,7 +299,7 @@ class AdminCriteriaTest extends TestCase
             'is_active' => true,
         ]);
 
-        $service = app(CriteriaConfigurationService::class);
+        $service = app(KonfigurasiKriteriaService::class);
         $completeness = $service->checkCompleteness();
 
         $this->assertEquals('NOT_READY', $completeness['status']);

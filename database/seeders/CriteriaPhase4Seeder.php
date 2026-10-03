@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Services\CriteriaConfigurationService;
+use App\Services\KonfigurasiKriteriaService;
 use Illuminate\Database\Seeder;
 
 class CriteriaPhase4Seeder extends Seeder
@@ -12,7 +12,7 @@ class CriteriaPhase4Seeder extends Seeder
      */
     public function run(): void
     {
-        $service = app(CriteriaConfigurationService::class);
+        $service = app(KonfigurasiKriteriaService::class);
         $service->setupProposedConfiguration();
         $service->setupResearchTargetMappings();
     }

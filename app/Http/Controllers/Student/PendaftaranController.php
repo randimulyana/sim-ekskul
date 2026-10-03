@@ -6,17 +6,17 @@ use App\Http\Controllers\Controller;
 use App\Models\Extracurricular;
 use App\Models\Period;
 use App\Models\Registration;
-use App\Services\SawRecommendationService;
+use App\Services\RekomendasiSawService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
 
-class RegistrationController extends Controller
+class PendaftaranController extends Controller
 {
     public function __construct(
-        protected SawRecommendationService $sawService
+        protected RekomendasiSawService $sawService
     ) {}
 
     /**
