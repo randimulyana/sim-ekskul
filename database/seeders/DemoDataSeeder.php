@@ -21,37 +21,39 @@ class DemoDataSeeder extends Seeder
      */
     public function run(): void
     {
-        // 1. Akun Demo Admin
-        User::updateOrCreate(
-            ['email' => 'admin@smkn3payakumbuh.sch.id'],
-            [
-                'name' => 'Administrator Utama',
-                'password' => Hash::make('password'),
-                'role' => 'admin',
-                'email_verified_at' => now(),
-            ]
-        );
+        // 1. Akun Demo Pengguna (Hanya disediakan pada lingkungan non-production)
+        if (! app()->environment('production')) {
+            User::updateOrCreate(
+                ['email' => 'admin@smkn3payakumbuh.sch.id'],
+                [
+                    'name' => 'Administrator Utama',
+                    'password' => Hash::make('password'),
+                    'role' => 'admin',
+                    'email_verified_at' => now(),
+                ]
+            );
 
-        // 2. Akun Demo Siswa & Profil
-        $studentUser = User::updateOrCreate(
-            ['email' => 'andi.saputra@smkn3payakumbuh.sch.id'],
-            [
-                'name' => 'Andi Saputra',
-                'password' => Hash::make('password'),
-                'role' => 'student',
-                'email_verified_at' => now(),
-            ]
-        );
+            // 2. Akun Demo Siswa & Profil
+            $studentUser = User::updateOrCreate(
+                ['email' => 'andi.saputra@smkn3payakumbuh.sch.id'],
+                [
+                    'name' => 'Andi Saputra',
+                    'password' => Hash::make('password'),
+                    'role' => 'student',
+                    'email_verified_at' => now(),
+                ]
+            );
 
-        Student::updateOrCreate(
-            ['user_id' => $studentUser->id],
-            [
-                'nis' => '2026001',
-                'class_name' => 'KULINER 1',
-                'whatsapp' => '08123456789',
-                'status' => 'active',
-            ]
-        );
+            Student::updateOrCreate(
+                ['user_id' => $studentUser->id],
+                [
+                    'nis' => '2026001',
+                    'class_name' => 'KULINER 1',
+                    'whatsapp' => '08123456789',
+                    'status' => 'active',
+                ]
+            );
+        }
 
         // 3. Periode Aktif Demo
         Period::updateOrCreate(

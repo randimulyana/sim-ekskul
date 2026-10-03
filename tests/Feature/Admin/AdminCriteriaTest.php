@@ -307,4 +307,37 @@ class AdminCriteriaTest extends TestCase
         $this->assertTrue($completeness['is_weight_valid']);
         $this->assertNotEmpty($completeness['issues']);
     }
+
+    public function test_admin_cannot_delete_core_criteria_c1_through_c5(): void
+    {
+        $coreCodes = ['C1', 'C2', 'C3', 'C4', 'C5'];
+
+        foreach ($coreCodes as $code) {
+            $criterion = Criterion::where('code', $code)->firstOrFail();
+
+            $response = $this->actingAs($this->admin)->delete("/admin/kriteria/{$criterion->id}");
+
+            $response->assertRedirect('/admin/kriteria');
+            $response->assertSessionHas('error', "Kriteria inti penelitian ({$code}) tidak dapat dihapus.");
+            $this->assertDatabaseHas('criteria', ['id' => $criterion->id, 'code' => $code]);
+        }
+    }
+
+    public function test_admin_can_delete_non_core_criterion(): void
+    {
+        $nonCore = Criterion::create([
+            'code' => 'C6',
+            'name' => 'Kedisiplinan',
+            'type' => 'benefit',
+            'weight' => 0.05,
+            'status' => 'proposed',
+            'is_active' => true,
+        ]);
+
+        $response = $this->actingAs($this->admin)->delete("/admin/kriteria/{$nonCore->id}");
+
+        $response->assertRedirect('/admin/kriteria');
+        $response->assertSessionHas('success', 'Kriteria C6 berhasil dihapus.');
+        $this->assertDatabaseMissing('criteria', ['id' => $nonCore->id, 'code' => 'C6']);
+    }
 }

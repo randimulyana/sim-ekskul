@@ -128,7 +128,13 @@ class KriteriaController extends Controller
     public function destroy(int|string $id): RedirectResponse
     {
         $criterion = Criterion::findOrFail($id);
-        $code = $criterion->code;
+        $code = strtoupper(trim($criterion->code));
+
+        if (in_array($code, ['C1', 'C2', 'C3', 'C4', 'C5'], true)) {
+            return redirect()->route('admin.kriteria.index')
+                ->with('error', "Kriteria inti penelitian ({$code}) tidak dapat dihapus.");
+        }
+
         $criterion->delete();
 
         return redirect()->route('admin.kriteria.index')

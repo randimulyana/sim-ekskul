@@ -6,7 +6,7 @@
 @php
 $name = $rankItem['name'] ?? $extracurricular?->name ?? 'Ekstrakurikuler';
 $category = $rankItem['category'] ?? $extracurricular?->category ?? 'Umum';
-$score = isset($rankItem['preference_score']) ? round($rankItem['preference_score'] * 100) : 85;
+$score = isset($rankItem['preference_score']) ? round($rankItem['preference_score'] * 100) : null;
 $rank = $rankItem['rank'] ?? null;
 $description = $extracurricular?->description ?? 'Kegiatan ekstrakurikuler terdaftar di SMK Negeri 3 Payakumbuh.';
 $schedule = $extracurricular?->schedule_info ?? 'Jadwal akan diumumkan oleh pembina';
@@ -39,10 +39,14 @@ $coach = $extracurricular?->coach_name ?? 'Pembina Terdaftar';
                 <div class="bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl px-5 py-3 text-center sm:text-right">
                     @if($rank)
                         <p class="text-xs text-blue-200 font-semibold uppercase">Peringkat #{{ $rank }} &middot; Skor</p>
-                    @else
+                        <p class="text-3xl font-extrabold text-white mt-0.5">{{ $score }} <span class="text-sm font-normal text-blue-200">/ 100</span></p>
+                    @elseif($score !== null)
                         <p class="text-xs text-blue-200 font-semibold uppercase">Skor Kecocokan</p>
+                        <p class="text-3xl font-extrabold text-white mt-0.5">{{ $score }} <span class="text-sm font-normal text-blue-200">/ 100</span></p>
+                    @else
+                        <p class="text-xs text-blue-200 font-semibold uppercase">Status Rekomendasi</p>
+                        <p class="text-lg font-bold text-white mt-0.5">Belum Dihitung</p>
                     @endif
-                    <p class="text-3xl font-extrabold text-white mt-0.5">{{ $score }} <span class="text-sm font-normal text-blue-200">/ 100</span></p>
                 </div>
             </div>
         </div>
@@ -67,6 +71,10 @@ $coach = $extracurricular?->coach_name ?? 'Pembina Terdaftar';
                     </div>
                     @endforeach
                 </div>
+            </div>
+            @else
+            <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 text-xs text-slate-600">
+                <span class="font-bold text-slate-800">Status Rekomendasi:</span> Rincian nilai kriteria untuk ekstrakurikuler ini belum tersedia. Silakan lengkapi pengisian kuesioner pada periode aktif untuk melihat analisis kecocokan SAW.
             </div>
             @endif
 

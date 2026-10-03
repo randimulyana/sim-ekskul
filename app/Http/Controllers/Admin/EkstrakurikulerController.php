@@ -148,6 +148,12 @@ class EkstrakurikulerController extends Controller
     public function destroy(int|string $id): RedirectResponse
     {
         $extracurricular = Extracurricular::findOrFail($id);
+
+        if ($extracurricular->registrations()->exists()) {
+            return redirect()->route('admin.ekstrakurikuler.index')
+                ->with('error', 'Ekstrakurikuler tidak dapat dihapus karena sudah memiliki data pendaftaran siswa. Silakan nonaktifkan status ekstrakurikuler jika kegiatan sudah tidak aktif.');
+        }
+
         $extracurricular->delete();
 
         return redirect()->route('admin.ekstrakurikuler.index')

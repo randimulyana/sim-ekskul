@@ -46,7 +46,7 @@ class RekomendasiController extends Controller
         $activePeriod = Period::where('is_active', true)->first();
         $progress = $student->getQuestionnaireProgress($activePeriod);
 
-        $extracurricular = Extracurricular::findOrFail($id);
+        $extracurricular = Extracurricular::where('is_active', true)->findOrFail($id);
 
         $recommendationResult = $this->sawService->recommend($student, $activePeriod, persist: false);
 

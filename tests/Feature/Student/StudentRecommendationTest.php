@@ -142,4 +142,30 @@ class StudentRecommendationTest extends TestCase
         $response->assertSee('PASKIBRAKA');
         $response->assertSee('Detail Analisis Kesesuaian');
     }
+
+    public function test_inactive_extracurricular_returns_404_on_recommendation_detail_page(): void
+    {
+        $inactiveEkskul = Extracurricular::create([
+            'name' => 'EKSKUL NONAKTIF',
+            'slug' => 'ekskul-nonaktif',
+            'category' => 'Umum',
+            'is_active' => false,
+        ]);
+
+        $this->actingAs($this->studentUser);
+
+        $response = $this->get('/siswa/rekomendasi/' . $inactiveEkskul->id);
+        $response->assertNotFound();
+    }
+
+    public function test_uncalculated_recommendation_detail_page_does_not_display_fallback_85_score(): void
+    {
+        $this->actingAs($this->studentUser);
+
+        $response = $this->get('/siswa/rekomendasi/' . $this->ekskul->id);
+        $response->assertOk();
+        $response->assertSee('Belum Dihitung');
+        $response->assertDontSee('85 / 100');
+        $response->assertDontSee('85</span>');
+    }
 }

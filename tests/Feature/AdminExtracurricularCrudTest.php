@@ -3,6 +3,9 @@
 namespace Tests\Feature;
 
 use App\Models\Extracurricular;
+use App\Models\Period;
+use App\Models\Registration;
+use App\Models\Student;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -206,6 +209,52 @@ class AdminExtracurricularCrudTest extends TestCase
 
         $this->assertDatabaseMissing('extracurriculars', [
             'id' => $ekskul->id,
+        ]);
+    }
+
+    public function test_admin_cannot_delete_extracurricular_with_existing_registrations(): void
+    {
+        $ekskul = Extracurricular::create([
+            'name' => 'SILAT TRADISI',
+            'slug' => 'silat-tradisi',
+            'category' => 'Bela Diri',
+            'is_active' => true,
+        ]);
+
+        $period = Period::create([
+            'name' => 'Tahun Pelajaran 2026/2027',
+            'is_active' => true,
+        ]);
+
+        $studentUser = User::factory()->create(['role' => 'student']);
+        $student = Student::create([
+            'user_id' => $studentUser->id,
+            'nis' => '2026001',
+        ]);
+
+        $registration = Registration::create([
+            'student_id' => $student->id,
+            'period_id' => $period->id,
+            'extracurricular_id' => $ekskul->id,
+            'registration_number' => 'REG-2026-001-ABCD',
+            'status' => 'submitted',
+        ]);
+
+        $response = $this->actingAs($this->admin)->delete("/admin/ekstrakurikuler/{$ekskul->id}");
+
+        $response->assertRedirect('/admin/ekstrakurikuler');
+        $response->assertSessionHas('error');
+
+        // Extracurricular must NOT be deleted
+        $this->assertDatabaseHas('extracurriculars', [
+            'id' => $ekskul->id,
+            'name' => 'SILAT TRADISI',
+        ]);
+
+        // Registration must remain intact
+        $this->assertDatabaseHas('registrations', [
+            'id' => $registration->id,
+            'extracurricular_id' => $ekskul->id,
         ]);
     }
 }
