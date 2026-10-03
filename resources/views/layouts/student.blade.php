@@ -9,7 +9,7 @@
 </head>
 <body class="bg-slate-50 font-sans antialiased">
 
-<!-- Top Navigation -->
+<!-- Navigasi Atas -->
 <header class="sticky top-0 z-30 bg-white border-b border-slate-200 shadow-sm">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex items-center justify-between h-16">
@@ -24,7 +24,7 @@
                 </div>
             </a>
 
-            <!-- Desktop Nav -->
+            <!-- Navigasi Desktop -->
             <nav class="hidden md:flex items-center gap-1">
                 <a href="/siswa/dashboard" class="px-3 py-2 rounded-lg text-sm font-medium {{ request()->is('siswa/dashboard') ? 'bg-blue-50 text-blue-700' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900' }}">Beranda</a>
                 <a href="/siswa/ekstrakurikuler" class="px-3 py-2 rounded-lg text-sm font-medium {{ request()->is('siswa/ekstrakurikuler*') ? 'bg-blue-50 text-blue-700' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900' }}">Katalog Ekskul</a>
@@ -33,7 +33,7 @@
                 <a href="/siswa/riwayat" class="px-3 py-2 rounded-lg text-sm font-medium {{ request()->is('siswa/riwayat') ? 'bg-blue-50 text-blue-700' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900' }}">Riwayat</a>
             </nav>
 
-            <!-- Right actions -->
+            <!-- Aksi Kanan -->
             <div class="flex items-center gap-2">
                 @php
                     $navUser = auth()->user();
@@ -41,7 +41,7 @@
                     $initial = strtoupper(substr($navUser?->name ?? 'S', 0, 1));
                     $shortName = \Illuminate\Support\Str::limit($navUser?->name ?? 'Siswa', 12);
                 @endphp
-                <!-- Profile dropdown -->
+                <!-- Dropdown Profil -->
                 <div class="relative" id="studentDropdown">
                     <button onclick="toggleStudentDropdown()" class="flex items-center gap-2 p-1.5 rounded-lg hover:bg-slate-100">
                         <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
@@ -71,7 +71,7 @@
                     </div>
                 </div>
 
-                <!-- Mobile menu button -->
+                <!-- Tombol Menu Mobile -->
                 <button onclick="toggleMobileMenu()" class="md:hidden p-2 rounded-lg text-slate-600 hover:bg-slate-100">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
                 </button>
@@ -79,7 +79,7 @@
         </div>
     </div>
 
-    <!-- Mobile Menu -->
+    <!-- Menu Mobile -->
     <div id="mobileMenu" class="hidden md:hidden border-t border-slate-100 bg-white">
         <nav class="px-4 py-3 space-y-1">
             <a href="/siswa/dashboard" class="block px-3 py-2 rounded-lg text-sm font-medium {{ request()->is('siswa/dashboard') ? 'bg-blue-50 text-blue-700' : 'text-slate-700 hover:bg-slate-50' }}">Beranda</a>
@@ -92,7 +92,7 @@
     </div>
 </header>
 
-<!-- Page Content -->
+<!-- Konten Halaman -->
 <main class="min-h-[calc(100vh-4rem)] max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
     @if(session('success'))
         <div class="mb-4">
@@ -107,7 +107,7 @@
     @yield('content')
 </main>
 
-<!-- Footer -->
+<!-- Catatan Kaki -->
 <footer class="bg-white border-t border-slate-200 py-6">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex flex-col sm:flex-row items-center justify-between gap-2 text-sm text-slate-500">

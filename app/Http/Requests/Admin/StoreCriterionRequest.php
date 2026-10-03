@@ -7,7 +7,7 @@ use Illuminate\Foundation\Http\FormRequest;
 class StoreCriterionRequest extends FormRequest
 {
     /**
-     * Determine if the user is authorized to make this request.
+     * Tentukan apakah user berwenang untuk membuat request ini.
      */
     public function authorize(): bool
     {
@@ -15,11 +15,11 @@ class StoreCriterionRequest extends FormRequest
     }
 
     /**
-     * Prepare data for validation.
+     * Siapkan data sebelum validasi.
      */
     protected function prepareForValidation(): void
     {
-        // Normalize weight: if entered as percentage > 1 (e.g. 30), convert to decimal 0.30
+        // Normalisasi bobot: jika diinput sebagai persentase > 1 (mis. 30), ubah ke desimal 0.30
         if ($this->has('weight') && is_numeric($this->input('weight'))) {
             $val = (float) $this->input('weight');
             if ($val > 1.0) {
@@ -48,7 +48,7 @@ class StoreCriterionRequest extends FormRequest
     }
 
     /**
-     * Get the validation rules that apply to the request.
+     * Ambil aturan validasi yang berlaku untuk request ini.
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
@@ -66,7 +66,7 @@ class StoreCriterionRequest extends FormRequest
     }
 
     /**
-     * Custom attribute names for validation.
+     * Nama atribut kustom untuk pesan validasi.
      */
     public function attributes(): array
     {

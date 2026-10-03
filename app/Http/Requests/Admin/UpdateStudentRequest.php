@@ -9,7 +9,7 @@ use Illuminate\Validation\Rule;
 class UpdateStudentRequest extends FormRequest
 {
     /**
-     * Determine if the user is authorized to make this request.
+     * Tentukan apakah user berwenang untuk membuat request ini.
      */
     public function authorize(): bool
     {
@@ -17,7 +17,7 @@ class UpdateStudentRequest extends FormRequest
     }
 
     /**
-     * Prepare the data for validation.
+     * Siapkan data sebelum validasi.
      */
     protected function prepareForValidation(): void
     {
@@ -31,7 +31,7 @@ class UpdateStudentRequest extends FormRequest
     }
 
     /**
-     * Get the validation rules that apply to the request.
+     * Ambil aturan validasi yang berlaku untuk request ini.
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
@@ -51,7 +51,7 @@ class UpdateStudentRequest extends FormRequest
     }
 
     /**
-     * Custom attribute names.
+     * Nama atribut kustom untuk pesan validasi.
      */
     public function attributes(): array
     {

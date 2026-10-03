@@ -30,7 +30,7 @@ class Registration extends Model
     }
 
     /**
-     * Scope query by registration status.
+     * Scope query berdasarkan status pendaftaran.
      */
     public function scopeStatus(Builder $query, string $status): void
     {
@@ -38,7 +38,7 @@ class Registration extends Model
     }
 
     /**
-     * The student who registered.
+     * Siswa yang melakukan pendaftaran.
      */
     public function student(): BelongsTo
     {
@@ -46,7 +46,7 @@ class Registration extends Model
     }
 
     /**
-     * The period for this registration.
+     * Periode untuk pendaftaran ini.
      */
     public function period(): BelongsTo
     {
@@ -54,7 +54,7 @@ class Registration extends Model
     }
 
     /**
-     * The extracurricular chosen.
+     * Ekstrakurikuler yang dipilih.
      */
     public function extracurricular(): BelongsTo
     {

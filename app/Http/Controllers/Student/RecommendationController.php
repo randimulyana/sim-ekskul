@@ -17,7 +17,7 @@ class RecommendationController extends Controller
     ) {}
 
     /**
-     * Display student recommendation results.
+     * Tampilkan hasil rekomendasi siswa.
      */
     public function index(): View
     {
@@ -37,7 +37,7 @@ class RecommendationController extends Controller
     }
 
     /**
-     * Display details for a specific recommended extracurricular.
+     * Tampilkan detail ekstrakurikuler yang direkomendasikan.
      */
     public function show(int|string $id): View
     {
@@ -50,7 +50,7 @@ class RecommendationController extends Controller
 
         $recommendationResult = $this->sawService->recommend($student, $activePeriod, persist: false);
 
-        // Find ranking item for this extracurricular if available
+        // Temukan item peringkat untuk ekstrakurikuler ini jika tersedia
         $rankItem = null;
         if (! empty($recommendationResult['ranking'])) {
             $rankItem = collect($recommendationResult['ranking'])

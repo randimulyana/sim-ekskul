@@ -13,7 +13,7 @@ use Illuminate\View\View;
 class ProfileController extends Controller
 {
     /**
-     * Display the student profile.
+     * Tampilkan profil siswa.
      */
     public function show(): View
     {
@@ -25,7 +25,7 @@ class ProfileController extends Controller
     }
 
     /**
-     * Update the student profile and account settings.
+     * Perbarui profil dan pengaturan akun siswa.
      */
     public function update(UpdateStudentProfileRequest $request): RedirectResponse
     {

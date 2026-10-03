@@ -20,7 +20,7 @@ class RegistrationController extends Controller
     ) {}
 
     /**
-     * Display registration form with selected extracurricular.
+     * Tampilkan formulir pendaftaran dengan ekstrakurikuler yang dipilih.
      */
     public function index(Request $request): View|RedirectResponse
     {
@@ -28,7 +28,7 @@ class RegistrationController extends Controller
         $student = $user->getOrCreateStudent();
         $activePeriod = Period::where('is_active', true)->first();
 
-        // Check if student already registered in the active period
+        // Periksa apakah siswa sudah terdaftar pada periode aktif
         $existingRegistration = null;
         if ($activePeriod) {
             $existingRegistration = Registration::where('student_id', $student->id)
@@ -41,7 +41,7 @@ class RegistrationController extends Controller
             ->orderBy('name')
             ->get();
 
-        // Check if student has recommendation result
+        // Periksa apakah siswa memiliki hasil rekomendasi
         $topRecommendation = null;
         $recommendationResult = null;
         if ($activePeriod) {
@@ -51,7 +51,7 @@ class RegistrationController extends Controller
             }
         }
 
-        // Determine preselected extracurricular
+        // Tentukan ekstrakurikuler yang dipilih sebelumnya
         $selectedEkskulId = $request->query('ekskul_id') ?? $request->query('ekskul');
         if (! $selectedEkskulId && $topRecommendation) {
             $selectedEkskulId = $topRecommendation['extracurricular_id'];
@@ -72,7 +72,7 @@ class RegistrationController extends Controller
     }
 
     /**
-     * Store student's extracurricular registration.
+     * Simpan pendaftaran ekstrakurikuler siswa.
      */
     public function store(Request $request): RedirectResponse
     {
@@ -85,7 +85,7 @@ class RegistrationController extends Controller
                 ->with('error', 'Tidak ada periode pendaftaran yang aktif saat ini.');
         }
 
-        // Check for duplicate registration in this period
+        // Periksa pendaftaran ganda pada periode ini
         $alreadyRegistered = Registration::where('student_id', $student->id)
             ->where('period_id', $activePeriod->id)
             ->exists();
@@ -109,7 +109,7 @@ class RegistrationController extends Controller
             ->where('is_active', true)
             ->firstOrFail();
 
-        // Generate unique registration number
+        // Buat nomor pendaftaran yang unik
         $randomSuffix = strtoupper(Str::random(4));
         $registrationNumber = sprintf(
             'REG-%s-%03d-%s',
@@ -135,7 +135,7 @@ class RegistrationController extends Controller
     }
 
     /**
-     * Display registration success page.
+     * Tampilkan halaman sukses pendaftaran.
      */
     public function sukses(): View|RedirectResponse
     {
@@ -166,7 +166,7 @@ class RegistrationController extends Controller
     }
 
     /**
-     * Display student's registration history.
+     * Tampilkan riwayat pendaftaran siswa.
      */
     public function riwayat(): View
     {

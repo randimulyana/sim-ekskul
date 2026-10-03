@@ -36,7 +36,7 @@
             ];
         @endphp
 
-        <!-- Latest Registration Notice -->
+        <!-- Notifikasi Pendaftaran Terakhir -->
         <div class="bg-blue-50 border border-blue-200 rounded-xl p-4 flex items-start sm:items-center justify-between gap-3 text-xs text-blue-900">
             <div class="flex items-center gap-2.5">
                 <span class="w-2.5 h-2.5 rounded-full bg-blue-600 animate-pulse"></span>

@@ -99,7 +99,7 @@
     {{-- Two Column Grid --}}
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
 
-        {{-- Recent Registrations --}}
+        {{-- Pendaftaran Terbaru --}}
         <div class="bg-white rounded-xl border border-slate-200 shadow-sm">
             <div class="flex items-center justify-between px-6 py-4 border-b border-slate-100">
                 <h3 class="text-base font-semibold text-slate-900">Pendaftaran Terbaru</h3>

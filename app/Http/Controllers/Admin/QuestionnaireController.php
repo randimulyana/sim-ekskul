@@ -15,7 +15,7 @@ use Illuminate\View\View;
 class QuestionnaireController extends Controller
 {
     /**
-     * Display a listing of questionnaire questions.
+     * Tampilkan daftar pertanyaan kuesioner.
      */
     public function index(): View
     {
@@ -27,7 +27,7 @@ class QuestionnaireController extends Controller
     }
 
     /**
-     * Show the form for creating a new question.
+     * Tampilkan formulir untuk membuat pertanyaan baru.
      */
     public function create(): View
     {
@@ -37,7 +37,7 @@ class QuestionnaireController extends Controller
     }
 
     /**
-     * Store a newly created question with optional options.
+     * Simpan pertanyaan yang baru dibuat beserta opsi jawaban (opsional).
      */
     public function store(StoreQuestionRequest $request): RedirectResponse
     {
@@ -55,7 +55,7 @@ class QuestionnaireController extends Controller
                 'is_active' => $request->has('is_active') ? $request->boolean('is_active') : true,
             ]);
 
-            // Save options if provided
+            // Simpan opsi jawaban jika tersedia
             $options = $request->input('options', []);
             if (is_array($options) && in_array($request->input('type'), ['radio', 'checkbox'], true)) {
                 $optOrder = 1;
@@ -79,7 +79,7 @@ class QuestionnaireController extends Controller
     }
 
     /**
-     * Show the form for editing the specified question.
+     * Tampilkan formulir untuk mengedit pertanyaan yang ditentukan.
      */
     public function edit(int|string $id): View
     {
@@ -90,7 +90,7 @@ class QuestionnaireController extends Controller
     }
 
     /**
-     * Update the specified question and its options.
+     * Perbarui pertanyaan yang ditentukan beserta opsinya.
      */
     public function update(UpdateQuestionRequest $request, int|string $id): RedirectResponse
     {
@@ -111,7 +111,7 @@ class QuestionnaireController extends Controller
 
             $options = $request->input('options');
             if (is_array($options) && in_array($request->input('type'), ['radio', 'checkbox'], true)) {
-                // Delete existing and re-create options cleanly
+                // Hapus opsi yang ada dan buat ulang dengan bersih
                 $question->options()->delete();
                 $optOrder = 1;
                 foreach ($options as $opt) {
@@ -134,7 +134,7 @@ class QuestionnaireController extends Controller
     }
 
     /**
-     * Toggle active status of the question.
+     * Ubah status aktif pertanyaan.
      */
     public function toggleStatus(int|string $id): RedirectResponse
     {
@@ -148,7 +148,7 @@ class QuestionnaireController extends Controller
     }
 
     /**
-     * Remove the specified question.
+     * Hapus pertanyaan yang ditentukan.
      */
     public function destroy(int|string $id): RedirectResponse
     {

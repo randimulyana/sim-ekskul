@@ -78,7 +78,7 @@
         </div>
     </div>
 
-    <!-- Mapped Questions -->
+    <!-- Pertanyaan Terpetakan -->
     <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
         <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between">
             <h2 class="text-sm font-bold text-slate-900">Pertanyaan Kuesioner Terpetakan ({{ $criterion->questions->count() }} Butir)</h2>

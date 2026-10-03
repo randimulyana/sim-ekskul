@@ -81,7 +81,7 @@
             </div>
         </div>
 
-        <!-- Questionnaire Card Container -->
+        <!-- Kontainer Kartu Kuesioner -->
         <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-6 sm:p-8">
             <form id="questionnaireForm" method="POST" action="{{ route('siswa.kuesioner.store') }}">
                 @csrf

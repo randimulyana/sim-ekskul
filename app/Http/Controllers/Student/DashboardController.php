@@ -16,7 +16,7 @@ class DashboardController extends Controller
     ) {}
 
     /**
-     * Display the student dashboard.
+     * Tampilkan dashboard siswa.
      */
     public function index(): View
     {

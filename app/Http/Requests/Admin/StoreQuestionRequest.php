@@ -7,7 +7,7 @@ use Illuminate\Foundation\Http\FormRequest;
 class StoreQuestionRequest extends FormRequest
 {
     /**
-     * Determine if the user is authorized to make this request.
+     * Tentukan apakah user berwenang untuk membuat request ini.
      */
     public function authorize(): bool
     {
@@ -15,7 +15,7 @@ class StoreQuestionRequest extends FormRequest
     }
 
     /**
-     * Prepare data for validation.
+     * Siapkan data sebelum validasi.
      */
     protected function prepareForValidation(): void
     {
@@ -42,7 +42,7 @@ class StoreQuestionRequest extends FormRequest
     }
 
     /**
-     * Get the validation rules that apply to the request.
+     * Ambil aturan validasi yang berlaku untuk request ini.
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
@@ -57,6 +57,29 @@ class StoreQuestionRequest extends FormRequest
             'is_active' => ['nullable', 'boolean'],
             'options' => ['nullable', 'array'],
             'options.*' => ['nullable'],
+        ];
+    }
+
+    /**
+     * Nama atribut kustom untuk pesan validasi.
+     *
+     * @return array<string, string>
+     */
+    public function attributes(): array
+    {
+        return [
+            'criterion_id' => 'Kriteria',
+            'question_text' => 'Teks Pertanyaan',
+            'teks_pertanyaan' => 'Teks Pertanyaan',
+            'question' => 'Teks Pertanyaan',
+            'category' => 'Kategori Pertanyaan',
+            'kategori' => 'Kategori Pertanyaan',
+            'type' => 'Tipe Pertanyaan',
+            'tipe' => 'Tipe Pertanyaan',
+            'order' => 'Nomor Urut',
+            'urutan' => 'Nomor Urut',
+            'is_active' => 'Status Aktif',
+            'options' => 'Pilihan Opsi',
         ];
     }
 }

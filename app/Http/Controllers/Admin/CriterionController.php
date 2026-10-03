@@ -21,7 +21,7 @@ class CriterionController extends Controller
     ) {}
 
     /**
-     * Display a listing of criteria and configuration completeness.
+     * Tampilkan daftar kriteria dan kelengkapan konfigurasi.
      */
     public function index(): View
     {
@@ -42,7 +42,7 @@ class CriterionController extends Controller
     }
 
     /**
-     * Show the form for creating a new criterion.
+     * Tampilkan formulir untuk membuat kriteria baru.
      */
     public function create(): View
     {
@@ -50,7 +50,7 @@ class CriterionController extends Controller
     }
 
     /**
-     * Store a newly created criterion in storage.
+     * Simpan kriteria yang baru dibuat ke database.
      */
     public function store(StoreCriterionRequest $request): RedirectResponse
     {
@@ -65,7 +65,7 @@ class CriterionController extends Controller
                 'is_active' => $request->boolean('is_active', true),
             ]);
 
-            // Automatically provide standard 1-5 scale values
+            // Otomatis menyediakan nilai skala standar 1-5
             foreach (CriteriaConfigurationService::STANDARD_SCALE as $scale) {
                 CriterionValue::create([
                     'criterion_id' => $criterion->id,
@@ -82,7 +82,7 @@ class CriterionController extends Controller
     }
 
     /**
-     * Display the specified criterion details and scale values.
+     * Tampilkan detail dan nilai skala kriteria yang ditentukan.
      */
     public function show(int|string $id): View
     {
@@ -92,7 +92,7 @@ class CriterionController extends Controller
     }
 
     /**
-     * Show the form for editing the specified criterion.
+     * Tampilkan formulir untuk mengedit kriteria yang ditentukan.
      */
     public function edit(int|string $id): View
     {
@@ -102,7 +102,7 @@ class CriterionController extends Controller
     }
 
     /**
-     * Update the specified criterion in storage.
+     * Perbarui kriteria yang ditentukan di database.
      */
     public function update(UpdateCriterionRequest $request, int|string $id): RedirectResponse
     {
@@ -123,7 +123,7 @@ class CriterionController extends Controller
     }
 
     /**
-     * Remove the specified criterion from storage.
+     * Hapus kriteria yang ditentukan dari penyimpanan.
      */
     public function destroy(int|string $id): RedirectResponse
     {
@@ -136,8 +136,8 @@ class CriterionController extends Controller
     }
 
     /**
-     * Display extracurricular criterion mapping matrix status.
-     * Strictly indicates NEEDS_VALIDATION without inventing ideal scores.
+     * Tampilkan status matriks pemetaan kriteria ekstrakurikuler.
+     * Menandai NEEDS_VALIDATION secara tegas tanpa mengarang nilai ideal.
      */
     public function mapping(): View
     {

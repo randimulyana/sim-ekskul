@@ -27,7 +27,7 @@ class RecommendationItem extends Model
     }
 
     /**
-     * The parent recommendation record.
+     * Data rekomendasi induk dari item ini.
      */
     public function recommendation(): BelongsTo
     {
@@ -35,7 +35,7 @@ class RecommendationItem extends Model
     }
 
     /**
-     * The extracurricular recommended.
+     * Ekstrakurikuler yang direkomendasikan.
      */
     public function extracurricular(): BelongsTo
     {

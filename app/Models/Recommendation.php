@@ -27,7 +27,7 @@ class Recommendation extends Model
     }
 
     /**
-     * The student receiving this recommendation.
+     * Siswa yang menerima rekomendasi ini.
      */
     public function student(): BelongsTo
     {
@@ -35,7 +35,7 @@ class Recommendation extends Model
     }
 
     /**
-     * The period when recommendation was generated.
+     * Periode saat rekomendasi dibuat.
      */
     public function period(): BelongsTo
     {
@@ -43,7 +43,7 @@ class Recommendation extends Model
     }
 
     /**
-     * The ranked recommendation items.
+     * Item rekomendasi yang telah diperingkatkan.
      */
     public function items(): HasMany
     {

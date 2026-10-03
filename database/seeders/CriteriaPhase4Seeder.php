@@ -8,7 +8,7 @@ use Illuminate\Database\Seeder;
 class CriteriaPhase4Seeder extends Seeder
 {
     /**
-     * Run the criteria configuration seeder.
+     * Jalankan seeder konfigurasi kriteria.
      */
     public function run(): void
     {

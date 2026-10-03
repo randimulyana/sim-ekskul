@@ -7,7 +7,7 @@ use Illuminate\Foundation\Http\FormRequest;
 class UpdateStudentProfileRequest extends FormRequest
 {
     /**
-     * Determine if the user is authorized to make this request.
+     * Tentukan apakah user berwenang untuk membuat request ini.
      */
     public function authorize(): bool
     {
@@ -15,7 +15,7 @@ class UpdateStudentProfileRequest extends FormRequest
     }
 
     /**
-     * Get the validation rules that apply to the request.
+     * Ambil aturan validasi yang berlaku untuk request ini.
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
@@ -30,7 +30,7 @@ class UpdateStudentProfileRequest extends FormRequest
     }
 
     /**
-     * Custom attribute names for validation.
+     * Nama atribut kustom untuk pesan validasi.
      */
     public function attributes(): array
     {

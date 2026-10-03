@@ -10,7 +10,7 @@ use Illuminate\View\View;
 class ExtracurricularController extends Controller
 {
     /**
-     * Display a listing of active extracurriculars for students.
+     * Tampilkan daftar ekstrakurikuler aktif untuk siswa.
      */
     public function index(Request $request): View
     {
@@ -44,7 +44,7 @@ class ExtracurricularController extends Controller
     }
 
     /**
-     * Display details of a specific active extracurricular.
+     * Tampilkan detail ekstrakurikuler aktif yang ditentukan.
      */
     public function show(int|string $id): View
     {

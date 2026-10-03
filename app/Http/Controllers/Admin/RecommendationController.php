@@ -20,7 +20,7 @@ class RecommendationController extends Controller
     ) {}
 
     /**
-     * Display a listing of recommendation results.
+     * Tampilkan daftar hasil rekomendasi.
      */
     public function index(): View
     {
@@ -33,14 +33,14 @@ class RecommendationController extends Controller
     }
 
     /**
-     * Preview Decision Matrix X & SAW Calculation for a student (Phase 5B Debug & Validation).
+     * Pratinjau Matriks Keputusan X & Kalkulasi SAW untuk siswa (Debug & Validasi Fase 5B).
      */
     public function matrixPreview(Request $request): View
     {
         $activePeriod = Period::where('is_active', true)->first();
         $students = Student::with('user')->get()->sortBy(fn ($s) => $s->user?->name ?? '')->values();
 
-        // Select student: either from query param or the first student with answers, or first student in DB
+        // Pilih siswa: dari parameter query, siswa pertama dengan jawaban, atau siswa pertama di DB
         $selectedStudent = null;
         if ($request->filled('student_id')) {
             $selectedStudent = Student::find($request->input('student_id'));
@@ -77,7 +77,7 @@ class RecommendationController extends Controller
     }
 
     /**
-     * Display the specified recommendation result.
+     * Tampilkan detail hasil rekomendasi yang ditentukan.
      */
     public function show(int|string $id): View
     {

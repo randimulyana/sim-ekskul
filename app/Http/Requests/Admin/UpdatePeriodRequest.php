@@ -7,7 +7,7 @@ use Illuminate\Foundation\Http\FormRequest;
 class UpdatePeriodRequest extends FormRequest
 {
     /**
-     * Determine if the user is authorized to make this request.
+     * Tentukan apakah user berwenang untuk membuat request ini.
      */
     public function authorize(): bool
     {
@@ -15,7 +15,7 @@ class UpdatePeriodRequest extends FormRequest
     }
 
     /**
-     * Prepare data for validation.
+     * Siapkan data sebelum validasi.
      */
     protected function prepareForValidation(): void
     {
@@ -34,7 +34,7 @@ class UpdatePeriodRequest extends FormRequest
     }
 
     /**
-     * Get the validation rules that apply to the request.
+     * Ambil aturan validasi yang berlaku untuk request ini.
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
@@ -47,6 +47,27 @@ class UpdatePeriodRequest extends FormRequest
             'end_date' => ['required', 'date', 'after_or_equal:start_date'],
             'is_active' => ['nullable', 'boolean'],
             'description' => ['nullable', 'string'],
+        ];
+    }
+
+    /**
+     * Nama atribut kustom untuk pesan validasi.
+     *
+     * @return array<string, string>
+     */
+    public function attributes(): array
+    {
+        return [
+            'name' => 'Nama Periode',
+            'nama_periode' => 'Nama Periode',
+            'school_year' => 'Tahun Pelajaran',
+            'tahun_pelajaran' => 'Tahun Pelajaran',
+            'start_date' => 'Tanggal Mulai',
+            'tanggal_mulai' => 'Tanggal Mulai',
+            'end_date' => 'Tanggal Selesai',
+            'tanggal_selesai' => 'Tanggal Selesai',
+            'is_active' => 'Status Aktif',
+            'description' => 'Keterangan/Deskripsi',
         ];
     }
 }

@@ -14,7 +14,7 @@ use Illuminate\View\View;
 class RegistrationController extends Controller
 {
     /**
-     * Display a listing of registrations with filters.
+     * Tampilkan daftar pendaftaran dengan filter.
      */
     public function index(Request $request): View
     {
@@ -52,7 +52,7 @@ class RegistrationController extends Controller
     }
 
     /**
-     * Display the specified registration.
+     * Tampilkan detail pendaftaran yang ditentukan.
      */
     public function show(int|string $id): View
     {
@@ -67,7 +67,7 @@ class RegistrationController extends Controller
     }
 
     /**
-     * Update the registration status and notes.
+     * Perbarui status dan catatan pendaftaran.
      */
     public function updateStatus(UpdateRegistrationStatusRequest $request, int|string $id): RedirectResponse
     {

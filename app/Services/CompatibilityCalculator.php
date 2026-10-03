@@ -5,8 +5,8 @@ namespace App\Services;
 class CompatibilityCalculator
 {
     /**
-     * Research status indicator.
-     * Classified strictly as PROTOTYPE / NEEDS VALIDATION.
+     * Indikator status penelitian.
+     * Diklasifikasikan secara ketat sebagai PROTOTYPE / NEEDS VALIDATION.
      */
     public const METHOD_NAME = 'Absolute Difference Linear Compatibility';
     public const STATUS = 'PROTOTYPE / NEEDS_VALIDATION';
@@ -15,12 +15,12 @@ class CompatibilityCalculator
     public const MAX_DIFFERENCE = 4.0; // SCALE_MAX - SCALE_MIN
 
     /**
-     * Calculate linear compatibility between a student's criterion score and an extracurricular target score.
+     * Hitung kecocokan linier antara skor kriteria seorang siswa dan skor target ekstrakurikuler.
      *
      * Formula:
      * compatibility = 1 - (|student_score - target_score| / 4)
      *
-     * Returns NULL if either score is null.
+     * Mengembalikan NULL jika salah satu skor bernilai null.
      */
     public function calculate(?float $studentScore, ?float $targetScore): ?float
     {
@@ -31,12 +31,12 @@ class CompatibilityCalculator
         $difference = abs($studentScore - $targetScore);
         $rawCompatibility = 1.0 - ($difference / self::MAX_DIFFERENCE);
 
-        // Clamp compatibility within [0.0, 1.0] and round to 4 decimals
+        // Batasi nilai kecocokan dalam rentang [0.0, 1.0] dan bulatkan ke 4 desimal
         return max(0.0, min(1.0, round($rawCompatibility, 4)));
     }
 
     /**
-     * Evaluate compatibility with full contextual metadata and readiness status.
+     * Evaluasi kecocokan dengan metadata kontekstual lengkap dan status kesiapan.
      *
      * @param float|null $studentScore
      * @param float|null $targetScore

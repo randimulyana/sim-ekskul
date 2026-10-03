@@ -55,7 +55,7 @@ class Extracurricular extends Model
     }
 
     /**
-     * Scope query to only active extracurriculars.
+     * Scope query hanya untuk ekstrakurikuler yang aktif.
      */
     public function scopeActive(Builder $query): void
     {
@@ -63,7 +63,7 @@ class Extracurricular extends Model
     }
 
     /**
-     * Registrations for this extracurricular.
+     * Pendaftaran untuk ekstrakurikuler ini.
      */
     public function registrations(): HasMany
     {
@@ -71,7 +71,7 @@ class Extracurricular extends Model
     }
 
     /**
-     * Recommendation items referencing this extracurricular.
+     * Item rekomendasi yang merujuk ke ekstrakurikuler ini.
      */
     public function recommendationItems(): HasMany
     {
@@ -79,7 +79,7 @@ class Extracurricular extends Model
     }
 
     /**
-     * Direct relationship to criterion mappings.
+     * Relasi langsung ke pemetaan kriteria.
      */
     public function criterionMappings(): HasMany
     {
@@ -87,7 +87,7 @@ class Extracurricular extends Model
     }
 
     /**
-     * Criteria associated with this extracurricular through mappings.
+     * Kriteria yang terkait dengan ekstrakurikuler ini melalui pemetaan.
      */
     public function criteria(): BelongsToMany
     {

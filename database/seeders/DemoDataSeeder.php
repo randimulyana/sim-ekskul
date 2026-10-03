@@ -13,15 +13,15 @@ use Illuminate\Support\Str;
 class DemoDataSeeder extends Seeder
 {
     /**
-     * Run the database seeds.
+     * Jalankan database seeder.
      *
-     * IMPORTANT:
-     * // DEMO DATA — NOT OFFICIAL SCHOOL DATA
-     * All entries below are for development and testing purposes only.
+     * PENTING:
+     * // DATA DEMO — BUKAN DATA RESMI SEKOLAH
+     * Semua entri di bawah hanya untuk keperluan pengembangan dan pengujian.
      */
     public function run(): void
     {
-        // 1. Admin Demo User
+        // 1. Akun Demo Admin
         User::updateOrCreate(
             ['email' => 'admin@smkn3payakumbuh.sch.id'],
             [
@@ -32,7 +32,7 @@ class DemoDataSeeder extends Seeder
             ]
         );
 
-        // 2. Student Demo User & Profile
+        // 2. Akun Demo Siswa & Profil
         $studentUser = User::updateOrCreate(
             ['email' => 'andi.saputra@smkn3payakumbuh.sch.id'],
             [
@@ -53,7 +53,7 @@ class DemoDataSeeder extends Seeder
             ]
         );
 
-        // 3. Demo Active Period
+        // 3. Periode Aktif Demo
         Period::updateOrCreate(
             ['name' => 'Tahun Pelajaran 2026/2027'],
             [
@@ -63,7 +63,7 @@ class DemoDataSeeder extends Seeder
             ]
         );
 
-        // 4. Demo Extracurriculars (Initial Observation Data Only — Not Official Final List)
+        // 4. Demo Ekstrakurikuler (Data Observasi Awal Saja — Bukan Daftar Final Resmi)
         $ekskuls = [
             [
                 'name' => 'PASKIBRAKA',
@@ -194,7 +194,7 @@ class DemoDataSeeder extends Seeder
             );
         }
 
-        // 5. Demo Questionnaire Questions & Options
+        // 5. Demo Pertanyaan & Opsi Kuesioner
         $questions = [
             // STEP 1: Minat Awal
             [
@@ -377,7 +377,7 @@ class DemoDataSeeder extends Seeder
                 array_merge($qData, ['is_active' => true])
             );
 
-            // Recreate options
+            // Buat ulang opsi
             $q->options()->delete();
             $optOrder = 1;
             foreach ($options as $opt) {
@@ -390,11 +390,11 @@ class DemoDataSeeder extends Seeder
             }
         }
 
-        // 6. Proposed Phase 4 Criteria, Indicator Values & Question Mappings
+        // 6. Kriteria Phase 4 yang Diusulkan, Nilai Indikator & Pemetaan Pertanyaan
         $criteriaService = app(\App\Services\CriteriaConfigurationService::class);
         $criteriaService->setupProposedConfiguration();
 
-        // 7. Research Target Mappings for 12 Extracurriculars (Phase 6 Baseline)
+        // 7. Pemetaan Target Penelitian untuk 12 Ekstrakurikuler (Baseline Phase 6)
         $criteriaService->setupResearchTargetMappings();
     }
 }

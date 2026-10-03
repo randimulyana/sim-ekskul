@@ -27,7 +27,7 @@ class CriterionValue extends Model
     }
 
     /**
-     * The criterion this indicator value belongs to.
+     * Kriteria tempat nilai indikator ini berada.
      */
     public function criterion(): BelongsTo
     {

@@ -12,7 +12,7 @@ use Illuminate\View\View;
 class DashboardController extends Controller
 {
     /**
-     * Display admin dashboard with real statistics.
+     * Tampilkan dashboard admin dengan statistik aktual.
      */
     public function index(): View
     {
@@ -33,7 +33,7 @@ class DashboardController extends Controller
             ->take(6)
             ->get();
 
-        // Calculate percentage for progress bars in ekskul stats
+        // Hitung persentase untuk progress bar statistik ekskul
         $maxRegistrations = $ekskulStats->max('registrations_count') ?: 1;
         $ekskulStats->each(function ($item) use ($maxRegistrations) {
             $item->percentage = $maxRegistrations > 0

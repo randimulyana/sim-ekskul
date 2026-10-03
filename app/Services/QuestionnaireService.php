@@ -14,7 +14,7 @@ use InvalidArgumentException;
 class QuestionnaireService
 {
     /**
-     * Get the current active period.
+     * Ambil periode aktif saat ini.
      */
     public function getActivePeriod(): ?Period
     {
@@ -171,9 +171,9 @@ class QuestionnaireService
     }
 
     /**
-     * Validate that all required active questions have answers.
+     * Validasi bahwa semua pertanyaan wajib aktif sudah dijawab.
      *
-     * @return array<int, string> List of error messages for missing required questions
+     * @return array<int, string> Daftar pesan error untuk pertanyaan wajib yang belum dijawab
      */
     public function validateRequiredQuestions(Student $student, Period $period): array
     {

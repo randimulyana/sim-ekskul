@@ -40,7 +40,7 @@
     </div>
 
     @if(isset($recommendationResult) && $recommendationResult['status'] === 'READY' && !empty($recommendationResult['ranking']))
-        <!-- Recommendations Cards List -->
+        <!-- Daftar Kartu Rekomendasi -->
         <div class="space-y-4">
             @php
                 $top3 = array_slice($recommendationResult['ranking'], 0, 3);

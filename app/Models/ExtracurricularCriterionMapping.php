@@ -26,7 +26,7 @@ class ExtracurricularCriterionMapping extends Model
     }
 
     /**
-     * The extracurricular in this mapping.
+     * Ekstrakurikuler dalam pemetaan ini.
      */
     public function extracurricular(): BelongsTo
     {
@@ -34,7 +34,7 @@ class ExtracurricularCriterionMapping extends Model
     }
 
     /**
-     * The criterion in this mapping.
+     * Kriteria dalam pemetaan ini.
      */
     public function criterion(): BelongsTo
     {

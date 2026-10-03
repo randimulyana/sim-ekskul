@@ -30,7 +30,7 @@
     @endif
 
     @if($existingRegistration)
-        <!-- Existing Registration Alert -->
+        <!-- Peringatan Pendaftaran Sudah Ada -->
         <div class="bg-blue-50 border border-blue-200 rounded-xl p-5 text-blue-900 space-y-3">
             <div class="flex items-center gap-2 text-sm font-bold text-blue-950">
                 <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>

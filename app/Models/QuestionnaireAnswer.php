@@ -27,7 +27,7 @@ class QuestionnaireAnswer extends Model
     }
 
     /**
-     * The student who gave this answer.
+     * Siswa yang memberikan jawaban ini.
      */
     public function student(): BelongsTo
     {
@@ -35,7 +35,7 @@ class QuestionnaireAnswer extends Model
     }
 
     /**
-     * The period in which this answer was submitted.
+     * Periode saat jawaban ini dikirimkan.
      */
     public function period(): BelongsTo
     {
@@ -43,7 +43,7 @@ class QuestionnaireAnswer extends Model
     }
 
     /**
-     * The question being answered.
+     * Pertanyaan yang dijawab.
      */
     public function question(): BelongsTo
     {
@@ -51,7 +51,7 @@ class QuestionnaireAnswer extends Model
     }
 
     /**
-     * The specific option chosen, if applicable.
+     * Opsi tertentu yang dipilih, jika ada.
      */
     public function questionOption(): BelongsTo
     {

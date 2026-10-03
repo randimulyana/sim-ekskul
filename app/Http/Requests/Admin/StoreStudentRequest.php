@@ -7,7 +7,7 @@ use Illuminate\Foundation\Http\FormRequest;
 class StoreStudentRequest extends FormRequest
 {
     /**
-     * Determine if the user is authorized to make this request.
+     * Tentukan apakah user berwenang untuk membuat request ini.
      */
     public function authorize(): bool
     {
@@ -15,7 +15,7 @@ class StoreStudentRequest extends FormRequest
     }
 
     /**
-     * Prepare the data for validation.
+     * Siapkan data sebelum validasi.
      */
     protected function prepareForValidation(): void
     {
@@ -29,7 +29,7 @@ class StoreStudentRequest extends FormRequest
     }
 
     /**
-     * Get the validation rules that apply to the request.
+     * Ambil aturan validasi yang berlaku untuk request ini.
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
@@ -46,7 +46,7 @@ class StoreStudentRequest extends FormRequest
     }
 
     /**
-     * Custom attribute names.
+     * Nama atribut kustom untuk pesan validasi.
      */
     public function attributes(): array
     {

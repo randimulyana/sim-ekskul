@@ -17,19 +17,19 @@ class DecisionMatrixService
     ) {}
 
     /**
-     * Build the Decision Matrix X for a student in a period.
+     * Bangun Matriks Keputusan X untuk seorang siswa dalam suatu periode.
      *
-     * In Decision Matrix X:
-     * - Rows (Alternatives): Active Extracurriculars
-     * - Columns (Criteria): Active Criteria (C1 - C5)
-     * - Cells (x_ij): Compatibility score of student on criterion j for alternative i
+     * Dalam Matriks Keputusan X:
+     * - Baris (Alternatif): Ekstrakurikuler Aktif
+     * - Kolom (Kriteria): Kriteria Aktif (C1 - C5)
+     * - Sel (x_ij): Skor kecocokan siswa pada kriteria j untuk alternatif i
      *
-     * IMPORTANT METHODOLOGICAL RULES:
-     * - NO SAW normalization performed here.
-     * - NO weighted multiplication performed here.
-     * - NO ranking or sorting by score performed here.
-     * - If target values or mappings are unvalidated, status is NOT_READY.
-     * - Missing targets are NEVER assumed as 0 or 3.
+     * ATURAN METODOLOGIS PENTING:
+     * - TIDAK ada normalisasi SAW yang dilakukan di sini.
+     * - TIDAK ada perkalian berbobot yang dilakukan di sini.
+     * - TIDAK ada peringkat atau pengurutan berdasarkan skor yang dilakukan di sini.
+     * - Jika nilai target atau pemetaan belum divalidasi, statusnya adalah NOT_READY.
+     * - Target yang hilang TIDAK PERNAH diasumsikan sebagai 0 atau 3.
      *
      * @return array{
      *     status: string,
@@ -69,24 +69,24 @@ class DecisionMatrixService
     {
         $period = $period ?? Period::where('is_active', true)->first();
 
-        // 1. Fetch active criteria ordered by code
+        // 1. Ambil kriteria aktif berurutan berdasarkan kode
         $criteria = Criterion::where('is_active', true)
             ->orderBy('code')
             ->get();
 
-        // 2. Fetch active extracurriculars ordered by name (inactive are excluded)
+        // 2. Ambil ekstrakurikuler aktif berurutan berdasarkan nama (yang tidak aktif dikecualikan)
         $extracurriculars = Extracurricular::where('is_active', true)
             ->orderBy('name')
             ->get();
 
-        // 3. Get Student Criterion Profile (C1 - C5 scores)
+        // 3. Ambil Profil Kriteria Siswa (skor C1 - C5)
         $studentProfile = $this->profileService->getProfile($student, $period);
 
-        // 4. Fetch all extracurricular mappings
+        // 4. Ambil semua pemetaan ekstrakurikuler
         $mappings = ExtracurricularCriterionMapping::all()
             ->groupBy(fn ($m) => "{$m->extracurricular_id}_{$m->criterion_id}");
 
-        // 5. Build Alternatives and Decision Matrix X
+        // 5. Bangun Alternatif dan Matriks Keputusan X
         $alternatives = [];
         $matrixX = [];
         $readyCellsCount = 0;
@@ -146,7 +146,7 @@ class DecisionMatrixService
             $matrixX[$ekskul->id] = $altMatrixRow;
         }
 
-        // 6. Criteria summary
+        // 6. Ringkasan kriteria
         $criteriaSummary = [];
         foreach ($criteria as $c) {
             $criteriaSummary[$c->code] = [
@@ -159,7 +159,7 @@ class DecisionMatrixService
             ];
         }
 
-        // 7. Check Readiness & Reasons for NOT_READY status
+        // 7. Periksa Kesiapan & Alasan untuk status NOT_READY
         $reasons = [];
 
         if (! $period) {

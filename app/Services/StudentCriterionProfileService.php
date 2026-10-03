@@ -11,13 +11,13 @@ use App\Models\User;
 class StudentCriterionProfileService
 {
     /**
-     * Compute criterion profile scores (C1-C5) for a student in a given period.
+     * Hitung skor profil kriteria (C1-C5) untuk seorang siswa pada periode tertentu.
      *
-     * Rule:
-     * - Only answers from mapped radio/likert questions with valid criterion values (1-5) are aggregated.
-     * - Textarea and checkbox answers are excluded (no arbitrary scoring).
-     * - Score per criterion = average(mapped answer scores), rounded to 4 decimals.
-     * - If no mapped answers exist for a criterion, its score is NULL (never 0).
+     * Aturan:
+     * - Hanya jawaban dari pertanyaan radio/likert yang terpetakan dengan nilai kriteria valid (1-5) yang diagregasi.
+     * - Jawaban textarea dan checkbox dikecualikan (tidak ada penilaian sembarangan).
+     * - Skor per kriteria = rata-rata(skor jawaban terpetakan), dibulatkan ke 4 desimal.
+     * - Jika tidak ada jawaban terpetakan untuk suatu kriteria, skornya adalah NULL (tidak pernah 0).
      *
      * @return array{
      *     student_id: int,
@@ -78,7 +78,7 @@ class StudentCriterionProfileService
             ];
         }
 
-        // Fetch all student answers for this period with relationships
+        // Ambil semua jawaban siswa untuk periode ini beserta relasi-relasinya
         $answers = QuestionnaireAnswer::where('student_id', $student->id)
             ->where('period_id', $period->id)
             ->with([
@@ -87,7 +87,7 @@ class StudentCriterionProfileService
             ])
             ->get();
 
-        // Group valid numeric scores by criterion code
+        // Kelompokkan skor numerik valid berdasarkan kode kriteria
         $scoresByCriterion = [];
         $evaluatedCount = 0;
 
@@ -102,12 +102,12 @@ class StudentCriterionProfileService
                 continue;
             }
 
-            // Strictly exclude textarea and checkbox questions from quantitative scoring
+            // Kecualikan secara ketat pertanyaan textarea dan checkbox dari penilaian kuantitatif
             if (in_array($question->type, ['textarea', 'checkbox'], true)) {
                 continue;
             }
 
-            // Extract numeric score from mapped Option / CriterionValue / AnswerValue
+            // Ekstrak skor numerik dari Opsi / CriterionValue / AnswerValue yang terpetakan
             $score = null;
 
             if ($ans->questionOption && $ans->questionOption->criterionValue) {
@@ -133,7 +133,7 @@ class StudentCriterionProfileService
             }
         }
 
-        // Build criteria scores array
+        // Bangun array skor kriteria
         $criteriaList = [];
         $missing = [];
 
@@ -164,7 +164,7 @@ class StudentCriterionProfileService
                     'name' => $criterion->name,
                     'type' => $criterion->type,
                     'weight' => (float) $criterion->weight,
-                    'score' => null, // Explicitly NULL, never zero
+                    'score' => null, // Eksplisit NULL, tidak pernah nol
                     'formatted_score' => null,
                     'answers_count' => 0,
                     'status' => 'missing',
@@ -186,7 +186,7 @@ class StudentCriterionProfileService
     }
 
     /**
-     * Check if a user is authorized to view a student's profile.
+     * Periksa apakah pengguna berwenang untuk melihat profil seorang siswa.
      */
     public function canAccess(User $user, Student $student): bool
     {

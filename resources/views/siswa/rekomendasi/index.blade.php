@@ -33,7 +33,7 @@
     </div>
 
     @if(isset($recommendationResult) && $recommendationResult['status'] === 'READY' && !empty($recommendationResult['ranking']))
-        <!-- Recommendations Cards List -->
+        <!-- Daftar Kartu Rekomendasi -->
         <div class="grid grid-cols-1 gap-4">
             @foreach($recommendationResult['ranking'] as $item)
             @php

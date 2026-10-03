@@ -16,7 +16,7 @@ use Illuminate\View\View;
 class StudentController extends Controller
 {
     /**
-     * Display a listing of students with filters and pagination.
+     * Tampilkan daftar siswa dengan filter dan paginasi.
      */
     public function index(Request $request): View
     {
@@ -57,7 +57,7 @@ class StudentController extends Controller
     }
 
     /**
-     * Show the form for creating a new student.
+     * Tampilkan formulir untuk membuat siswa baru.
      */
     public function create(): View
     {
@@ -65,7 +65,7 @@ class StudentController extends Controller
     }
 
     /**
-     * Store a newly created student and associated user account.
+     * Simpan siswa yang baru dibuat beserta akun pengguna terkait.
      */
     public function store(StoreStudentRequest $request): RedirectResponse
     {
@@ -73,7 +73,7 @@ class StudentController extends Controller
             $cleanNis = preg_replace('/[^a-zA-Z0-9]/', '', $request->input('nis'));
             $email = $request->input('email') ?: (strtolower($cleanNis) . '@smkn3payakumbuh.sch.id');
 
-            // Ensure unique email
+            // Pastikan email unik
             $baseEmail = $email;
             $counter = 1;
             while (User::where('email', $email)->exists()) {
@@ -103,7 +103,7 @@ class StudentController extends Controller
     }
 
     /**
-     * Display the specified student.
+     * Tampilkan detail siswa yang ditentukan.
      */
     public function show(int|string $id): View
     {
@@ -118,7 +118,7 @@ class StudentController extends Controller
     }
 
     /**
-     * Show the form for editing the specified student.
+     * Tampilkan formulir untuk mengedit siswa yang ditentukan.
      */
     public function edit(int|string $id): View
     {
@@ -128,7 +128,7 @@ class StudentController extends Controller
     }
 
     /**
-     * Update the specified student and associated user.
+     * Perbarui data siswa dan pengguna terkait.
      */
     public function update(UpdateStudentRequest $request, int|string $id): RedirectResponse
     {
@@ -154,7 +154,7 @@ class StudentController extends Controller
     }
 
     /**
-     * Remove the specified student from storage.
+     * Hapus siswa yang ditentukan dari penyimpanan.
      */
     public function destroy(int|string $id): RedirectResponse
     {

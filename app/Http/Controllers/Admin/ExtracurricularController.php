@@ -14,7 +14,7 @@ use Illuminate\View\View;
 class ExtracurricularController extends Controller
 {
     /**
-     * Display a listing of the extracurriculars.
+     * Tampilkan daftar ekstrakurikuler.
      */
     public function index(Request $request): View
     {
@@ -48,7 +48,7 @@ class ExtracurricularController extends Controller
     }
 
     /**
-     * Show the form for creating a new extracurricular.
+     * Tampilkan formulir untuk membuat ekstrakurikuler baru.
      */
     public function create(): View
     {
@@ -56,7 +56,7 @@ class ExtracurricularController extends Controller
     }
 
     /**
-     * Store a newly created extracurricular.
+     * Simpan ekstrakurikuler yang baru dibuat.
      */
     public function store(StoreExtracurricularRequest $request): RedirectResponse
     {
@@ -85,7 +85,7 @@ class ExtracurricularController extends Controller
     }
 
     /**
-     * Display the specified extracurricular.
+     * Tampilkan detail ekstrakurikuler yang ditentukan.
      */
     public function show(int|string $id): View
     {
@@ -98,7 +98,7 @@ class ExtracurricularController extends Controller
     }
 
     /**
-     * Show the form for editing the specified extracurricular.
+     * Tampilkan formulir untuk mengedit ekstrakurikuler yang ditentukan.
      */
     public function edit(int|string $id): View
     {
@@ -108,7 +108,7 @@ class ExtracurricularController extends Controller
     }
 
     /**
-     * Update the specified extracurricular.
+     * Perbarui ekstrakurikuler yang ditentukan.
      */
     public function update(UpdateExtracurricularRequest $request, int|string $id): RedirectResponse
     {
@@ -143,7 +143,7 @@ class ExtracurricularController extends Controller
     }
 
     /**
-     * Remove the specified extracurricular.
+     * Hapus ekstrakurikuler yang ditentukan.
      */
     public function destroy(int|string $id): RedirectResponse
     {

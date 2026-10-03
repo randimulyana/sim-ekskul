@@ -54,7 +54,7 @@ class Question extends Model
     }
 
     /**
-     * Scope query to only active questions.
+     * Scope query hanya untuk pertanyaan yang aktif.
      */
     public function scopeActive(Builder $query): void
     {
@@ -62,7 +62,7 @@ class Question extends Model
     }
 
     /**
-     * Optional criterion mapped to this question.
+     * Kriteria opsional yang dipetakan ke pertanyaan ini.
      */
     public function criterion(): BelongsTo
     {
@@ -70,7 +70,7 @@ class Question extends Model
     }
 
     /**
-     * Available options for this question.
+     * Opsi yang tersedia untuk pertanyaan ini.
      */
     public function options(): HasMany
     {
@@ -78,7 +78,7 @@ class Question extends Model
     }
 
     /**
-     * Student answers recorded for this question.
+     * Jawaban siswa yang dicatat untuk pertanyaan ini.
      */
     public function answers(): HasMany
     {

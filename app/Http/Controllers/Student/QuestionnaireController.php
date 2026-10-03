@@ -18,7 +18,7 @@ class QuestionnaireController extends Controller
     ) {}
 
     /**
-     * Display the questionnaire form.
+     * Tampilkan formulir kuesioner.
      */
     public function index(): View
     {
@@ -48,7 +48,7 @@ class QuestionnaireController extends Controller
         $existingAnswers = $this->questionnaireService->getStudentAnswers($student, $activePeriod);
         $progress = $student->getQuestionnaireProgress($activePeriod);
 
-        // Group questions by category for multi-step presentation
+        // Kelompokkan pertanyaan berdasarkan kategori untuk presentasi multi-langkah
         $categories = $questions->pluck('category')->unique()->values();
 
         return view('siswa.kuesioner.index', compact(
@@ -62,7 +62,7 @@ class QuestionnaireController extends Controller
     }
 
     /**
-     * Save student's answers to the active questionnaire.
+     * Simpan jawaban siswa pada kuesioner yang aktif.
      */
     public function store(SaveQuestionnaireRequest $request): RedirectResponse
     {
@@ -78,7 +78,7 @@ class QuestionnaireController extends Controller
         $answers = $request->input('answers', []);
         $this->questionnaireService->saveAnswers($student, $activePeriod, $answers);
 
-        // Check if this is final submission
+        // Periksa apakah ini adalah pengiriman final
         $isFinal = $request->boolean('is_final', true);
 
         if ($isFinal) {
@@ -98,7 +98,7 @@ class QuestionnaireController extends Controller
     }
 
     /**
-     * Display the questionnaire analyzing animation page.
+     * Tampilkan halaman animasi pengolahan kuesioner.
      */
     public function analisis(): View
     {
@@ -106,7 +106,7 @@ class QuestionnaireController extends Controller
     }
 
     /**
-     * Display questionnaire completion / recommendation results page.
+     * Tampilkan halaman hasil penyelesaian kuesioner / hasil rekomendasi.
      */
     public function hasil(): View
     {

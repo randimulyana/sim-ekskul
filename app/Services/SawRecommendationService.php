@@ -18,16 +18,16 @@ class SawRecommendationService
     ) {}
 
     /**
-     * Execute the full SAW recommendation pipeline for a student.
+     * Jalankan seluruh pipeline rekomendasi SAW untuk seorang siswa.
      *
      * Pipeline:
-     * 1. Decision Matrix X (from DecisionMatrixService)
-     * 2. Readiness Validation
-     * 3. Normalization R (rij = xij / max(xj) for benefit, min(xj) / xij for cost)
-     * 4. Weighted Matrix V (vij = rij * wj)
-     * 5. Preference Scores (Vi = sum(vij))
-     * 6. Deterministic Ranking
-     * 7. Persistence (only if READY and $persist is true)
+     * 1. Matriks Keputusan X (dari DecisionMatrixService)
+     * 2. Validasi Kesiapan
+     * 3. Normalisasi R (rij = xij / max(xj) untuk benefit, min(xj) / xij untuk cost)
+     * 4. Matriks Berbobot V (vij = rij * wj)
+     * 5. Nilai Preferensi (Vi = sum(vij))
+     * 6. Peringkat Deterministik
+     * 7. Simpan ke database (hanya jika READY dan $persist bernilai true)
      *
      * @return array{
      *     status: string,
@@ -61,10 +61,10 @@ class SawRecommendationService
     {
         $period = $period ?? Period::where('is_active', true)->first();
 
-        // 1. Obtain Decision Matrix X from Phase 5A service
+        // 1. Dapatkan Matriks Keputusan X dari layanan Phase 5A
         $matrixData = $this->matrixService->build($student, $period);
 
-        // 2. Validate readiness
+        // 2. Validasi kesiapan
         $validation = $this->validateReadiness($matrixData);
 
         if (! $validation['is_ready']) {
@@ -91,19 +91,19 @@ class SawRecommendationService
         $matrixX = $matrixData['matrix_x'];
         $alternatives = $matrixData['alternatives'];
 
-        // 3. Normalization R
+        // 3. Normalisasi R
         $matrixR = $this->normalizeMatrix($matrixX, $criteria);
 
-        // 4. Weighted Matrix V
+        // 4. Matriks Berbobot V
         $matrixV = $this->calculateWeightedMatrix($matrixR, $criteria);
 
-        // 5. Preference Scores Vi
+        // 5. Nilai Preferensi Vi
         $preferenceScores = $this->calculatePreferenceScores($matrixV);
 
-        // 6. Deterministic Ranking
+        // 6. Peringkat Deterministik
         $ranking = $this->rankAlternatives($alternatives, $preferenceScores, $matrixX, $matrixR, $matrixV);
 
-        // 7. Persistence (only if ready and requested)
+        // 7. Simpan ke database (hanya jika siap dan diminta)
         $persistedRecommendation = null;
         if ($persist && $period) {
             $persistedRecommendation = $this->persistRecommendation($student, $period, $ranking);
@@ -129,7 +129,7 @@ class SawRecommendationService
     }
 
     /**
-     * Validate whether the decision matrix is ready for SAW execution.
+     * Validasi apakah matriks keputusan siap untuk eksekusi SAW.
      *
      * @param array<string, mixed> $matrixData
      * @return array{is_ready: bool, reasons: array<string>}
@@ -138,21 +138,21 @@ class SawRecommendationService
     {
         $reasons = $matrixData['reasons'] ?? [];
 
-        // Check if matrix status from Phase 5A is not ready
+        // Periksa apakah status matriks dari Phase 5A belum siap
         if (($matrixData['status'] ?? 'NOT_READY') !== 'READY_FOR_SAW') {
             if (empty($reasons)) {
                 $reasons[] = 'Matriks keputusan belum memenuhi syarat kesiapan SAW.';
             }
         }
 
-        // Verify total weight equals 1.0000 (tolerance: 0.001)
+        // Verifikasi total bobot sama dengan 1.0000 (toleransi: 0.001)
         $criteria = $matrixData['criteria'] ?? [];
         $totalWeight = array_sum(array_column($criteria, 'weight'));
         if (abs($totalWeight - 1.00) > 0.001) {
             $reasons[] = 'Total bobot kriteria tidak bernilai 1.00 (100%).';
         }
 
-        // Check for empty alternatives or criteria
+        // Periksa apakah alternatif atau kriteria kosong
         $alternatives = $matrixData['alternatives'] ?? [];
         if (empty($alternatives)) {
             $reasons[] = 'Tidak ada alternatif ekstrakurikuler yang dapat dievaluasi.';
@@ -162,7 +162,7 @@ class SawRecommendationService
             $reasons[] = 'Jumlah kriteria aktif kurang dari 5 kriteria dasar (C1-C5).';
         }
 
-        // Check that every cell in Matrix X has a non-null compatibility score
+        // Periksa bahwa setiap sel dalam Matriks X memiliki skor kecocokan yang tidak null
         $matrixX = $matrixData['matrix_x'] ?? [];
         $hasNullCell = false;
         foreach ($matrixX as $row) {
@@ -187,7 +187,7 @@ class SawRecommendationService
     }
 
     /**
-     * Normalize Decision Matrix X to Matrix R according to criterion types.
+     * Normalisasi Matriks Keputusan X menjadi Matriks R sesuai tipe kriteria.
      *
      * Benefit: rij = xij / max_i(xij)
      * Cost:    rij = min_i(xij) / xij
@@ -200,7 +200,7 @@ class SawRecommendationService
     {
         $matrixR = [];
 
-        // Precompute max and min for each criterion column
+        // Hitung terlebih dahulu max dan min untuk setiap kolom kriteria
         $colMax = [];
         $colMin = [];
 
@@ -216,7 +216,7 @@ class SawRecommendationService
             $colMin[$code] = ! empty($values) ? min($values) : 0.0;
         }
 
-        // Compute normalized value rij for each cell
+        // Hitung nilai ternormalisasi rij untuk setiap sel
         foreach ($matrixX as $altId => $row) {
             $matrixR[$altId] = [];
 
@@ -228,7 +228,7 @@ class SawRecommendationService
                     $min = $colMin[$code];
                     $rij = ($xij > 0.0) ? ($min / $xij) : 0.0;
                 } else {
-                    // Default to benefit
+                    // Default ke benefit
                     $max = $colMax[$code];
                     $rij = ($max > 0.0) ? ($xij / $max) : 0.0;
                 }
@@ -241,7 +241,7 @@ class SawRecommendationService
     }
 
     /**
-     * Calculate Weighted Matrix V: vij = rij * wj.
+     * Hitung Matriks Berbobot V: vij = rij * wj.
      *
      * @param array<int, array<string, float>> $matrixR
      * @param array<string, array{weight: float}> $criteria
@@ -267,7 +267,7 @@ class SawRecommendationService
     }
 
     /**
-     * Calculate Preference Score Vi for each alternative: Vi = sum(vij).
+     * Hitung Nilai Preferensi Vi untuk setiap alternatif: Vi = sum(vij).
      *
      * @param array<int, array<string, float>> $matrixV
      * @return array<int, float> [altId => Vi]
@@ -285,11 +285,11 @@ class SawRecommendationService
     }
 
     /**
-     * Rank alternatives by preference score descending with deterministic tie-breaking.
+     * Peringkatkan alternatif berdasarkan nilai preferensi secara menurun dengan pemecah seri deterministik.
      *
-     * Tie-breaking:
-     * 1. Higher preference score
-     * 2. Lower alternative ID (deterministic fallback)
+     * Pemecah seri:
+     * 1. Nilai preferensi lebih tinggi
+     * 2. ID alternatif lebih kecil (fallback deterministik)
      *
      * @param array<int, array<string, mixed>> $alternatives
      * @param array<int, float> $preferenceScores
@@ -365,7 +365,7 @@ class SawRecommendationService
     }
 
     /**
-     * Persist recommendation result to database in an idempotent transaction.
+     * Simpan hasil rekomendasi ke database dalam transaksi idempoten.
      *
      * @param array<int, array<string, mixed>> $ranking
      */

@@ -24,7 +24,7 @@
 
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
-        {{-- Student Info Card --}}
+        {{-- Kartu Info Siswa --}}
         <div class="lg:col-span-1 space-y-4">
             <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-6">
                 <div class="flex flex-col items-center text-center mb-6">
@@ -90,7 +90,7 @@
         {{-- Right Column --}}
         <div class="lg:col-span-2 space-y-6">
 
-            {{-- Registration History --}}
+            {{-- Riwayat Pendaftaran --}}
             <div class="bg-white rounded-xl border border-slate-200 shadow-sm">
                 <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between">
                     <h3 class="text-base font-semibold text-slate-900">Riwayat Pendaftaran Ekskul</h3>
@@ -142,7 +142,7 @@
                 </div>
             </div>
 
-            {{-- Recommendation Preview --}}
+            {{-- Pratinjau Rekomendasi --}}
             <div class="bg-white rounded-xl border border-slate-200 shadow-sm">
                 <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between">
                     <h3 class="text-base font-semibold text-slate-900">Hasil Rekomendasi Sistem</h3>

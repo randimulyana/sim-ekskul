@@ -30,7 +30,7 @@ class Period extends Model
     }
 
     /**
-     * Scope query to only active periods.
+     * Scope query hanya untuk periode yang aktif.
      */
     public function scopeActive(Builder $query): void
     {
@@ -38,7 +38,7 @@ class Period extends Model
     }
 
     /**
-     * Registrations under this period.
+     * Pendaftaran dalam periode ini.
      */
     public function registrations(): HasMany
     {
@@ -46,7 +46,7 @@ class Period extends Model
     }
 
     /**
-     * Questionnaire answers under this period.
+     * Jawaban kuesioner dalam periode ini.
      */
     public function questionnaireAnswers(): HasMany
     {
@@ -54,7 +54,7 @@ class Period extends Model
     }
 
     /**
-     * Recommendations generated under this period.
+     * Rekomendasi yang dibuat dalam periode ini.
      */
     public function recommendations(): HasMany
     {

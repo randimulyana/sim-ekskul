@@ -15,7 +15,7 @@ class User extends Authenticatable
     use HasFactory, Notifiable;
 
     /**
-     * The model's default values for attributes.
+     * Nilai default model untuk atribut.
      *
      * @var array<string, mixed>
      */
@@ -24,7 +24,7 @@ class User extends Authenticatable
     ];
 
     /**
-     * The attributes that are mass assignable.
+     * Atribut yang dapat diisi secara massal.
      *
      * @var list<string>
      */
@@ -36,7 +36,7 @@ class User extends Authenticatable
     ];
 
     /**
-     * The attributes that should be hidden for serialization.
+     * Atribut yang disembunyikan saat serialisasi.
      *
      * @var list<string>
      */
@@ -46,7 +46,7 @@ class User extends Authenticatable
     ];
 
     /**
-     * Get the attributes that should be cast.
+     * Ambil atribut yang harus di-cast.
      *
      * @return array<string, string>
      */
@@ -59,7 +59,7 @@ class User extends Authenticatable
     }
 
     /**
-     * Check if user has admin role.
+     * Periksa apakah user memiliki role admin.
      */
     public function isAdmin(): bool
     {
@@ -67,7 +67,7 @@ class User extends Authenticatable
     }
 
     /**
-     * Check if user has student role.
+     * Periksa apakah user memiliki role student.
      */
     public function isStudent(): bool
     {
@@ -75,7 +75,7 @@ class User extends Authenticatable
     }
 
     /**
-     * Relation to Student profile.
+     * Relasi ke profil Siswa.
      */
     public function student(): HasOne
     {
@@ -83,7 +83,7 @@ class User extends Authenticatable
     }
 
     /**
-     * Get or safely instantiate student profile for this user.
+     * Ambil atau buat profil siswa untuk user ini secara aman.
      */
     public function getOrCreateStudent(): Student
     {

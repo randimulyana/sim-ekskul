@@ -33,7 +33,7 @@ class Criterion extends Model
     }
 
     /**
-     * Get weight in percentage representation (e.g. 0.30 -> 30).
+     * Ambil bobot dalam representasi persentase (mis. 0.30 -> 30).
      */
     public function getWeightPercentageAttribute(): float
     {
@@ -41,7 +41,7 @@ class Criterion extends Model
     }
 
     /**
-     * Human readable label for status.
+     * Label yang mudah dibaca untuk status.
      */
     public function getStatusLabelAttribute(): string
     {
@@ -53,7 +53,7 @@ class Criterion extends Model
     }
 
     /**
-     * Check if criterion is benefit type.
+     * Periksa apakah kriteria bertipe benefit.
      */
     public function isBenefit(): bool
     {
@@ -61,7 +61,7 @@ class Criterion extends Model
     }
 
     /**
-     * Check if criterion is cost type.
+     * Periksa apakah kriteria bertipe cost.
      */
     public function isCost(): bool
     {
@@ -69,7 +69,7 @@ class Criterion extends Model
     }
 
     /**
-     * Calculate total active criteria weight.
+     * Hitung total bobot kriteria yang aktif.
      */
     public static function getTotalWeight(): float
     {
@@ -77,7 +77,7 @@ class Criterion extends Model
     }
 
     /**
-     * Validate whether total active criteria weight equals 1.00 (100%).
+     * Validasi apakah total bobot kriteria yang aktif sama dengan 1.00 (100%).
      */
     public static function isTotalWeightValid(): bool
     {
@@ -85,7 +85,7 @@ class Criterion extends Model
     }
 
     /**
-     * Scope query to only active criteria.
+     * Scope query hanya untuk kriteria yang aktif.
      */
     public function scopeActive(Builder $query): void
     {
@@ -93,7 +93,7 @@ class Criterion extends Model
     }
 
     /**
-     * Indicator/scale values associated with this criterion.
+     * Nilai indikator/skala yang terkait dengan kriteria ini.
      */
     public function values(): HasMany
     {
@@ -101,7 +101,7 @@ class Criterion extends Model
     }
 
     /**
-     * Questions mapped to this criterion.
+     * Pertanyaan yang dipetakan ke kriteria ini.
      */
     public function questions(): HasMany
     {
@@ -109,7 +109,7 @@ class Criterion extends Model
     }
 
     /**
-     * Direct relationship to extracurricular mappings.
+     * Relasi langsung ke pemetaan ekstrakurikuler.
      */
     public function extracurricularMappings(): HasMany
     {
@@ -117,7 +117,7 @@ class Criterion extends Model
     }
 
     /**
-     * Extracurriculars associated with this criterion through mappings.
+     * Ekstrakurikuler yang terkait dengan kriteria ini melalui pemetaan.
      */
     public function extracurriculars(): BelongsToMany
     {

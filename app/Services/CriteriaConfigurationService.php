@@ -14,8 +14,8 @@ use Illuminate\Support\Str;
 class CriteriaConfigurationService
 {
     /**
-     * Definition of proposed criteria for SRPE SMKN 3 Payakumbuh.
-     * All items classified as PROPOSED / NEEDS VALIDATION.
+     * Definisi kriteria yang diusulkan untuk SRPE SMKN 3 Payakumbuh.
+     * Semua item diklasifikasikan sebagai PROPOSED / NEEDS VALIDATION.
      */
     public const PROPOSED_CRITERIA = [
         [
@@ -61,8 +61,8 @@ class CriteriaConfigurationService
     ];
 
     /**
-     * Target values for 12 extracurriculars on criteria C1–C5.
-     * Documented as DESIGN / RESEARCH CONFIGURATION (Research Baseline for SMKN 3 Payakumbuh).
+     * Nilai target untuk 12 ekstrakurikuler pada kriteria C1–C5.
+     * Didokumentasikan sebagai KONFIGURASI DESAIN / RISET (Research Baseline untuk SMKN 3 Payakumbuh).
      */
     public const RESEARCH_TARGET_MAPPINGS = [
         'PASKIBRAKA'    => ['C1' => 5.0, 'C2' => 4.0, 'C3' => 5.0, 'C4' => 3.0, 'C5' => 5.0],
@@ -91,7 +91,7 @@ class CriteriaConfigurationService
     ];
 
     /**
-     * Seed or sync proposed criteria, criterion values, and question mappings.
+     * Seed atau sinkronisasi kriteria yang diusulkan, nilai indikator, dan pemetaan pertanyaan.
      */
     public function setupProposedConfiguration(): array
     {
@@ -141,8 +141,8 @@ class CriteriaConfigurationService
     }
 
     /**
-     * Setup research target mappings for 12 extracurriculars on criteria C1–C5.
-     * All mappings are assigned status 'validated' as research/design configuration baseline.
+     * Atur pemetaan target penelitian untuk 12 ekstrakurikuler pada kriteria C1–C5.
+     * Semua pemetaan diberi status 'validated' sebagai baseline konfigurasi riset/desain.
      */
     public function setupResearchTargetMappings(): int
     {
@@ -186,8 +186,8 @@ class CriteriaConfigurationService
     }
 
     /**
-     * Map questionnaire questions to appropriate criteria.
-     * Qualitative textarea or unaligned items are left unmapped.
+     * Petakan pertanyaan kuesioner ke kriteria yang sesuai.
+     * Item textarea kualitatif atau yang tidak selaras dibiarkan tidak terpetakan.
      *
      * @param array<string, Criterion> $criteria
      */
@@ -228,8 +228,8 @@ class CriteriaConfigurationService
     }
 
     /**
-     * Map question options to matching CriterionValue records.
-     * Strictly avoids arbitrary scoring for textarea or checkbox.
+     * Petakan opsi pertanyaan ke CriterionValue yang sesuai.
+     * Menghindari pemberian skor sembarangan untuk textarea atau checkbox.
      *
      * @param array<string, Criterion> $criteria
      */
@@ -262,10 +262,10 @@ class CriteriaConfigurationService
     }
 
     /**
-     * Check configuration completeness for Phase 4.
-     * Determines whether the configuration is ready for SAW (Phase 5).
+     * Periksa kelengkapan konfigurasi untuk Phase 4.
+     * Menentukan apakah konfigurasi sudah siap untuk SAW (Phase 5).
      *
-     * Note: READY_FOR_SAW != SAW RUNNING.
+     * Catatan: READY_FOR_SAW != SAW BERJALAN.
      */
     public function checkCompleteness(): array
     {

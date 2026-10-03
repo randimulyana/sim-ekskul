@@ -80,7 +80,7 @@
         </p>
     </div>
 
-    <!-- Student Selector & Period Card -->
+    <!-- Pemilih Siswa & Kartu Periode -->
     <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-6">
         <form method="GET" action="{{ route('admin.rekomendasi.matrix') }}" class="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div class="flex-1 max-w-md">

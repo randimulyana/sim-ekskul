@@ -13,7 +13,7 @@ use Illuminate\View\View;
 class AdminProfileController extends Controller
 {
     /**
-     * Display the admin profile page.
+     * Tampilkan halaman profil admin.
      */
     public function edit(): View
     {
@@ -23,7 +23,7 @@ class AdminProfileController extends Controller
     }
 
     /**
-     * Update the admin's profile information.
+     * Perbarui informasi profil admin.
      */
     public function update(UpdateAdminProfileRequest $request): RedirectResponse
     {
@@ -39,7 +39,7 @@ class AdminProfileController extends Controller
     }
 
     /**
-     * Update the admin's password.
+     * Perbarui kata sandi admin.
      */
     public function updatePassword(UpdateAdminPasswordRequest $request): RedirectResponse
     {

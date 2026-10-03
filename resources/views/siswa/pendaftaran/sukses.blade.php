@@ -28,7 +28,7 @@
             </p>
         </div>
 
-        <!-- Registration Summary Details -->
+        <!-- Detail Ringkasan Pendaftaran -->
         <div class="mt-6 text-left border-t border-slate-100 pt-5 space-y-2.5 text-xs">
             <div class="flex justify-between py-1 border-b border-slate-50">
                 <span class="text-slate-500">Pilihan Ekstrakurikuler</span>

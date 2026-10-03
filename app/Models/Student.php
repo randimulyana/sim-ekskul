@@ -20,7 +20,7 @@ class Student extends Model
     ];
 
     /**
-     * Get the student's name from the associated user account.
+     * Ambil nama siswa dari akun user yang terkait.
      */
     public function getNameAttribute(): string
     {
@@ -28,7 +28,7 @@ class Student extends Model
     }
 
     /**
-     * The user account associated with the student profile.
+     * Akun user yang berasosiasi dengan profil siswa ini.
      */
     public function user(): BelongsTo
     {
@@ -36,7 +36,7 @@ class Student extends Model
     }
 
     /**
-     * Registrations submitted by this student.
+     * Pendaftaran yang diajukan oleh siswa ini.
      */
     public function registrations(): HasMany
     {
@@ -44,7 +44,7 @@ class Student extends Model
     }
 
     /**
-     * Questionnaire answers submitted by this student.
+     * Jawaban kuesioner yang dikirimkan oleh siswa ini.
      */
     public function questionnaireAnswers(): HasMany
     {
@@ -52,7 +52,7 @@ class Student extends Model
     }
 
     /**
-     * Recommendations calculated for this student.
+     * Rekomendasi yang telah dihitung untuk siswa ini.
      */
     public function recommendations(): HasMany
     {
@@ -60,7 +60,7 @@ class Student extends Model
     }
 
     /**
-     * Calculate questionnaire completion progress for a given period.
+     * Hitung progres pengisian kuesioner untuk periode tertentu.
      */
     public function getQuestionnaireProgress(?Period $period = null): array
     {
@@ -108,7 +108,7 @@ class Student extends Model
     }
 
     /**
-     * Calculate profile completion percentage based on stored student fields.
+     * Hitung persentase kelengkapan profil berdasarkan field siswa yang tersimpan.
      */
     public function getProfileCompletionPercentage(): int
     {

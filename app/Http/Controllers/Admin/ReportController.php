@@ -13,7 +13,7 @@ use Illuminate\View\View;
 class ReportController extends Controller
 {
     /**
-     * Display reports and recaps.
+     * Tampilkan laporan dan rekap data.
      */
     public function index(Request $request): View
     {

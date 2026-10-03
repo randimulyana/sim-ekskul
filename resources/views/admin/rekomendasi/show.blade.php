@@ -26,7 +26,7 @@
         </a>
     </div>
 
-    <!-- Student Info Summary Card -->
+    <!-- Kartu Ringkasan Info Siswa -->
     <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-6">
         <h3 class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-3">Ringkasan Data Siswa</h3>
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 text-xs">

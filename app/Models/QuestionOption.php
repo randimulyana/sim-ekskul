@@ -72,7 +72,7 @@ class QuestionOption extends Model
     }
 
     /**
-     * The question this option belongs to.
+     * Pertanyaan tempat opsi ini berada.
      */
     public function question(): BelongsTo
     {
@@ -80,7 +80,7 @@ class QuestionOption extends Model
     }
 
     /**
-     * Optional mapped criterion value (indicator).
+     * Nilai kriteria opsional yang dipetakan (indikator).
      */
     public function criterionValue(): BelongsTo
     {
@@ -88,7 +88,7 @@ class QuestionOption extends Model
     }
 
     /**
-     * Student answers that selected this option.
+     * Jawaban siswa yang memilih opsi ini.
      */
     public function answers(): HasMany
     {

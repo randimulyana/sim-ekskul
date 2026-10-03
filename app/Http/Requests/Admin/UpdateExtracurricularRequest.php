@@ -9,7 +9,7 @@ use Illuminate\Validation\Rule;
 class UpdateExtracurricularRequest extends FormRequest
 {
     /**
-     * Determine if the user is authorized to make this request.
+     * Tentukan apakah user berwenang untuk membuat request ini.
      */
     public function authorize(): bool
     {
@@ -17,7 +17,7 @@ class UpdateExtracurricularRequest extends FormRequest
     }
 
     /**
-     * Prepare data for validation.
+     * Siapkan data sebelum validasi.
      */
     protected function prepareForValidation(): void
     {
@@ -47,7 +47,7 @@ class UpdateExtracurricularRequest extends FormRequest
     }
 
     /**
-     * Get the validation rules that apply to the request.
+     * Ambil aturan validasi yang berlaku untuk request ini.
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
@@ -65,6 +65,31 @@ class UpdateExtracurricularRequest extends FormRequest
             'coach_name' => ['nullable', 'string', 'max:255'],
             'quota' => ['nullable', 'integer', 'min:0'],
             'is_active' => ['nullable', 'boolean'],
+        ];
+    }
+
+    /**
+     * Nama atribut kustom untuk pesan validasi.
+     *
+     * @return array<string, string>
+     */
+    public function attributes(): array
+    {
+        return [
+            'name' => 'Nama Ekstrakurikuler',
+            'nama' => 'Nama Ekstrakurikuler',
+            'category' => 'Kategori',
+            'kategori' => 'Kategori',
+            'description' => 'Deskripsi',
+            'deskripsi' => 'Deskripsi',
+            'schedule' => 'Jadwal Kegiatan',
+            'jadwal' => 'Jadwal Kegiatan',
+            'location' => 'Lokasi Kegiatan',
+            'lokasi' => 'Lokasi Kegiatan',
+            'coach_name' => 'Nama Pembina/Pelatih',
+            'pembina' => 'Nama Pembina/Pelatih',
+            'quota' => 'Kuota Anggota',
+            'is_active' => 'Status Aktif',
         ];
     }
 }

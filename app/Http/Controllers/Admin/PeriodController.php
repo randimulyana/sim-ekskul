@@ -13,7 +13,7 @@ use Illuminate\View\View;
 class PeriodController extends Controller
 {
     /**
-     * Display period management page.
+     * Tampilkan halaman manajemen periode.
      */
     public function index(): View
     {
@@ -24,7 +24,7 @@ class PeriodController extends Controller
     }
 
     /**
-     * Store a newly created period.
+     * Simpan periode yang baru dibuat.
      */
     public function store(StorePeriodRequest $request): RedirectResponse
     {
@@ -50,7 +50,7 @@ class PeriodController extends Controller
     }
 
     /**
-     * Update the specified period.
+     * Perbarui periode yang ditentukan.
      */
     public function update(UpdatePeriodRequest $request, int|string $id): RedirectResponse
     {
@@ -78,7 +78,7 @@ class PeriodController extends Controller
     }
 
     /**
-     * Toggle the active status of the period.
+     * Ubah status aktif periode.
      */
     public function toggleStatus(int|string $id): RedirectResponse
     {
