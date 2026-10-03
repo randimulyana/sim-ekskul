@@ -42,7 +42,11 @@ class StudentAuthorizationTest extends TestCase
         $admin = User::factory()->create(['role' => 'admin']);
         $this->actingAs($admin);
 
-        $this->get('/siswa/dashboard')->assertForbidden();
+        $response = $this->get('/siswa/dashboard');
+        $response->assertForbidden();
+        $response->assertDontSee('Halaman ini hanya untuk Administrator');
+        $response->assertSee('Akses tidak diizinkan. Anda tidak memiliki hak akses untuk halaman ini.');
+
         $this->get('/siswa/profil')->assertForbidden();
         $this->get('/siswa/kuesioner')->assertForbidden();
     }

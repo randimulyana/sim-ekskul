@@ -2,8 +2,11 @@
 
 namespace Tests\Feature;
 
+use App\Models\Period;
 use App\Models\Question;
 use App\Models\QuestionOption;
+use App\Models\QuestionnaireAnswer;
+use App\Models\Student;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -207,5 +210,53 @@ class AdminQuestionnaireCrudTest extends TestCase
         ]);
 
         $response->assertSessionHasErrors(['question_text', 'type']);
+    }
+
+    public function test_admin_cannot_delete_question_with_existing_answers(): void
+    {
+        $question = Question::create([
+            'question_text' => 'Pertanyaan yang sudah dijawab siswa',
+            'category' => 'Kemampuan',
+            'type' => 'likert',
+            'order' => 7,
+            'is_active' => true,
+        ]);
+
+        $period = Period::create([
+            'name' => 'Tahun Pelajaran 2026/2027',
+            'is_active' => true,
+        ]);
+
+        $studentUser = User::factory()->create(['role' => 'student']);
+        $student = Student::create([
+            'user_id' => $studentUser->id,
+            'nis' => '2026099',
+            'status' => 'active',
+        ]);
+
+        $answer = QuestionnaireAnswer::create([
+            'student_id' => $student->id,
+            'period_id' => $period->id,
+            'question_id' => $question->id,
+            'answer_value' => 4,
+            'answer_text' => 'Setuju',
+        ]);
+
+        $response = $this->actingAs($this->admin)->delete("/admin/kuesioner/{$question->id}");
+
+        $response->assertRedirect('/admin/kuesioner');
+        $response->assertSessionHas('error');
+
+        // Question must still exist
+        $this->assertDatabaseHas('questions', [
+            'id' => $question->id,
+        ]);
+
+        // Questionnaire answer must still exist (not cascade deleted)
+        $this->assertDatabaseHas('questionnaire_answers', [
+            'id' => $answer->id,
+            'question_id' => $question->id,
+            'student_id' => $student->id,
+        ]);
     }
 }

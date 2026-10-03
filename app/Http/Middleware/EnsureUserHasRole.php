@@ -21,7 +21,7 @@ class EnsureUserHasRole
         }
 
         if (! in_array($request->user()->role, $roles, true)) {
-            abort(403, 'Akses tidak diizinkan. Halaman ini hanya untuk Administrator.');
+            abort(403, 'Akses tidak diizinkan. Anda tidak memiliki hak akses untuk halaman ini.');
         }
 
         return $next($request);

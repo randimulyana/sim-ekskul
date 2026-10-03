@@ -153,6 +153,16 @@ class KuesionerController extends Controller
     public function destroy(int|string $id): RedirectResponse
     {
         $question = Question::findOrFail($id);
+
+        if ($question->answers()->exists()) {
+            return redirect()
+                ->route('admin.kuesioner.index')
+                ->with(
+                    'error',
+                    'Pertanyaan tidak dapat dihapus karena sudah memiliki data jawaban siswa. Silakan nonaktifkan pertanyaan jika tidak ingin digunakan lagi.'
+                );
+        }
+
         $question->delete();
 
         return redirect()->route('admin.kuesioner.index')

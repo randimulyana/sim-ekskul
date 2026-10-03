@@ -48,7 +48,11 @@ class AdminRoleAuthorizationTest extends TestCase
 
         $this->actingAs($studentUser);
 
-        $this->get('/admin/dashboard')->assertForbidden();
+        $response = $this->get('/admin/dashboard');
+        $response->assertForbidden();
+        $response->assertDontSee('Halaman ini hanya untuk Administrator');
+        $response->assertSee('Akses tidak diizinkan. Anda tidak memiliki hak akses untuk halaman ini.');
+
         $this->get('/admin/siswa')->assertForbidden();
         $this->get('/admin/ekstrakurikuler')->assertForbidden();
         $this->get('/admin/pendaftaran')->assertForbidden();
