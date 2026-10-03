@@ -14,7 +14,11 @@ Route::get('/', function () {
 // Breeze Dashboard (kept for compatibility)
 // ============================================================
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    if (auth()->user()?->isAdmin()) {
+        return redirect()->route('admin.dashboard');
+    }
+
+    return redirect()->route('siswa.dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 // ============================================================
